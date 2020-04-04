@@ -7,12 +7,19 @@ body {
 #main-nav {
   background-color: #ccc;
   display: inline-block;
+  padding: 0.5rem 0 0 0;
+}
+
+body > div > * {
+  height: 100vh;
+  max-height: 100vh;
+  overflow: auto;
 }
 
 nav {
   border-right: 1px solid rgba(0,0,0,.125);
+  float: left;
   width: 280px;
-  padding: 0.5rem 0 0 0;
 }
 
 
@@ -58,13 +65,13 @@ nav input {
 }
 
 /* Views */
-div#main-view {
-  display: inline-block;
+#main-view {
+  padding: 0.5rem;
 }
 
-pre {
-  max-width: 600px;
-  overflow: hidden;
+#main-view ul {
+  margin: 0;
+  padding: 0;
 }
 
 /* Podcasts */
