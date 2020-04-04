@@ -4,17 +4,14 @@ body {
   padding: 0;
 }
 
-body > * {
-  padding-top: 2rem;
-}
-
 #main-nav {
   background-color: #ccc;
+  display: inline-block;
 }
 
 nav {
   border-right: 1px solid rgba(0,0,0,.125);
-  max-width: 280px;
+  width: 280px;
   padding: 0.5rem 0 0 0;
 }
 
@@ -54,4 +51,24 @@ nav h6 {
 nav,
 nav input {
   font-size: 0.9rem;
+}
+
+.search-results {
+  list-style-type: none;
+}
+
+/* Views */
+div#main-view {
+  display: inline-block;
+}
+
+pre {
+  max-width: 600px;
+  overflow: hidden;
+}
+
+/* Podcasts */
+.podcast-show img {
+  height: 230px;
+  width: 230px;
 }

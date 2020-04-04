@@ -6,44 +6,67 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="services/itunes.js"></script>
+    <script src="classes/podcast.js"></script>
   </head>
   <body>
-    <nav
-      id="main-nav"
+    <div
     >
-      <div
-        class="nav-header"
+      <nav
+        id="main-nav"
       >
-        <form
-          id="search"
+        <div
+          class="nav-header"
         >
-          <input
-            type="search"
+          <form
             id="search"
-            placeholder="Search"
-            class="form-control"
           >
-        </form>
-        <h6>
-          Your Podcasts
-        </h6>
-      </div>
-      <!-- Should have two podcast groups: subscribed/non-subscribed -->
-      <ul
-        class="list-group"
-      >
-        <li
-          class="list-group-item"
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Search"
+              class="form-control"
+              value="Switchblade Sisters"
+            >
+          </form>
+          <h6>
+            Your Podcasts
+          </h6>
+        </div>
+        <!-- Should have two podcast groups: subscribed/non-subscribed -->
+        <ul
+          class="list-group"
         >
-          <div
-            class="media"
+          <li
+            class="list-group-item"
           >
-            Switchblade Sisters
-          </div>
-        </li>
-      </ul>
-    </nav>
+            <div
+              class="media"
+            >
+              Switchblade Sisters
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div
+        id="main-view"
+      ><div id="searchResults"><ul class="search-results">
+      <li class="show">
 
+      <div class="podcast-show">
+        <img src="https://is3-ssl.mzstatic.com/image/thumb/Podcasts123/v4/8c/99/51/8c995158-67a3-1316-7cc6-4dcad5d3eaf3/mza_3555509844503864478.png/600x600bb.jpg">
+        <div class="title">
+          Switchblade Sisters
+        </div>
+        <div class="identity">
+          MaximumFun.org, Casey O'Brien
+        </div>
+      </div>
+
+      </li>
+    </ul></div>
+
+      </div>
+    </div>
     <script src="./renderer.js"></script>
   </body>
 </html>
