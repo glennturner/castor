@@ -7,12 +7,28 @@ class Podcast {
     this._artwork = args.artwork
     this._title = args.title
     this._feed = args.feed
+    this._episodes = args.episodes || []
   }
 
   // Update podcast information via feed.
   async _update () {
     this.getFeed((parsed) => {
+      this._title = parsed.title
+      this._identity = parsed.title
+      this._description = parsed.description
+      this._copyright = parsed.copyright
+      this._pubDate = parsed.pubDate
+      this._lastUpdated = parsed.lastUpdated
+      this._artwork = parsed.artwork
+      this._episodesType = parsed.episodesType
+      this._episodes = []
 
+      this._episodes.map(item => {
+        this._episodes.push(
+          {
+          }
+        )
+      })
     })
   }
 
@@ -33,7 +49,7 @@ class Podcast {
     await this._update()
       .then(() => {
       console.log('FEED')
-      console.log(this.episodes)
+      console.log(this._episodes)
     })
   }
 
@@ -42,15 +58,35 @@ class Podcast {
 
     let parsed = {
       title: xml.querySelector('channel > title').textContent,
-      description: xml.querySelector('channel > description').textContent,
+      description: xml.querySelector('channel > description').innerHTML,
       copyright: xml.querySelector('channel > copyright').textContent,
       pubDate: xml.querySelector('channel > pubDate').textContent,
       lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
       artwork: xml.querySelector('channel > image > url').textContent,
-      episodesType: xml.getElementsByTagName('itunes:type')[0].textContent
+      identity: xml.getElementsByTagName('itunes:author')[0].textContent,
+      episodesType: xml.getElementsByTagName('itunes:type')[0].textContent,
+      episodes: []
     }
 
-    console.log(parsed)
+    xml.querySelectorAll('channel > item').forEach((item) => {
+      let enclosure = item.querySelector('enclosure')
+
+      parsed.episodes.push(
+        {
+          id: item.querySelector('guid').textContent,
+          titile: item.querySelector('title').textContent,
+          description: item.querySelector('description').textContent,
+          pubDate: item.querySelector('pubDate').textContent,
+          author: item.querySelector('author').textContent,
+          link: item.querySelector('author').textContent,
+          duration: xml.getElementsByTagName('itunes:duration')[0].textContent,
+          episodeNum: xml.getElementsByTagName('itunes:episode')[0].textContent,
+          episodeUrl: enclosure.getAttribute('url')
+        }
+      )
+    })
+
+    return parsed
   }
 
   capsule () {
