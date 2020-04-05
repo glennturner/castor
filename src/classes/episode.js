@@ -1,5 +1,5 @@
 class Episode {
-  constructor(args) {
+  constructor (args) {
     this.podcast = args.podcast;
     this.id = args.id;
   }
