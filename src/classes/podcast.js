@@ -8,11 +8,12 @@ class Podcast {
     this._title = args.title
     this._feed = args.feed
     this._episodes = args.episodes || []
+    this._player = new Player;
   }
 
   // Update podcast information via feed.
   async _update () {
-    this.getFeed((parsed) => {
+    return await this.getFeed().then((parsed) => {
       this._title = parsed.title
       this._identity = parsed.title
       this._description = parsed.description
@@ -21,22 +22,15 @@ class Podcast {
       this._lastUpdated = parsed.lastUpdated
       this._artwork = parsed.artwork
       this._episodesType = parsed.episodesType
-      this._episodes = []
-
-      this._episodes.map(item => {
-        this._episodes.push(
-          {
-          }
-        )
-      })
+      this._episodes = parsed.episodes
     })
   }
 
   async getFeed () {
-    return fetch(this._feed)
+    return await fetch(this._feed)
       .then(response => response.text())
       .then((str) => {
-        this._parseFeed(
+        return this._parseFeed(
           (new window.DOMParser()).parseFromString(str, "text/xml")
         )
       })
@@ -46,10 +40,14 @@ class Podcast {
     console.log('PLAY LATEST')
     console.log(this)
 
-    await this._update()
-      .then(() => {
-      console.log('FEED')
-      console.log(this._episodes)
+    return await this._update().then(() => {
+      console.log('FEED: ' + this._pubDate)
+      console.log(this._episodes[0])
+
+      let ep = this._episodes[0]
+      ep.episodeUrl = 'http://localhost:5000/podcast'
+      this._player.episode = ep
+      this._player.play()
     })
   }
 
@@ -117,6 +115,11 @@ class Podcast {
           &#9657;
         </span>
         <span
+          class="btn btn-primary btn-pause"
+        >
+          ||
+        </span>
+        <span
           class="btn btn-secondary btn-settings"
         >
           &#8943;
@@ -130,6 +133,13 @@ class Podcast {
       'click',
       (e) => {
         this.playLatest()
+      }
+    )
+
+    showEle.querySelectorAll('.btn-pause')[0].addEventListener(
+      'click',
+      (e) => {
+        this._player.pause()
       }
     )
 
