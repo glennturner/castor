@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="classes/podcast.js"></script>
+    <script src="classes/player.js"></script>
     <script src="services/itunes.js"></script>
   </head>
   <body>
@@ -30,7 +31,7 @@
             >
           </form>
           <h6>
-            Your Podcasts
+            Subscribed Podcasts
           </h6>
         </div>
         <!-- Should have two podcast groups: subscribed/non-subscribed -->
@@ -132,6 +133,13 @@
          ]</pre>
         </div>-->
       </main>
+      <nav
+        id="podcast-player"
+      >
+        <audio id="player">
+            <source src="" type="audio/mpeg">
+        </audio>
+      </nav>
     </div>
     <script src="./renderer.js"></script>
   </body>
