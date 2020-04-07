@@ -1,14 +1,16 @@
 class Podcast {
   constructor (args) {
+    console.log('ITEM: ' + args.identity)
     // Basic info
     // Usually supplied by iTunes.
     this._id = args.id
-    this._identity = args.identity
+    this._author = args.identity
     this._artwork = args.artwork
     this._title = args.title
     this._feed = args.feed
     this._episodes = args.episodes || []
-    this._player = new Player;
+    this._player = new Player
+    this._args = args
   }
 
   // Update podcast information via feed.
@@ -20,7 +22,7 @@ class Podcast {
 
     return await this.getFeed().then((parsed) => {
       this._title = parsed.title
-      this._identity = parsed.title
+      this._author = parsed.author
       this._description = parsed.description
       this._copyright = parsed.copyright
       this._pubDate = parsed.pubDate
@@ -33,6 +35,7 @@ class Podcast {
   }
 
   async getFeed () {
+    console.log('GET FEED!')
     return await fetch(this._feed)
       .then(response => response.text())
       .then((str) => {
@@ -66,7 +69,7 @@ class Podcast {
       pubDate: xml.querySelector('channel > pubDate').textContent,
       lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
       artwork: xml.querySelector('channel > image > url').textContent,
-      identity: xml.getElementsByTagName('itunes:author')[0].textContent,
+      author: xml.getElementsByTagName('itunes:author')[0].textContent,
       episodesType: xml.getElementsByTagName('itunes:type')[0].textContent,
       episodes: []
     }
@@ -106,9 +109,9 @@ class Podcast {
         ${this._title}
       </div>
       <div
-        class="identity"
+        class="author"
       >
-        ${this._identity}
+        ${this._author}
       </div>
 
       <div
@@ -160,16 +163,23 @@ class Podcast {
       .then(() => {
         let detailedEle = document.createElement('div')
         detailedEle.className = 'podcast-show-detailed'
+        console.log('ARGS')
+        console.log(this._args)
 
         detailedEle.innerHTML = `
-          <img
-            src="${this._artwork}"
-            class="artwork"
-          />
-
           <div
             class="podcast-show-details"
           >
+            <img
+              src="${this._artwork}"
+              class="artwork"
+            />
+            <h2>
+              ${this._title}
+            </h2>
+            <h3>
+              ${this._author}
+            </h3>
 
           </div>
         `
