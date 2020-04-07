@@ -12,7 +12,12 @@ class Podcast {
   }
 
   // Update podcast information via feed.
-  async _update () {
+  async _update (forceUpdate = false) {
+    // Don't update if already updated.
+    if (this._lastUpdated && !forceUpdate) {
+      return
+    }
+
     return await this.getFeed().then((parsed) => {
       this._title = parsed.title
       this._identity = parsed.title
@@ -23,6 +28,7 @@ class Podcast {
       this._artwork = parsed.artwork
       this._episodesType = parsed.episodesType
       this._episodes = parsed.episodes
+      this._lastUpdated = new Date
     })
   }
 
@@ -37,23 +43,22 @@ class Podcast {
   }
 
   async playLatest () {
-    console.log('PLAY LATEST')
-    console.log(this)
-
     return await this._update().then(() => {
-      console.log('FEED: ' + this._pubDate)
-      console.log(this._episodes[0])
-
       let ep = this._episodes[0]
       ep.episodeUrl = 'http://localhost:5000/podcast'
-      this._player.episode = ep
-      this._player.play()
+
+      // Not 100% sure why `Player#togglePlayback` is not working here,
+      // so we manually control pausing.
+      if ( this._player.playing && this._player.episode == ep ) {
+        this._player.pause()
+      } else {
+        this._player.episode = ep
+        this._player.play()
+      }
     })
   }
 
   _parseFeed (xml) {
-    console.log('PARSE FEED')
-
     let parsed = {
       title: xml.querySelector('channel > title').textContent,
       description: xml.querySelector('channel > description').innerHTML,
@@ -115,34 +120,42 @@ class Podcast {
           &#9657;
         </span>
         <span
-          class="btn btn-primary btn-pause"
-        >
-          ||
-        </span>
-        <span
           class="btn btn-secondary btn-settings"
         >
           &#8943;
       </div>
     `
 
-    console.log('SHOW ELE')
-    console.log(showEle.querySelectorAll('.btn-play'))
-
     showEle.querySelectorAll('.btn-play')[0].addEventListener(
       'click',
       (e) => {
         this.playLatest()
+        e.stopPropagation()
       }
     )
 
-    showEle.querySelectorAll('.btn-pause')[0].addEventListener(
+    showEle.querySelectorAll('.btn-settings')[0].addEventListener(
       'click',
       (e) => {
-        this._player.pause()
+        // this.showCapsuleSettings()
+        e.stopPropagation()
+      }
+    )
+
+    showEle.addEventListener(
+      'click',
+      (e) => {
+        changeMainView('podcast', this.detailed())
       }
     )
 
     return showEle
+  }
+
+  detailed () {
+    let detailedEle = document.createElement('div')
+    detailedEle.className = 'podcast-show-detailed'
+
+    return detailedEle
   }
 }
