@@ -27,7 +27,6 @@ class Player {
   }
 
   play () {
-    console.log('PLAY!')
     this.playing = true
 
     this._player.src = this._episode.episodeUrl
@@ -38,10 +37,13 @@ class Player {
   pause () {
     this.playing = false
 
-    let player = document.getElementById(this._playerId)
-    this._currentTime = player.currentTime
-    player.pause()
+    this._currentTime = this._player.currentTime
+    this._player.pause()
 
+  }
+
+  togglePlayback () {
+    this.playing === true ? this.pause() : this.play()
   }
 
   _setEvents () {
