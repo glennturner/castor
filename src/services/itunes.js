@@ -11,6 +11,7 @@ class Itunes {
       attribute: 'titleTerm',
       entity: entity,
       explicit: opts.explicit,
+      limit: 50,
       media: entity,
       term: query
     }
