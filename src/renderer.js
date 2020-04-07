@@ -1,11 +1,8 @@
 document.getElementById('search').addEventListener('submit', (e) => {
   let itunes = new Itunes()
-  let searchEle = document.getElementById('search-input').value
+  let searchTerm = document.getElementById('search-input').value
 
-  itunes.search(searchEle).then((resp) => {
-    console.log('RESULTS')
-    console.log(resp.results)
-
+  itunes.search(searchTerm).then((resp) => {
     let podcasts = resp.results.map((item) => {
       return new Podcast({
         id: item.collectionId,
@@ -15,13 +12,18 @@ document.getElementById('search').addEventListener('submit', (e) => {
         feed: item.feedUrl,
       })
     })
-    console.log('PODCASTS:')
-    console.log(podcasts)
 
-    let results = searchResults(podcasts)
+    let results = document.createElement('div')
+    let foundPodcasts = searchResults(podcasts)
+
+    let searchHeader = document.createElement('h2')
+    searchHeader.innerText = `Showing search results for "${searchTerm}"`
+    results.appendChild(searchHeader)
+    results.appendChild(foundPodcasts)
+
     let debugEle = document.createElement('pre')
     debugEle.innerHTML = JSON.stringify( resp.results, null, 2 )
-    results.appendChild(debugEle)
+    // results.appendChild(debugEle)
 
     changeMainView(
       'searchResults',
@@ -44,6 +46,7 @@ function changeMainView(type, cont) {
 function searchResults(podcasts) {
   let list = document.createElement('ul')
   list.classList.add('search-results')
+
 
   let results = podcasts.map((podcast) => {
     let listItem = document.createElement('li')
