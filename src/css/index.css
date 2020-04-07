@@ -74,7 +74,7 @@ nav input {
 
 /* Views */
 #main-view {
-  padding: 0.5rem;
+  padding: 1rem 2rem;
 }
 
 #main-view ul {
@@ -106,7 +106,8 @@ nav input {
   width: 230px;
 }
 
-.podcast-show img {
+.podcast-show img,
+.podcast-show-detailed img.artwork {
   height: 230px;
   width: 230px;
 }
@@ -131,5 +132,12 @@ nav input {
 
 .capsule-player .btn-settings {
   float: right;
+}
+
+/* Podcast */
+.podcast-show-detailed {
+}
+
+.podcast-show-detailed img.artwork {
 }
 
