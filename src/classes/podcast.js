@@ -145,17 +145,36 @@ class Podcast {
     showEle.addEventListener(
       'click',
       (e) => {
-        changeMainView('podcast', this.detailed())
+        this.detailed()
+          .then((ele) => {
+            changeMainView('podcast', ele)
+          })
       }
     )
 
     return showEle
   }
 
-  detailed () {
-    let detailedEle = document.createElement('div')
-    detailedEle.className = 'podcast-show-detailed'
+  async detailed () {
+    return await this._update()
+      .then(() => {
+        let detailedEle = document.createElement('div')
+        detailedEle.className = 'podcast-show-detailed'
 
-    return detailedEle
+        detailedEle.innerHTML = `
+          <img
+            src="${this._artwork}"
+            class="artwork"
+          />
+
+          <div
+            class="podcast-show-details"
+          >
+
+          </div>
+        `
+
+        return detailedEle
+      })
   }
 }
