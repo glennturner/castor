@@ -32,7 +32,7 @@ class Player {
 
     this._player.src = this._episode.episodeUrl
     this._player.currentTime = this._currentTime
-    this.updateGlobalPlayer()
+    this._updateGlobalPlayerUI()
     player.play()
   }
 
@@ -43,14 +43,14 @@ class Player {
     this._player.pause()
   }
 
-  updateGlobalPlayer () {
+  togglePlayback () {
+    this.playing === true ? this.pause() : this.play()
+  }
+
+  _updateGlobalPlayerUI () {
     document.getElementById(
       'podcast-display-name'
     ).innerText = this.episode.title
-  }
-
-  togglePlayback () {
-    this.playing === true ? this.pause() : this.play()
   }
 
   _setEvents () {
