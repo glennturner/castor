@@ -35,7 +35,6 @@ class Podcast {
   }
 
   async getFeed () {
-    console.log('GET FEED!')
     return await fetch(this._feed)
       .then(response => response.text())
       .then((str) => {
@@ -62,20 +61,29 @@ class Podcast {
   }
 
   _parseFeed (xml) {
+    // Optional values.
+    let copyright = xml.querySelector('channel > copyright')
+    let pubDate = xml.querySelector('channel > pubDate')
+    let epType = xml.getElementsByTagName('itunes:type')
+
     let parsed = {
       title: xml.querySelector('channel > title').textContent,
       description: xml.querySelector('channel > description').innerHTML,
-      copyright: xml.querySelector('channel > copyright').textContent,
-      pubDate: xml.querySelector('channel > pubDate').textContent,
+      copyright: copyright ? copyright.textContent : '',
+      pubDate: pubDate ? pubDate.textContent : undefined,
       lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
-      artwork: xml.querySelector('channel > image > url').textContent,
+      artwork: this._getArtworkFromFeed(xml),
       author: xml.getElementsByTagName('itunes:author')[0].textContent,
-      episodesType: xml.getElementsByTagName('itunes:type')[0].textContent,
+      episodesType: epType.length ? epType[0].textContent : undefined,
       episodes: []
     }
 
     xml.querySelectorAll('channel > item').forEach((item) => {
       let enclosure = item.querySelector('enclosure')
+      // Optional values.
+      let link = item.querySelector('author')
+      let epNum = item.getElementsByTagName('itunes:episode')
+      let author = item.querySelector('author')
 
       parsed.episodes.push(
         {
@@ -83,16 +91,27 @@ class Podcast {
           title: item.querySelector('title').textContent,
           description: item.querySelector('description').textContent,
           pubDate: item.querySelector('pubDate').textContent,
-          author: item.querySelector('author').textContent,
-          link: item.querySelector('author').textContent,
-          duration: xml.getElementsByTagName('itunes:duration')[0].textContent,
-          episodeNum: xml.getElementsByTagName('itunes:episode')[0].textContent,
+          author: author ? author.textContent : undefined,
+          link: link ? link.textContent : undefined,
+          duration: item.getElementsByTagName('itunes:duration')[0].textContent,
+          episodeNum: epNum.length ? epNum[0].textContent : undefined,
           episodeUrl: enclosure.getAttribute('url')
         }
       )
     })
 
     return parsed
+  }
+
+  _getArtworkFromFeed (xml) {
+    let channelUrl = xml.querySelector('channel > image > url')
+    let itunesImageUrl = xml.getElementsByTagName('itunes:image')
+
+    if (itunesImageUrl) {
+      return itunesImageUrl[0].getAttribute('href')
+    } else if (channelUrl) {
+      return channelUrl.textContent
+    }
   }
 
   capsule () {
