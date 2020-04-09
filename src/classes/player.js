@@ -6,6 +6,7 @@ class Player {
     this._playerId = 'player'
     this._playerInterfaceId = 'player-ui'
     this._player = document.getElementById(this._playerId)
+    this._playerUI = document.getElementById(this._playerInterfaceId)
     this._currentTime = opts.currentTime || 0
   }
 
@@ -31,6 +32,7 @@ class Player {
 
     this._player.src = this._episode.episodeUrl
     this._player.currentTime = this._currentTime
+    this.updateGlobalPlayer()
     player.play()
   }
 
@@ -39,7 +41,12 @@ class Player {
 
     this._currentTime = this._player.currentTime
     this._player.pause()
+  }
 
+  updateGlobalPlayer () {
+    document.getElementById(
+      'podcast-display-name'
+    ).innerText = this.episode.title
   }
 
   togglePlayback () {
