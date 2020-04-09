@@ -47,7 +47,6 @@ function searchResults(podcasts) {
   let list = document.createElement('ul')
   list.classList.add('search-results')
 
-
   let results = podcasts.map((podcast) => {
     let listItem = document.createElement('li')
 
