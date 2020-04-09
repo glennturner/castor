@@ -80,7 +80,7 @@ class Podcast {
       parsed.episodes.push(
         {
           id: item.querySelector('guid').textContent,
-          titile: item.querySelector('title').textContent,
+          title: item.querySelector('title').textContent,
           description: item.querySelector('description').textContent,
           pubDate: item.querySelector('pubDate').textContent,
           author: item.querySelector('author').textContent,
