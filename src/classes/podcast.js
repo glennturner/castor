@@ -8,7 +8,7 @@ class Podcast {
     this._artwork = args.artwork
     this._title = args.title
     this._feed = args.feed
-    this._episodes = args.episodes || []
+    this.episodes = args.episodes || []
     this._player = new Player
     this._args = args
   }
@@ -29,7 +29,7 @@ class Podcast {
       this._lastUpdated = parsed.lastUpdated
       this._artwork = parsed.artwork
       this._episodesType = parsed.episodesType
-      this._episodes = parsed.episodes
+      this.episodes = parsed.episodes
       this._lastUpdated = new Date
     })
   }
@@ -46,7 +46,7 @@ class Podcast {
 
   async playLatest () {
     return await this._update().then(() => {
-      let ep = this._episodes[0]
+      let ep = this.episodes[0]
       ep.episodeUrl = 'http://localhost:5000/podcast'
 
       // Not 100% sure why `Player#togglePlayback` is not working here,
@@ -185,25 +185,47 @@ class Podcast {
         console.log('ARGS')
         console.log(this._args)
 
+        let eps = this.episodes.map(ep => {
+            return this._detailedEp(ep)
+          }).join('')
+
         detailedEle.innerHTML = `
           <div
             class="podcast-show-details"
           >
-            <img
-              src="${this._artwork}"
-              class="artwork"
-            />
-            <h2>
-              ${this._title}
-            </h2>
-            <h3>
-              ${this._author}
-            </h3>
-
+            <div
+              class="podcast-show-artwork"
+            >
+              <img
+                src="${this._artwork}"
+                class="artwork"
+              />
+            </div>
+            <div
+              class="podcast-show-content"
+            >
+              <h2>
+                ${this._title}
+              </h2>
+              <h3>
+                ${this._author}
+              </h3>
+        ` + eps + `
+            </div>
           </div>
         `
 
         return detailedEle
       })
+  }
+
+  _detailedEp (ep) {
+    return `
+      <div
+        class="episode"
+      >
+        ${ep.title}
+      </div>
+    `
   }
 }

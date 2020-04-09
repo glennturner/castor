@@ -146,9 +146,13 @@ nav input {
 }
 
 /* Podcast */
-.podcast-show-detailed {
+.podcast-show-content {
+  display: inline-block;
 }
 
-.podcast-show-detailed img.artwork {
+.podcast-show-detailed .podcast-show-artwork {
+  display: inline-block;
+  height: auto;
+  width: 230px;
 }
 
