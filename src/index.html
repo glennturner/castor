@@ -5,6 +5,8 @@
     <title>Castor</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="classes/feed.js"></script>
+    <script src="classes/episode.js"></script>
     <script src="classes/podcast.js"></script>
     <script src="classes/player.js"></script>
     <script src="services/itunes.js"></script>
@@ -31,10 +33,13 @@
             >
           </form>
           <h6>
-            Subscribed Podcasts
+            Subscribed
+          </h6>
+          <h6>
+            Archived
           </h6>
         </div>
-        <!-- Should have two podcast groups: subscribed/non-subscribed? -->
+        <!-- Should have two podcast groups: subscribed/archived (saved, but not subscribed) -->
         <ul
           class="list-group"
         >
@@ -64,6 +69,536 @@
       <main
         id="main-view"
       >
+        <!-- Podcast show view -->
+        <div
+          class="podcast-show-detailed"
+        >
+          <div class="podcast-show-details">
+            <div class="podcast-show-artwork">
+              <img
+                src="https://cdn.simplecast.com/images/be052949-6926-4d69-a2e0-7ebc07eaf977/3dcd6604-20da-42dc-a2b1-548c4d8fe29b/3000x3000/squarelogo.png?aid=rss_feed"
+                class="artwork"
+              />
+            </div>
+            <div class="podcast-show-content">
+              <h2>
+                Switchblade Sisters
+              </h2>
+              <h3>
+                MaximumFun.org, Casey O'Brien
+              </h3>
+
+              <div class="episode">
+                ‘Mandy’ with ‘Aliens’ and ‘Terminator 2: Judgment Day’ Actor Jenette Goldstein
+              </div>
+
+              <div class="episode">
+                ‘Ms .45’ with ‘The Ranger’ Director Jenn Wexler
+              </div>
+
+              <div class="episode">
+                'The Wicker Man' with 'Blow the Man Down' Directors Danielle Krudy &amp; Bridget Savage Cole
+              </div>
+
+              <div class="episode">
+                ‘Willow’ with ‘I Am Not Okay with This’ Co-Creator Christy Hall
+              </div>
+
+              <div class="episode">
+                ‘Don’t Breathe’ with ‘Into the Dark: Culture Shock’ Director Gigi Saul Guerrero and a Conversation with the Artistic Director of Indie Memphis Film Festival Miriam Bale
+              </div>
+
+              <div class="episode">
+                ‘Kill Bill’ with ‘Sacred Lies’ Showrunner Raelle Tucker
+              </div>
+
+              <div class="episode">
+                ‘It Follows’ with Jenna Kanell
+              </div>
+
+              <div class="episode">
+                ‘The Lost Boys’ with ‘Into the Dark: My Valentine’ Director Maggie Levin
+              </div>
+
+              <div class="episode">
+                ‘Mad Max: Fury Road’ with ‘Birds of Prey’ Director Cathy Yan
+              </div>
+
+              <div class="episode">
+                ‘Adaptation’ with ‘Color Out of Space’ Star Madeleine Arthur
+              </div>
+
+              <div class="episode">
+                ‘Bunny Lake Is Missing’ with ‘She’s Missing’ Director Alexandra McGuinness
+              </div>
+
+              <div class="episode">
+                ‘Addams Family Values’ with Julia Prescott
+              </div>
+
+              <div class="episode">
+                ‘The Texas Chainsaw Massacre’ with Writer Megan Amram
+              </div>
+
+              <div class="episode">
+                ‘Ladyhawke’ with Janet Varney
+              </div>
+
+              <div class="episode">
+                ‘Scream’ with Clarke Wolfe
+              </div>
+
+              <div class="episode">
+                'Brazil' with 'Watchmen' and 'The OA' Writer Claire Kiechel
+              </div>
+
+              <div class="episode">
+                ‘Prince of Darkness’ with ‘Black Christmas’ Co-Writer and Switchblade Sisters Host April Wolfe
+              </div>
+
+              <div class="episode">
+                ‘The Visit’ with ‘Little Joe’ Director Jessica Hausner
+              </div>
+
+              <div class="episode">
+                ‘Safe’ with ‘Knives and Skin’ Director Jennifer Reeder
+              </div>
+
+              <div class="episode">
+                'Another Earth' with 'Fun Size Horror' Producer &amp; Director Mali Elfman
+              </div>
+
+              <div class="episode">
+                'The Ring' with 'Pure' &amp; 'Sickhouse' Director Hannah Macpherson
+              </div>
+
+              <div class="episode">
+                'Psycho' with 'Blue' Director Gabriela Ledesma
+              </div>
+
+              <div class="episode">
+                'Logan's Run' with 'Paradise Hills' Director Alice Waddington and Halloween Horror Recs with Jordan Crucchiola
+              </div>
+
+              <div class="episode">
+                'Black Widow' with '10 Things I Hate About You' &amp; 'Legally Blonde' Screenwriter Kiwi Smith
+              </div>
+
+              <div class="episode">
+                'Polyester' with 'Greener Grass' Actors and Directors Dawn Luebbe &amp; Jocelyn DeBoer
+              </div>
+
+              <div class="episode">
+                'Ravenous' with 'Bloodline' Writer Avra Fox-Lerner
+              </div>
+
+              <div class="episode">
+                'Get Out' with 'A Black Lady Sketch Show' &amp; 'Full Frontal with Samantha Bee' Writer and Actor Ashley Nicole Black
+              </div>
+
+              <div class="episode">
+                'The Witch' with 'The Long Walk' Director Mattie Do and 'Tigers Are Not Afraid' Director Issa López (LIVE AT FANTASTIC FEST)
+              </div>
+
+              <div class="episode">
+                'Picnic at Hanging Rock' with 'The Office' and 'Maniac' Writer Caroline Williams
+              </div>
+
+              <div class="episode">
+                'Henry: Portrait of a Serial Killer' with Producer Heather Buckley
+              </div>
+
+              <div class="episode">
+                'Dead &amp; Buried' with 'Riot Girls' Director Jovanka Vuckovic
+              </div>
+
+              <div class="episode">
+                'Heathers' with 'Jawline' Director Liza Mandelup
+              </div>
+
+              <div class="episode">
+                'Hereditary' with 'Pet Sematary' Director Mary Lambert
+              </div>
+
+              <div class="episode">
+                'Rebecca' with 'The Wind' Director Emma Tammi
+              </div>
+
+              <div class="episode">
+                'American Psycho' with 'Satanic Panic' Director Chelsea Stardust
+              </div>
+
+              <div class="episode">
+                'The Innocents' with 'The Babadook' and 'The Nightingale' Director Jennifer Kent
+              </div>
+
+              <div class="episode">
+                'Little Shop of Horrors' with 'The Last Time You Had Fun' Director Mo Perkins
+              </div>
+
+              <div class="episode">
+                'Donnie Darko' with 'Braid' Director Mitzi Peirone
+              </div>
+
+              <div class="episode">
+                'Drop Dead Gorgeous' with 'Grown-ish' Writers Melanie Kirschbaum &amp; Alexandra Decas
+              </div>
+
+              <div class="episode">
+                'Blacula' with 'Jezebel' Director Numa Perrier
+              </div>
+
+              <div class="episode">
+                'Black Christmas' with 'Night of the Comet' &amp; 'Chopping Mall' Star Kelli Maroney
+              </div>
+
+              <div class="episode">
+                'Night Tide' with 'Gas Food Lodging' Director Allison Anders
+              </div>
+
+              <div class="episode">
+                '3 Days of the Condor' with the Incomparable Adrienne Barbeau
+              </div>
+
+              <div class="episode">
+                ‘Shaun of the Dead’ with ‘Broad City’ writer and comedian Naomi Ekperigin
+              </div>
+
+              <div class="episode">
+                'Unfaithful' with 'Being Frank' Director Miranda Bailey
+              </div>
+
+              <div class="episode">
+                'E.T. the Extra-Terrestrial' with 'The Devil Wears Prada' writer and 'Crazy Ex-Girlfriend' Co-Creator/ Showrunner Aline Brosh McKenna
+              </div>
+
+              <div class="episode">
+                'An American Werewolf in London' with 'American Psycho' and 'Charlie Says' Writer Guinevere Turner
+              </div>
+
+              <div class="episode">
+                'The Red Queen Kills Seven Times' with 'Body at Brighton Rock' Director Roxanne Benjamin
+              </div>
+
+              <div class="episode">
+                'Mulholland Drive' with 'Wild Nights with Emily' Director Madeleine Olnek
+              </div>
+
+              <div class="episode">
+                'The Peanut Butter Solution' with 'Pet Sematary' Actor and 'The Girlfriend Experience' Co-creator Amy Seimetz
+              </div>
+
+              <div class="episode">
+                'Alien' with 'Little Woods' Director Nia DaCosta
+              </div>
+
+              <div class="episode">
+                'The Bad Seed' with 'Breakthrough' Director and 'Star Trek: Voyager' Actor Roxann Dawson
+              </div>
+
+              <div class="episode">
+                'One False Move' with 'Miss Stevens' and 'Fast Color' Director Julia Hart
+              </div>
+
+              <div class="episode">
+                'Dead Ringers' with The Soska Sisters! PLUS an Interview with Michele Meek
+              </div>
+
+              <div class="episode">
+                'Pickup on South Street' with 'Leave No Trace' and 'Winter's Bone' Director Debra Granik
+              </div>
+
+              <div class="episode">
+                'What We Do in the Shadows' with 'At Home with Amy Sedaris' Producer Katie Tibaldi
+              </div>
+
+              <div class="episode">
+                'Ex Machina' with 'Mapplethorpe' and 'Dig!' Director Ondi Timoner
+              </div>
+
+              <div class="episode">
+                'Twin Peaks: Fire Walk with Me' with 'Shirkers' Director Sandi Tan
+              </div>
+
+              <div class="episode">
+                'Labyrinth' with 'Solace' Director Tchaiko Omawale
+              </div>
+
+              <div class="episode">
+                'Head' with 'B.C. Butcher' Director Kansas Bowling
+              </div>
+
+              <div class="episode">
+                'Don't Look Now' with 'Untogether' Director Emma Forrest
+              </div>
+
+              <div class="episode">
+                'The Wiz' with 'How to Get Away with Murder' Director DeMane Davis
+              </div>
+
+              <div class="episode">
+                'The Bourne Identity' with 'Close' Director Vicky Jewson
+              </div>
+
+              <div class="episode">
+                'The Lure' with 'Abducted in Plain Sight' Director Skye Borgman
+              </div>
+
+              <div class="episode">
+                'Defending Your Life' with 'Operator' Director Logan Kibens
+              </div>
+
+              <div class="episode">
+                'Under the Skin' with 'Rust Creek' Director Jen McGowan
+              </div>
+
+              <div class="episode">
+                'Point Break' with 'Alaska Is a Drag' Director Shaz Bennett
+              </div>
+
+              <div class="episode">
+                'Black Panther' with Director, Actor, and Dancer Delila Vallot
+              </div>
+
+              <div class="episode">
+                'Hush...Hush, Sweet Charlotte' with 'Clara's Ghost' Director Bridey Elliott
+              </div>
+
+              <div class="episode">
+                'Leave Her to Heaven' with 'Dirty John' Showrunner Alexandra Cunningham
+              </div>
+
+              <div class="episode">
+                'Funny Games' with 'The Long Dumb Road' Director Hannah Fidell
+              </div>
+
+              <div class="episode">
+                'Jennifer's Body' with 'Cam' Writer/Producer Isa Mazzei
+              </div>
+
+              <div class="episode">
+                'The Mask' with Emily Heller
+              </div>
+
+              <div class="episode">
+                'The Host' with 'Unlovable' Director Suzi Yoonessi
+              </div>
+
+              <div class="episode">
+                'The Skeleton Key' with 'Lez Bomb' Director Jenna Laurenzo
+              </div>
+
+              <div class="episode">
+                'All That Jazz' with 'Party Girl' Director Daisy von Scherler Mayer
+              </div>
+
+              <div class="episode">
+                'Black Swan' with 'Jinn' Director Nijla Mu'min
+              </div>
+
+              <div class="episode">
+                '12 Monkeys' with 'Sadie' Director Megan Griffiths
+              </div>
+
+              <div class="episode">
+                'Matilda' with Documentary Producer Erikka Yancy
+              </div>
+
+              <div class="episode">
+                LIVE FROM FANTASTIC FEST: 'The Bitter Tears of Petra von Kant' with 'Ladyworld' Director Amanda Kramer
+              </div>
+
+              <div class="episode">
+                'Freaks' with Jess Weixler
+              </div>
+
+              <div class="episode">
+                'Let the Right One In' with 'Nancy' Director Christina Choe
+              </div>
+
+              <div class="episode">
+                'Basket Case' with Brea Grant
+              </div>
+
+              <div class="episode">
+                'The Night of the Hunter' with 'Night Comes On' Director Jordana Spiro
+              </div>
+
+              <div class="episode">
+                'Unbreakable' with 'Like Father' Director Lauren Miller Rogen
+              </div>
+
+              <div class="episode">
+                'Young Frankenstein' with 'The Miseducation of Cameron Post' Director Desiree Akhavan
+              </div>
+
+              <div class="episode">
+                'The Innkeepers' with 'Summer of 84' Co-Director Anouk Whissell
+              </div>
+
+              <div class="episode">
+                'The Big Lebowski' with 'Never Goin' Back' Director Augustine Frizzell
+              </div>
+
+              <div class="episode">
+                'Wild Tales' with 'Buster's Mal Heart' director Sarah Adina Smith
+              </div>
+
+              <div class="episode">
+                The Matrix with Vera Miao
+              </div>
+
+              <div class="episode">
+                Birth with Kate Berlant
+              </div>
+
+              <div class="episode">
+                Jurassic Park with The Writers of 'Lost in Space' - Vivian Lee, Kari Drake and Katherine Collins
+              </div>
+
+              <div class="episode">
+                Children of Men with The Last Man on Earth's Cleopatra Coleman
+              </div>
+
+              <div class="episode">
+                Rear Window with 'The Killing' and 'Seven Seconds' Creator Veena Sud
+              </div>
+
+              <div class="episode">
+                Death Becomes Her with Angela Trimbur, Lauren Parks and Jenée LaMarque of 'The Feels'
+              </div>
+
+              <div class="episode">
+                Deep Rising with Rebekah McKendry
+              </div>
+
+              <div class="episode">
+                28 Days Later with 'Bob's Burgers' Writers/Producers Lizzie &amp; Wendy Molyneux
+              </div>
+
+              <div class="episode">
+                The Craft with 'UnREAL' Creator Sarah Gertrude Shapiro
+              </div>
+
+              <div class="episode">
+                Being John Malkovich with 'The Magicians' creator Sera Gamble
+              </div>
+
+              <div class="episode">
+                'The Fly' with 'Divergent' &amp; 'Hell or High Water' Producer Rachel Shane
+              </div>
+
+              <div class="episode">
+                'Carrie' with 'RBG' Directors Betsy West &amp; Julie Cohen
+              </div>
+
+              <div class="episode">
+                The Witches of Eastwick with Ramaa Mosley
+              </div>
+
+              <div class="episode">
+                The Big Sleep with Martha Coolidge
+              </div>
+
+              <div class="episode">
+                The Heat with Tamra Davis
+              </div>
+
+              <div class="episode">
+                Fatal Attraction with Heather Graham
+              </div>
+
+              <div class="episode">
+                The Silence of the Lambs with Liz Hannah
+              </div>
+
+              <div class="episode">
+                Monsters with Meera Menon
+              </div>
+
+              <div class="episode">
+                Code 46 with Lynn Shelton
+              </div>
+
+              <div class="episode">
+                The Witch Who Came from the Sea with Drea Clark
+              </div>
+
+              <div class="episode">
+                Invasion of the Body Snatchers with Leigh Janiak
+              </div>
+
+              <div class="episode">
+                Night of the Comet with Amber Benson
+              </div>
+
+              <div class="episode">
+                The Shining with Lin Shaye
+              </div>
+
+              <div class="episode">
+                Blood Simple with Julie Hébert
+              </div>
+
+              <div class="episode">
+                Raw with Barbara Crampton
+              </div>
+
+              <div class="episode">
+                Set It Off with Tina Mabry
+              </div>
+
+              <div class="episode">
+                Star Trek Generations with Marianna Palka
+              </div>
+
+              <div class="episode">
+                The Legacy with Lotti Pharriss Knowles
+              </div>
+
+              <div class="episode">
+                Snowpiercer with Trish Sie
+              </div>
+
+              <div class="episode">
+                Sudden Fear with Anna Biller
+              </div>
+
+              <div class="episode">
+                Rosemary's Baby with Jessie Nickson-Lopez
+              </div>
+
+              <div class="episode">
+                Body Double with Sophia Takal
+              </div>
+
+              <div class="episode">
+                The Others with Anne Hamilton
+              </div>
+
+              <div class="episode">
+                Pan's Labyrinth with Issa López
+              </div>
+
+              <div class="episode">
+                The Invitation with Heather Matarazzo
+              </div>
+
+              <div class="episode">
+                Near Dark with Karyn Kusama
+              </div>
+
+              <div class="episode">
+                Bone Tomahawk with Emily Gordon
+              </div>
+
+              <div class="episode">
+                Switchblade Sisters Preview
+              </div>
+
+            </div>
+          </div>
+      </div>
       <!-- // Search results
       <div><h2>Showing search results for "film"</h2><ul class="search-results"><li class="show"><div class="podcast-show">
       <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts114/v4/75/97/ad/7597ade8-8710-d6d0-15ff-b65805b48502/mza_16653473462481274035.jpg/600x600bb.jpg">

@@ -175,7 +175,12 @@ class Podcast {
       <div
         class="episode"
       >
-        ${ep.title}
+        <h4>
+          ${ep.episodeNum} ${ep.title}
+        </h4>
+        <p>
+          ${ep.description}
+        </p>
       </div>
     `
   }
