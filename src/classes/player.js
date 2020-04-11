@@ -1,21 +1,28 @@
 class Player {
+  #currentTime
+  #playing
+  #player
+  #playerId
+  #playerInterfaceId
+  #playerUI
+
   constructor (episode = undefined, opts = {}) {
     this.episode = episode
 
-    this._playing = false
-    this._playerId = 'player'
-    this._playerInterfaceId = 'player-ui'
-    this._player = document.getElementById(this._playerId)
-    this._playerUI = document.getElementById(this._playerInterfaceId)
-    this._currentTime = opts.currentTime || 0
+    this.#playing = false
+    this.#playerId = 'player'
+    this.#playerInterfaceId = 'player-ui'
+    this.#player = document.getElementById(this.#playerId)
+    this.#playerUI = document.getElementById(this.#playerInterfaceId)
+    this.#currentTime = opts.currentTime || 0
   }
 
   get playing () {
-    return this._playing
+    return this.#playing
   }
 
   set playing (state) {
-    this._playing = state ? true : false
+    this.#playing = state ? true : false
   }
 
   get episode () {
@@ -30,8 +37,8 @@ class Player {
   play () {
     this.playing = true
 
-    this._player.src = this._episode.episodeUrl
-    this._player.currentTime = this._currentTime
+    this.#player.src = this._episode.episodeUrl
+    this.#player.currentTime = this.#currentTime
     this._updateGlobalPlayerUI()
     player.play()
   }
@@ -39,13 +46,15 @@ class Player {
   pause () {
     this.playing = false
 
-    this._currentTime = this._player.currentTime
-    this._player.pause()
+    this.#currentTime = this.#player.currentTime
+    this.#player.pause()
   }
 
   togglePlayback () {
     this.playing === true ? this.pause() : this.play()
   }
+
+  /* Private */
 
   _updateGlobalPlayerUI () {
     document.getElementById(
@@ -54,10 +63,10 @@ class Player {
   }
 
   _setEvents () {
-    this._player.removeEventListener('play', this._onPlay)
-    this._player.removeEventListener('pause', this._onPause)
+    this.#player.removeEventListener('play', this._onPlay)
+    this.#player.removeEventListener('pause', this._onPause)
 
-    this._player.addEventListener('play', this._onPlay)
-    this._player.addEventListener('pause', this._onPause)
+    this.#player.addEventListener('play', this._onPlay)
+    this.#player.addEventListener('pause', this._onPause)
   }
 }

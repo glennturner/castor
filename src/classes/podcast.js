@@ -1,47 +1,52 @@
 class Podcast {
+  #artwork
+  #author
+  #description
+  #copyright
+  #episodesType
+  #feed
+  #id
+  #lastUpdated
+  #player
+  #pubDate
+  #title
+
   constructor (args) {
     console.log('ITEM: ' + args.identity)
     // Basic info
     // Usually supplied by iTunes.
-    this._id = args.id
-    this._author = args.identity
-    this._artwork = args.artwork
-    this._title = args.title
-    this._feed = args.feed
+    this.#id = args.id
+    this.#author = args.identity
+    this.#artwork = args.artwork
+    this.#feed = args.feed
+    this.#title = args.title
+    this.#player = new Player
     this.episodes = args.episodes || []
-    this._player = new Player
-    this._args = args
   }
 
   // Update podcast information via feed.
   async _update (forceUpdate = false) {
     // Don't update if already updated.
-    if (this._lastUpdated && !forceUpdate) {
+    if (this.#lastUpdated && !forceUpdate) {
       return
     }
 
     return await this.getFeed().then((parsed) => {
-      this._title = parsed.title
-      this._author = parsed.author
-      this._description = parsed.description
-      this._copyright = parsed.copyright
-      this._pubDate = parsed.pubDate
-      this._lastUpdated = parsed.lastUpdated
-      this._artwork = parsed.artwork
-      this._episodesType = parsed.episodesType
+      this.#title = parsed.title
+      this.#author = parsed.author
+      this.#description = parsed.description
+      this.#copyright = parsed.copyright
+      this.#pubDate = parsed.pubDate
+      this.#lastUpdated = parsed.lastUpdated || new Date
+      this.#artwork = parsed.artwork
+      this.#episodesType = parsed.episodesType
+
       this.episodes = parsed.episodes
-      this._lastUpdated = new Date
     })
   }
 
   async getFeed () {
-    return await fetch(this._feed)
-      .then(response => response.text())
-      .then((str) => {
-        return this._parseFeed(
-          (new window.DOMParser()).parseFromString(str, "text/xml")
-        )
-      })
+    return new Feed(this.#feed).get()
   }
 
   async playLatest () {
@@ -51,67 +56,13 @@ class Podcast {
 
       // Not 100% sure why `Player#togglePlayback` is not working here,
       // so we manually control pausing.
-      if ( this._player.playing && this._player.episode == ep ) {
-        this._player.pause()
+      if ( this.#player.playing && this.#player.episode == ep ) {
+        this.#player.pause()
       } else {
-        this._player.episode = ep
-        this._player.play()
+        this.#player.episode = ep
+        this.#player.play()
       }
     })
-  }
-
-  _parseFeed (xml) {
-    // Optional values.
-    let copyright = xml.querySelector('channel > copyright')
-    let pubDate = xml.querySelector('channel > pubDate')
-    let epType = xml.getElementsByTagName('itunes:type')
-
-    let parsed = {
-      title: xml.querySelector('channel > title').textContent,
-      description: xml.querySelector('channel > description').innerHTML,
-      copyright: copyright ? copyright.textContent : '',
-      pubDate: pubDate ? pubDate.textContent : undefined,
-      lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
-      artwork: this._getArtworkFromFeed(xml),
-      author: xml.getElementsByTagName('itunes:author')[0].textContent,
-      episodesType: epType.length ? epType[0].textContent : undefined,
-      episodes: []
-    }
-
-    xml.querySelectorAll('channel > item').forEach((item) => {
-      let enclosure = item.querySelector('enclosure')
-      // Optional values.
-      let link = item.querySelector('author')
-      let epNum = item.getElementsByTagName('itunes:episode')
-      let author = item.querySelector('author')
-
-      parsed.episodes.push(
-        {
-          id: item.querySelector('guid').textContent,
-          title: item.querySelector('title').textContent,
-          description: item.querySelector('description').textContent,
-          pubDate: item.querySelector('pubDate').textContent,
-          author: author ? author.textContent : undefined,
-          link: link ? link.textContent : undefined,
-          duration: item.getElementsByTagName('itunes:duration')[0].textContent,
-          episodeNum: epNum.length ? epNum[0].textContent : undefined,
-          episodeUrl: enclosure.getAttribute('url')
-        }
-      )
-    })
-
-    return parsed
-  }
-
-  _getArtworkFromFeed (xml) {
-    let channelUrl = xml.querySelector('channel > image > url')
-    let itunesImageUrl = xml.getElementsByTagName('itunes:image')
-
-    if (itunesImageUrl) {
-      return itunesImageUrl[0].getAttribute('href')
-    } else if (channelUrl) {
-      return channelUrl.textContent
-    }
   }
 
   capsule () {
@@ -120,17 +71,17 @@ class Podcast {
 
     showEle.innerHTML = `
       <img
-        src="${this._artwork}"
+        src="${this.#artwork}"
       />
       <div
         class="title"
       >
-        ${this._title}
+        ${this.#title}
       </div>
       <div
         class="author"
       >
-        ${this._author}
+        ${this.#author}
       </div>
 
       <div
@@ -182,8 +133,6 @@ class Podcast {
       .then(() => {
         let detailedEle = document.createElement('div')
         detailedEle.className = 'podcast-show-detailed'
-        console.log('ARGS')
-        console.log(this._args)
 
         let eps = this.episodes.map(ep => {
             return this._detailedEp(ep)
@@ -197,7 +146,7 @@ class Podcast {
               class="podcast-show-artwork"
             >
               <img
-                src="${this._artwork}"
+                src="${this.#artwork}"
                 class="artwork"
               />
             </div>
@@ -205,10 +154,10 @@ class Podcast {
               class="podcast-show-content"
             >
               <h2>
-                ${this._title}
+                ${this.#title}
               </h2>
               <h3>
-                ${this._author}
+                ${this.#author}
               </h3>
         ` + eps + `
             </div>
@@ -218,6 +167,8 @@ class Podcast {
         return detailedEle
       })
   }
+
+  /* Private */
 
   _detailedEp (ep) {
     return `

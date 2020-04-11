@@ -1,6 +1,8 @@
 class Episode {
+  #podcast
+
   constructor (podcast, args = {}) {
-    this._podcast = podcast
+    this.#podcast = podcast
   }
 }
 
