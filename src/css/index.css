@@ -11,30 +11,34 @@ body {
   padding: 0;
 }
 
-body > div {
-  overflow: hidden;
-}
-
 #main-nav {
   background-color: #ccc;
   display: block;
   padding: 0.5rem 0 0 0;
   border-right: 1px solid rgba(0,0,0,.125);
   float: left;
-  width: 280px;
-}
-
-body > div > nav#main-nav,
-body > div > main {
   height: 100%;
   max-height: 100%;
-  overflow: auto;
+  width: 280px;
+  overflow: hidden;
+  position: fixed;
+}
+
+body > div > main {
+  margin-left: 280px;
 }
 
 nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+nav #player-ui {
+  position: fixed;
+  top: 0;
+  left: 280px;
+  width: 100%;
 }
 
 nav .list-group-item:first-child,
