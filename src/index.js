@@ -1,18 +1,29 @@
-const { app, BrowserWindow } = require('electron')
+const {
+  app,
+  BrowserWindow,
+  ipcMain
+} = require('electron')
 const path = require('path')
 const http  = require('http')
+const fs = require('fs')
+const ncrypto = require('crypto')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
 }
 
+let mainWindow
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 2000,
     height: 600,
     webPreferences: {
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, 'preload.js')
     }
   })
@@ -22,6 +33,7 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
+
 }
 
 // This method will be called when Electron has finished
@@ -46,5 +58,20 @@ app.on('activate', () => {
   }
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+/* Sandbox required modules */
+ipcMain.on('hash', (event, str) => {
+  let hashedStr = ncrypto.createHash('md5').update(str).digest('hex')
+  mainWindow.webContents.send('hashed', hashedStr);
+});
+
+ipcMain.on('saveFile', (event, f) => {
+  /*
+  fs.readFile("path/to/file", (error, data) => {
+    // Do something with file contents
+
+    // Send result back to renderer process
+    mainWindow.webContents.send("fromMain", responseObj);
+  });
+  */
+});
+
