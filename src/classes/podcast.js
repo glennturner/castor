@@ -36,6 +36,7 @@ class Podcast {
     })
   }
 
+  /* Move to `Episode`? */
   async playEpisode (ep) {
     // ep.episodeUrl = 'http://localhost:5000/podcast'
 
@@ -164,6 +165,10 @@ class Podcast {
 
         return detailedEle
       })
+  }
+
+  static getById (id) {
+    return JSON.parse(localStorage.getItem(id))
   }
 
   /* Private */

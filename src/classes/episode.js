@@ -16,6 +16,10 @@ class Episode {
     this.playing = false
   }
 
+  getPodcast () {
+    return Podcast.getById(this.podcastId)
+  }
+
   json () {
     return JSON.stringify(this.obj)
   }
