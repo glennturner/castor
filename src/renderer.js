@@ -10,6 +10,7 @@ document.getElementById('search').addEventListener('submit', (e) => {
         identity: item.artistName,
         title: item.collectionName,
         feed: item.feedUrl,
+        lastUpdated: item.releaseDate
       })
     })
 
