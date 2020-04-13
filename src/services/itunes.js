@@ -22,7 +22,6 @@ class Itunes {
     }).join('&')
 
     const searchUrl = this._baseUrl + '/search?' + qs
-    console.log('SEARCH URL: ' + searchUrl)
 
     return fetch(searchUrl).then((response) => {
       return response.json()
