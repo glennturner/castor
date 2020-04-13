@@ -7,7 +7,9 @@ class Player {
   #playerUI
 
   constructor (episode = undefined, opts = {}) {
-    this.episode = episode
+    if (episode) {
+      this.episode = episode
+    }
 
     this.#playing = false
     this.#playerId = 'player'
@@ -31,20 +33,23 @@ class Player {
 
   set episode (ep) {
     this._episode = ep
-    player.load()
+
+    this.#player.load()
   }
 
   play () {
     this.playing = true
+    this.episode.playing = true
 
     this.#player.src = this._episode.episodeUrl
     this.#player.currentTime = this.#currentTime
     this._updateGlobalPlayerUI()
-    player.play()
+    this.#player.play()
   }
 
   pause () {
     this.playing = false
+    this.episode.playing = false
 
     this.#currentTime = this.#player.currentTime
     this.#player.pause()
