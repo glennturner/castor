@@ -22,10 +22,13 @@ body {
   width: 280px;
   overflow: hidden;
   position: fixed;
+  top: 0;
+  left: 0;
 }
 
 body > div > main {
   margin-left: 280px;
+  overflow: hidden;
 }
 
 nav ul {
@@ -34,10 +37,16 @@ nav ul {
   padding: 0;
 }
 
-nav #player-ui {
+nav#player-ui {
   position: fixed;
   top: 0;
   left: 280px;
+  text-align: center;
+  width: calc(100vw - 300px);
+}
+
+nav#player-ui audio {
+  max-width: 750px;
   width: 100%;
 }
 
@@ -78,6 +87,7 @@ nav input {
 
 /* Views */
 #main-view {
+  margin-top: 3rem;
   padding: 1rem 2rem;
 }
 
