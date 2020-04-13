@@ -5,6 +5,7 @@
     <title>Castor</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="helpers/global.js"></script>
     <script src="classes/feed.js"></script>
     <script src="classes/episode.js"></script>
     <script src="classes/podcast.js"></script>
@@ -56,19 +57,30 @@
           /subscribed podcasts -->
         </ul>
       </nav>
+      <nav
+        id="player-ui"
+      >
+        <div>
+          <div
+            id="podcast-display-name"
+          >
+            Podcast Name/Ep
+          </div>
+
+          <audio
+            controls
+            id="player"
+          >
+            <source
+              src="http://localhost:5000/podcast"
+              type="audio/mpeg"
+            />
+          </audio>
+        </div>
+      </nav>
       <main
         id="main-view"
       >
-        <nav
-          id="player-ui"
-        >
-          <div>
-            <p
-              id="podcast-display-name"
-            >Podcast Name/Ep</p>
-            <progress />
-          </div>
-        </nav>
         <!-- Podcast show view -->
         <div
           class="podcast-show-detailed"
@@ -2112,13 +2124,6 @@
          ]</pre>
         </div>-->
       </main>
-      <nav
-        id="podcast-player"
-      >
-        <audio id="player">
-            <source src="" type="audio/mpeg">
-        </audio>
-      </nav>
     </div>
     <script src="./renderer.js"></script>
   </body>
