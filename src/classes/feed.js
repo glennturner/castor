@@ -20,6 +20,7 @@ class Feed {
     let xml = this.#xml
 
     // Optional values.
+    let channelLink = xml.querySelector('channel > link')
     let copyright = xml.querySelector('channel > copyright')
     let pubDate = xml.querySelector('channel > pubDate')
     let epType = xml.getElementsByTagName('itunes:type')
@@ -28,6 +29,7 @@ class Feed {
       title: xml.querySelector('channel > title').textContent,
       description: xml.querySelector('channel > description').innerHTML,
       copyright: copyright ? copyright.textContent : '',
+      link: channelLink ? channelLink.textContent : undefined,
       pubDate: pubDate ? pubDate.textContent : undefined,
       lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
       artwork: this._getArtworkFromFeed(),
@@ -52,7 +54,7 @@ class Feed {
           author: author ? author.textContent : undefined,
           link: link ? link.textContent : undefined,
           duration: item.getElementsByTagName('itunes:duration')[0].textContent,
-          episodeNum: epNum.length ? epNum[0].textContent : undefined,
+          episodeNum: epNum.length ? epNum[0].textContent : '',
           episodeUrl: enclosure.getAttribute('url')
         }
       )
