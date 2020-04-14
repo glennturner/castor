@@ -1,7 +1,6 @@
 html,
 body,
 body > div {
-  height: 100%;
   margin: 0;
 }
 
@@ -14,7 +13,6 @@ body {
 #main-nav {
   background-color: #ccc;
   display: block;
-  padding: 0.5rem 0 0 0;
   border-right: 1px solid rgba(0,0,0,.125);
   float: left;
   height: 100%;
@@ -37,17 +35,34 @@ nav ul {
   padding: 0;
 }
 
+#search {
+  padding-top: 1.4rem;
+}
+
+#search,
 nav#player-ui {
+  border-bottom: solid 1px #aaa;
+  height: 80px;
+}
+
+nav#player-ui {
+  background-color: #f9f9f9;
   position: fixed;
   top: 0;
   left: 280px;
   text-align: center;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 280px);
 }
 
 nav#player-ui audio {
+  height: 30px;
   max-width: 750px;
+  outline: none;
   width: 100%;
+}
+
+nav#player-ui #podcast-display-name {
+  height: 2rem;
 }
 
 nav .list-group-item:first-child,
@@ -87,7 +102,7 @@ nav input {
 
 /* Views */
 #main-view {
-  margin-top: 3rem;
+  margin-top: 80px;
   padding: 1rem 2rem;
 }
 
