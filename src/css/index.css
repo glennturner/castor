@@ -15,18 +15,13 @@ body {
   display: block;
   border-right: 1px solid rgba(0,0,0,.125);
   float: left;
-  height: 100%;
-  max-height: 100%;
+  height: calc(100vh);
+  max-height: calc(100vh);
   width: 280px;
   overflow: hidden;
   position: fixed;
   top: 0;
   left: 0;
-}
-
-body > div > main {
-  margin-left: 280px;
-  overflow: hidden;
 }
 
 nav ul {
@@ -62,7 +57,7 @@ nav#player-ui audio {
 }
 
 nav#player-ui #podcast-display-name {
-  height: 2rem;
+  height: 2.5rem;
 }
 
 nav .list-group-item:first-child,
@@ -103,12 +98,12 @@ nav input {
 /* Views */
 #main-view {
   margin-top: 80px;
-  padding: 1rem 2rem;
+  margin-left: 280px;
+  padding: 0.5rem;
 }
 
-#main-view ul {
-  margin: 0 auto;
-  padding: 0;
+#main-view > div {
+  padding: 0.5rem;
 }
 
 /* Podcasts */
