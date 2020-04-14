@@ -1,6 +1,7 @@
 class View {
   #currentPage = 0
   #debug = false
+  #historyKey = 'C-HIS'
   #pages = []
   #parent
 
@@ -13,7 +14,6 @@ class View {
   }
 
   back () {
-    console.log('BACK! ' + this.#pages.length)
     // Remove current page.
     this.#pages.pop()
 
@@ -38,10 +38,19 @@ class View {
     )
 
     this.#parent.innerHTML = ''
-    this.#parent.appendChild(
-      this._viewNav()
-    )
+    this.#parent.appendChild(this._viewNav())
     this.#parent.appendChild(html)
+
+    this._storeHistory()
+  }
+
+  // Uses the last stored page.
+  resume() {
+    let history = this._getHistory()
+
+    if (history) {
+      this._doChange(history)
+    }
   }
 
   _viewNav () {
@@ -73,7 +82,7 @@ class View {
 
         break
       case 'podcast':
-        let podcast = Podcast.getById(opts.podcastId)
+        let podcast = Podcast.get(opts.podcastId)
 
         podcast.detailed().then(ele => {
           view.change('podcast',
@@ -88,5 +97,23 @@ class View {
       default:
         alert(`Invalid view: ${opts.type}`)
     }
+  }
+
+  _getHistory () {
+    let json = localStorage.getItem(this.#historyKey)
+
+    if (json) {
+      return JSON.parse(json)
+    }
+  }
+
+  // We only store the latest page.
+  _storeHistory () {
+    localStorage.setItem(
+      this.#historyKey,
+      JSON.stringify(
+        this.#pages[this.#pages.length - 1]
+      )
+    )
   }
 }
