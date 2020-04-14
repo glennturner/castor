@@ -105,7 +105,12 @@ class Podcast {
       (e) => {
         this.detailed()
           .then((ele) => {
-            changeMainView('podcast', ele)
+            view.change('podcast',
+              ele,
+              {
+                podcastId: this.id
+              }
+            )
           })
       }
     )
@@ -168,7 +173,9 @@ class Podcast {
   }
 
   static getById (id) {
-    return JSON.parse(localStorage.getItem(id))
+    return new Podcast(
+      JSON.parse(localStorage.getItem(id))
+    )
   }
 
   /* Private */
@@ -197,6 +204,7 @@ class Podcast {
     return JSON.stringify(
       {
         title: this.title,
+        feed: this.#feed,
         author: this.author,
         description: this.description,
         copyright: this.copyright,
