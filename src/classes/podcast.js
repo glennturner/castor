@@ -3,13 +3,13 @@ class Podcast {
   #player
 
   constructor (args) {
-    // Basic info
-    // Usually supplied by iTunes.
-
     // This is usually the iTMS podcast collectionId.
     this.id = args.id
 
     /*
+    // Basic info
+    // Usually supplied by iTunes.
+
       Pre-populate?
     */
 
@@ -159,10 +159,8 @@ class Podcast {
             'click',
             (e) => {
               let id = e.currentTarget.dataset.episodeId
-              console.log('ELE: ' + id)
-              console.log(e.currentTarget)
               let ep = this._getEpisodeById(id)
-              console.log(ep)
+
               this.playEpisode(ep)
             }
           )
@@ -172,10 +170,18 @@ class Podcast {
       })
   }
 
-  static getById (id) {
-    return new Podcast(
-      JSON.parse(localStorage.getItem(id))
-    )
+  static get (id) {
+    let json = JSON.parse(localStorage.getItem(id))
+
+    if (json) {
+      return new Podcast(json)
+    }
+  }
+
+  static getOrInitialize (args) {
+    let podcast = Podcast.get(args.id)
+
+    return podcast || new Podcast(args)
   }
 
   /* Private */
@@ -203,6 +209,7 @@ class Podcast {
   _json () {
     return JSON.stringify(
       {
+        id: this.id,
         title: this.title,
         feed: this.#feed,
         author: this.author,

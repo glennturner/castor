@@ -17,7 +17,7 @@ class Episode {
   }
 
   getPodcast () {
-    return Podcast.getById(this.podcastId)
+    return Podcast.get(this.podcastId)
   }
 
   json () {
