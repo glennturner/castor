@@ -39,6 +39,7 @@ class Feed {
     }
 
     xml.querySelectorAll('channel > item').forEach((item) => {
+      let duration = item.getElementsByTagName('itunes:duration')[0]
       let enclosure = item.querySelector('enclosure')
       // Optional values.
       let link = item.querySelector('author')
@@ -53,9 +54,9 @@ class Feed {
           pubDate: item.querySelector('pubDate').textContent,
           author: author ? author.textContent : undefined,
           link: link ? link.textContent : undefined,
-          duration: item.getElementsByTagName('itunes:duration')[0].textContent,
+          duration: duration ? duration.textContent : undefined,
           episodeNum: epNum.length ? epNum[0].textContent : '',
-          episodeUrl: enclosure.getAttribute('url')
+          episodeUrl: enclosure ? enclosure.getAttribute('url') : undefined
         }
       )
     })
