@@ -5,6 +5,7 @@ class Player {
   #playerId
   #playerInterfaceId
   #playerUI
+  #stateKey
 
   constructor (episode = undefined, opts = {}) {
     if (episode) {
@@ -17,6 +18,8 @@ class Player {
     this.#player = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
     this.#currentTime = opts.currentTime || 0
+
+    this.#stateKey = 'castorPlayerState'
   }
 
   get playing () {
@@ -40,11 +43,15 @@ class Player {
   play () {
     this.playing = true
     this.episode.playing = true
+    console.log('PODCAST:')
+    console.log(this.episode.getPodcast())
 
     this.#player.src = this._episode.episodeUrl
     this.#player.currentTime = this.#currentTime
     this._updateGlobalPlayerUI()
     this.#player.play()
+
+    this._updateState()
   }
 
   pause () {
@@ -53,6 +60,8 @@ class Player {
 
     this.#currentTime = this.#player.currentTime
     this.#player.pause()
+
+    this._updateState()
   }
 
   togglePlayback () {
@@ -60,6 +69,14 @@ class Player {
   }
 
   /* Private */
+
+  _getPlayerState () {
+    localStorage.getItem(this.#stateKey)
+  }
+
+  _updatePlayerState () {
+    localStorage.setItem(this.#stateKey, this._state())
+  }
 
   _updateGlobalPlayerUI () {
     document.getElementById(
