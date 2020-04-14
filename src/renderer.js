@@ -1,4 +1,6 @@
 view = new View('main-view')
+view.resume()
+
 podcast = undefined
 
 document.getElementById('search').addEventListener('submit', (e) => {
@@ -15,7 +17,7 @@ function search (searchTerm) {
 
   itunes.search(searchTerm).then((resp) => {
     let podcasts = resp.results.map((item) => {
-      return new Podcast({
+      return Podcast.getOrInitialize({
         id: item.collectionId,
         artwork: item.artworkUrl600,
         identity: item.artistName,
