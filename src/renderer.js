@@ -1,6 +1,17 @@
+view = new View('main-view')
+podcast = undefined
+
 document.getElementById('search').addEventListener('submit', (e) => {
-  let itunes = new Itunes()
   let searchTerm = document.getElementById('search-input').value
+
+  search(searchTerm)
+
+  e.preventDefault()
+  return false
+});
+
+function search (searchTerm) {
+  let itunes = new Itunes()
 
   itunes.search(searchTerm).then((resp) => {
     let podcasts = resp.results.map((item) => {
@@ -22,29 +33,19 @@ document.getElementById('search').addEventListener('submit', (e) => {
     results.appendChild(searchHeader)
     results.appendChild(foundPodcasts)
 
-    let debugEle = document.createElement('pre')
-    debugEle.innerHTML = JSON.stringify( resp.results, null, 2 )
-    // results.appendChild(debugEle)
-
-    changeMainView(
+    view.change(
       'searchResults',
-      results
+      results,
+      {
+        query: searchTerm
+      }
     )
   }).catch((err) => {
     console.error(err)
   })
-
-  e.preventDefault()
-  return false
-});
-
-function changeMainView(type, cont) {
-  let view = document.getElementById('main-view')
-  view.innerHTML = ''
-  view.appendChild(cont)
 }
 
-function searchResults(podcasts) {
+function searchResults (podcasts) {
   let list = document.createElement('ul')
   list.classList.add('search-results')
 
