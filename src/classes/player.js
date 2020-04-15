@@ -1,5 +1,6 @@
 class Player {
   #currentTime
+  #episode
   #history
   #player
   #playing = false
@@ -27,11 +28,11 @@ class Player {
   }
 
   get episode () {
-    return this._episode
+    return this.#episode
   }
 
   set episode (ep) {
-    this._episode = ep
+    this.#episode = ep
 
     this.#player.load()
   }
@@ -40,19 +41,25 @@ class Player {
     this.playing = true
     this.episode.playing = true
 
-    this.#player.src = this._episode.episodeUrl
+    this.#player.src = this.episode.episodeUrl
     this.#player.currentTime = this.#currentTime
     this._updateGlobalPlayerUI()
+
     this.#player.play()
 
     this._updateState()
   }
 
   pause () {
+    console.log('PAUSE!')
+    console.log(this.episode)
+
     this.playing = false
-    this.episode.playing = false
+    this.episode.pause = false
 
     this.#currentTime = this.#player.currentTime
+    this.episode.currentTime = this.#currentTime
+
     this.#player.pause()
 
     this._updateState()
@@ -76,7 +83,7 @@ class Player {
     document.getElementById(
       'podcast-display-name'
     ).innerHTML = `
-    ${this.episode.title}<br />${this.episode.getPodcast().title} &ndash; ${this.episode.pubDate}
+    ${this.episode.title}<br />${this.episode.podcast.title} &ndash; ${this.episode.pubDate}
     `
   }
 
