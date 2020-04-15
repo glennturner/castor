@@ -1,6 +1,7 @@
 const {
   app,
   BrowserWindow,
+  Menu,
   ipcMain
 } = require('electron')
 const path = require('path')
@@ -33,7 +34,6 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
-
 }
 
 // This method will be called when Electron has finished
@@ -45,7 +45,7 @@ app.on('ready', createWindow)
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
+  if (isMac) {
     app.quit()
   }
 })
@@ -75,3 +75,34 @@ ipcMain.on('saveFile', (event, f) => {
   */
 });
 
+/* Menus */
+const isMac = process.platform === 'darwin'
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      isMac ? { role: 'close' } : { role: 'quit' }
+    ]
+  }
+]
+
+if (process.platform === 'darwin') {
+    template.unshift(
+      {
+        label: app.getName(),
+        submenu:
+        [
+          {role: 'about'},
+          {type: 'separator'},
+          {role: 'services', submenu: []},
+          {type: 'separator'},
+          {role: 'hide'},
+          {role: 'hideothers'},
+          {role: 'unhide'},
+          {type: 'separator'},
+          {role: 'quit'}
+        ]
+    }
+  )
+}
