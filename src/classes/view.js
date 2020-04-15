@@ -28,7 +28,7 @@ class View {
   //   - podcastId
   //   - episodeId
   change (type, html, opts) {
-    this.#pages.push(
+    this._setHistory(
       {
         episodeId: opts.episodeId,
         podcastId: opts.podcastId,
@@ -50,6 +50,16 @@ class View {
 
     if (history) {
       this._doChange(history)
+    }
+  }
+
+  _setHistory (opts) {
+    console.log('SET HISTORY')
+    // We store page history as JSON, so this kind of comparison is OK.
+    if (
+      JSON.stringify(opts) !== JSON.stringify(this.#pages[this.#pages.length - 1])
+    ) {
+      this.#pages.push(opts)
     }
   }
 
