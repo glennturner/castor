@@ -57,7 +57,7 @@ nav#player-ui audio {
 }
 
 nav#player-ui #podcast-display-name {
-  height: 2.5rem;
+  height: 2.75rem;
 }
 
 nav .list-group-item:first-child,
@@ -177,7 +177,20 @@ nav input {
 .podcast-show-content {
 }
 
+nav.podcast-options {
+  text-align: right;
+  width: 100%;
+}
+
 .podcast-show-detailed .podcast-show-artwork {
   margin-right: 2rem;
+}
+
+/* Dialog */
+dialog {
+  border-color: #ccc;
+  border-width: 1px;
+  border-radius: 15px;
+  min-width: 30vw;
 }
 
