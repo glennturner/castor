@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="helpers/global.js"></script>
+    <script src="classes/user.js"></script>
     <script src="classes/feed.js"></script>
     <script src="classes/episode.js"></script>
     <script src="classes/podcast.js"></script>
@@ -82,25 +83,60 @@
       <main
         id="main-view"
       >
-        <!-- Podcast show view
-        <div
-          class="podcast-show-detailed"
-        >
+        <!-- Podcast show view -->
+        <main id="main-view"><nav></nav><div class="podcast-show-detailed">
           <div class="podcast-show-details">
             <div class="podcast-show-artwork">
-              <img
-                src="https://cdn.simplecast.com/images/be052949-6926-4d69-a2e0-7ebc07eaf977/3dcd6604-20da-42dc-a2b1-548c4d8fe29b/3000x3000/squarelogo.png?aid=rss_feed"
-                class="artwork"
-              />
-            </div><div class="podcast-show-content">
+              <img src="https://cdn.simplecast.com/images/be052949-6926-4d69-a2e0-7ebc07eaf977/3dcd6604-20da-42dc-a2b1-548c4d8fe29b/3000x3000/squarelogo.png?aid=rss_feed" class="artwork">
+            </div>
+            <div class="podcast-show-content">
               <h2>
                 Switchblade Sisters
               </h2>
               <h3>
                 MaximumFun.org, Casey O'Brien
               </h3>
+              <nav
+                class="podcast-options"
+              >
+                <button
+                  id="podcast-options-btn"
+                  type="button"
+                  class="btn btn-sm btn-primary"
+                  data-toggle="modal"
+                  data-target="#podcast-options"
+                >
+                  Subscribe
+                </button>
 
-      <div class="episode">
+                <script>
+                  document.getElementById('podcast-options-btn').addEventListener('click', () => {
+                    podcastOptions.showModal()
+                  })
+                </script>
+
+                <!-- Modal -->
+                <dialog id="podcastOptions">
+                  <form method="dialog">
+                    <menu>
+                      <button
+                        class="btn btn-danger"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        id="savePodcastOptions"
+                        class="btn btn-primary"
+                      >
+                        Confirm
+                      </button>
+                    </menu>
+                  </form>
+                </dialog>
+              </nav>
+              <div class="episodes">
+
+      <div class="episode" data-episode-id="0630d333-0576-4a26-9c79-e3cb4ffcf408">
         <h4>
           127 ‘Brick’ with ‘Selah And The Spades’ Director Tayarisha Poe
         </h4>
@@ -112,7 +148,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="523eedd7-ca14-452d-b81a-e04b2aa4cd46">
         <h4>
           126 ‘Mandy’ with ‘Aliens’ and ‘Terminator 2: Judgment Day’ Actor Jenette Goldstein
         </h4>
@@ -124,7 +160,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="497c9b72-167a-4f15-943a-f395577d78b3">
         <h4>
           125 ‘Ms .45’ with ‘The Ranger’ Director Jenn Wexler
         </h4>
@@ -136,7 +172,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="6f10adf9-d6ee-40ac-8672-6a46f2bca425">
         <h4>
           124 'The Wicker Man' with 'Blow the Man Down' Directors Danielle Krudy &amp; Bridget Savage Cole
         </h4>
@@ -148,7 +184,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="d4a70d37-c3c7-4bc9-bfd2-0d297818117d">
         <h4>
           123 ‘Willow’ with ‘I Am Not Okay with This’ Co-Creator Christy Hall
         </h4>
@@ -160,7 +196,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="968601f7-0ec5-4a88-bd41-f468257b61f9">
         <h4>
           122 ‘Don’t Breathe’ with ‘Into the Dark: Culture Shock’ Director Gigi Saul Guerrero and a Conversation with the Artistic Director of Indie Memphis Film Festival Miriam Bale
         </h4>
@@ -172,7 +208,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="1935f9b1-1fea-44c6-b772-1447595643ce">
         <h4>
           121 ‘Kill Bill’ with ‘Sacred Lies’ Showrunner Raelle Tucker
         </h4>
@@ -184,7 +220,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="7b401488-8c44-4154-bb75-9aa5a64b81a2">
         <h4>
           120 ‘It Follows’ with Jenna Kanell
         </h4>
@@ -196,7 +232,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="47a9c889-0ebe-48c2-a1a2-a8c9c7878b8f">
         <h4>
           119 ‘The Lost Boys’ with ‘Into the Dark: My Valentine’ Director Maggie Levin
         </h4>
@@ -208,7 +244,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="461ef31d-ca71-4ba2-befa-6418d33c1c1b">
         <h4>
           118 ‘Mad Max: Fury Road’ with ‘Birds of Prey’ Director Cathy Yan
         </h4>
@@ -220,7 +256,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="a812c86c-1e36-4463-b6ca-53c98cd81925">
         <h4>
           117 ‘Adaptation’ with ‘Color Out of Space’ Star Madeleine Arthur
         </h4>
@@ -232,7 +268,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3287b921-2ee8-487c-967d-1359e7a69d03">
         <h4>
           116 ‘Bunny Lake Is Missing’ with ‘She’s Missing’ Director Alexandra McGuinness
         </h4>
@@ -244,7 +280,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ad856f0b-1ff1-47bf-88e4-978f7b61047e">
         <h4>
           115 ‘Addams Family Values’ with Julia Prescott
         </h4>
@@ -256,7 +292,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="6deea9bd-1781-45ce-812a-414d13b348f5">
         <h4>
           114 ‘The Texas Chainsaw Massacre’ with Writer Megan Amram
         </h4>
@@ -268,7 +304,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="28de174a-2668-456c-9add-0b8ee38c3201">
         <h4>
           113 ‘Ladyhawke’ with Janet Varney
         </h4>
@@ -280,7 +316,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="333db9e9-c097-45cc-882b-7936d8ac394c">
         <h4>
           112 ‘Scream’ with Clarke Wolfe
         </h4>
@@ -292,7 +328,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4c926f00-c0d7-4503-a9f0-9f721906382c">
         <h4>
           111 'Brazil' with 'Watchmen' and 'The OA' Writer Claire Kiechel
         </h4>
@@ -304,7 +340,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="35ae2fa9-c940-4b26-b79c-a6f7bbb88612">
         <h4>
           110 ‘Prince of Darkness’ with ‘Black Christmas’ Co-Writer and Switchblade Sisters Host April Wolfe
         </h4>
@@ -316,7 +352,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="26a7fa58-a5f1-41bc-bff0-79cbce881a1c">
         <h4>
           109 ‘The Visit’ with ‘Little Joe’ Director Jessica Hausner
         </h4>
@@ -328,7 +364,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="737ba37d-de1e-4ac4-8cfb-c5621c0e0c8a">
         <h4>
           108 ‘Safe’ with ‘Knives and Skin’ Director Jennifer Reeder
         </h4>
@@ -340,7 +376,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="b56ced8b-3c01-4274-8dec-967957008f13">
         <h4>
           107 'Another Earth' with 'Fun Size Horror' Producer &amp; Director Mali Elfman
         </h4>
@@ -352,7 +388,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="b09e68d0-d3b9-4c9a-90f1-62b2b29c8c4b">
         <h4>
           106 'The Ring' with 'Pure' &amp; 'Sickhouse' Director Hannah Macpherson
         </h4>
@@ -364,7 +400,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="cf0b8574aa9c437198b1edacce83ff1d">
         <h4>
           105 'Psycho' with 'Blue' Director Gabriela Ledesma
         </h4>
@@ -376,7 +412,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="650f2ae5fbe14dce9607811b11449a39">
         <h4>
           104 'Logan's Run' with 'Paradise Hills' Director Alice Waddington and Halloween Horror Recs with Jordan Crucchiola
         </h4>
@@ -388,7 +424,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3736e1b48cfb4cfcbd7d764f015b7b54">
         <h4>
           103 'Black Widow' with '10 Things I Hate About You' &amp; 'Legally Blonde' Screenwriter Kiwi Smith
         </h4>
@@ -400,7 +436,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="bb6af3258af546068b59794ef9ad7847">
         <h4>
           102 'Polyester' with 'Greener Grass' Actors and Directors Dawn Luebbe &amp; Jocelyn DeBoer
         </h4>
@@ -412,7 +448,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ca42affb27984c5980b66c23586a5ee2">
         <h4>
           101 'Ravenous' with 'Bloodline' Writer Avra Fox-Lerner
         </h4>
@@ -424,7 +460,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="0fff5ea8199a47ab9953c60157c65728">
         <h4>
           100 'Get Out' with 'A Black Lady Sketch Show' &amp; 'Full Frontal with Samantha Bee' Writer and Actor Ashley Nicole Black
         </h4>
@@ -436,7 +472,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3736beda639043299114bd693eccf4a4">
         <h4>
           99 'The Witch' with 'The Long Walk' Director Mattie Do and 'Tigers Are Not Afraid' Director Issa López (LIVE AT FANTASTIC FEST)
         </h4>
@@ -448,7 +484,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="760e85724c84402fbc2e608285a9f7d1">
         <h4>
           98 'Picnic at Hanging Rock' with 'The Office' and 'Maniac' Writer Caroline Williams
         </h4>
@@ -460,7 +496,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="22653631d1c74c82b53289dfc541576e">
         <h4>
           97 'Henry: Portrait of a Serial Killer' with Producer Heather Buckley
         </h4>
@@ -472,7 +508,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ff108511be2c41d3a92b7caa936acaf3">
         <h4>
           96 'Dead &amp; Buried' with 'Riot Girls' Director Jovanka Vuckovic
         </h4>
@@ -484,7 +520,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="de4db316444e4062a4b2ac0b1cef0028">
         <h4>
           95 'Heathers' with 'Jawline' Director Liza Mandelup
         </h4>
@@ -496,7 +532,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ea10329d94c6429ca4e6abb42fbd2793">
         <h4>
           94 'Hereditary' with 'Pet Sematary' Director Mary Lambert
         </h4>
@@ -508,7 +544,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="449e209d5334491f894e62cc82708eac">
         <h4>
           93 'Rebecca' with 'The Wind' Director Emma Tammi
         </h4>
@@ -520,7 +556,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="e0945227f9c84ae1b9f035eb1f921c0e">
         <h4>
           92 'American Psycho' with 'Satanic Panic' Director Chelsea Stardust
         </h4>
@@ -532,7 +568,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="01e1fdb5c595439892ad9889b3931549">
         <h4>
           91 'The Innocents' with 'The Babadook' and 'The Nightingale' Director Jennifer Kent
         </h4>
@@ -544,7 +580,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="c6e2d9d5fcad48b98d26a8e72a001c5a">
         <h4>
           90 'Little Shop of Horrors' with 'The Last Time You Had Fun' Director Mo Perkins
         </h4>
@@ -556,7 +592,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3de40bcd2cf44dfdb36664551829b0f5">
         <h4>
           89 'Donnie Darko' with 'Braid' Director Mitzi Peirone
         </h4>
@@ -568,7 +604,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="77da3e855a6743709bc9e1f9528b7a30">
         <h4>
           88 'Drop Dead Gorgeous' with 'Grown-ish' Writers Melanie Kirschbaum &amp; Alexandra Decas
         </h4>
@@ -580,7 +616,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="b3be1ea3d53c4137b016938ee83a7626">
         <h4>
           87 'Blacula' with 'Jezebel' Director Numa Perrier
         </h4>
@@ -592,7 +628,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="dd88ccf80e544c449865984f0daa05e3">
         <h4>
           86 'Black Christmas' with 'Night of the Comet' &amp; 'Chopping Mall' Star Kelli Maroney
         </h4>
@@ -604,7 +640,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="45b7a8bcbd4a4bc2974a3d97d399d698">
         <h4>
           85 'Night Tide' with 'Gas Food Lodging' Director Allison Anders
         </h4>
@@ -616,7 +652,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="05406314da3a4a1f93d4a5ebe838f93e">
         <h4>
           84 '3 Days of the Condor' with the Incomparable Adrienne Barbeau
         </h4>
@@ -628,7 +664,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="61eb1a4f4abd46d8b13388867cb7e648">
         <h4>
           83 ‘Shaun of the Dead’ with ‘Broad City’ writer and comedian Naomi Ekperigin
         </h4>
@@ -640,7 +676,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="dd9b606c873b43c19b688bf6da4b17fe">
         <h4>
           82 'Unfaithful' with 'Being Frank' Director Miranda Bailey
         </h4>
@@ -652,7 +688,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f6451e02454946ec98ad78d1ab55ee95">
         <h4>
           81 'E.T. the Extra-Terrestrial' with 'The Devil Wears Prada' writer and 'Crazy Ex-Girlfriend' Co-Creator/ Showrunner Aline Brosh McKenna
         </h4>
@@ -664,7 +700,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="a048f867225140e99bb1453b97f73e5c">
         <h4>
           80 'An American Werewolf in London' with 'American Psycho' and 'Charlie Says' Writer Guinevere Turner
         </h4>
@@ -676,7 +712,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f9ca1c65e70d4cf5ab397d8f01e251ca">
         <h4>
           79 'The Red Queen Kills Seven Times' with 'Body at Brighton Rock' Director Roxanne Benjamin
         </h4>
@@ -688,7 +724,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="6ce93916e864481faafeeefe9c04c430">
         <h4>
           78 'Mulholland Drive' with 'Wild Nights with Emily' Director Madeleine Olnek
         </h4>
@@ -700,7 +736,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="617aa75b92c84e7d81a590ccf56e35a4">
         <h4>
           77 'The Peanut Butter Solution' with 'Pet Sematary' Actor and 'The Girlfriend Experience' Co-creator Amy Seimetz
         </h4>
@@ -712,7 +748,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="7a0df16999d6458489c3a92162128bd5">
         <h4>
           76 'Alien' with 'Little Woods' Director Nia DaCosta
         </h4>
@@ -724,7 +760,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f608fa8c6bcf4333960e5efb3e7ce47d">
         <h4>
           75 'The Bad Seed' with 'Breakthrough' Director and 'Star Trek: Voyager' Actor Roxann Dawson
         </h4>
@@ -736,7 +772,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="468dae1f03f54d06ad6a8638fd0c7070">
         <h4>
           74 'One False Move' with 'Miss Stevens' and 'Fast Color' Director Julia Hart
         </h4>
@@ -748,7 +784,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="0f79fb5237644de0921052ff0fb76b5e">
         <h4>
           73 'Dead Ringers' with The Soska Sisters! PLUS an Interview with Michele Meek
         </h4>
@@ -760,7 +796,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="e7d87a7c790e465497b41388318cf8bc">
         <h4>
           72 'Pickup on South Street' with 'Leave No Trace' and 'Winter's Bone' Director Debra Granik
         </h4>
@@ -772,7 +808,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="b3871dc504404ee9aa9037dedf675e3e">
         <h4>
           71 'What We Do in the Shadows' with 'At Home with Amy Sedaris' Producer Katie Tibaldi
         </h4>
@@ -784,7 +820,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="9f9c6b335f794251869f0d8f9f15afa0">
         <h4>
           70 'Ex Machina' with 'Mapplethorpe' and 'Dig!' Director Ondi Timoner
         </h4>
@@ -796,7 +832,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f02ea8261769488f859aba1567a59aea">
         <h4>
           69 'Twin Peaks: Fire Walk with Me' with 'Shirkers' Director Sandi Tan
         </h4>
@@ -808,7 +844,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="8d60eea0042f454bb5e3507fefbbc65b">
         <h4>
           68 'Labyrinth' with 'Solace' Director Tchaiko Omawale
         </h4>
@@ -820,7 +856,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="61c5b3358dce489997d68a121f87da1b">
         <h4>
           67 'Head' with 'B.C. Butcher' Director Kansas Bowling
         </h4>
@@ -832,7 +868,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="81ee0063e1894a3cb0f91254ebf71723">
         <h4>
           66 'Don't Look Now' with 'Untogether' Director Emma Forrest
         </h4>
@@ -844,7 +880,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="be63a6d4deba4e7a832109c278c3c3e9">
         <h4>
           65 'The Wiz' with 'How to Get Away with Murder' Director DeMane Davis
         </h4>
@@ -856,7 +892,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f3e1a36fdfee4b3fabb3b47abda251c1">
         <h4>
           64 'The Bourne Identity' with 'Close' Director Vicky Jewson
         </h4>
@@ -868,7 +904,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="7ac6c4e7f7a0473c919ceec42ede9424">
         <h4>
           63 'The Lure' with 'Abducted in Plain Sight' Director Skye Borgman
         </h4>
@@ -880,7 +916,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="96ad5ecb73ef4b7ab57e8e91b14cc6ed">
         <h4>
           62 'Defending Your Life' with 'Operator' Director Logan Kibens
         </h4>
@@ -892,7 +928,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4d448f4f45504a03b911dce719186b3c">
         <h4>
           61 'Under the Skin' with 'Rust Creek' Director Jen McGowan
         </h4>
@@ -904,7 +940,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="912e28f5b9d84b0d953b1f95014abc89">
         <h4>
           60 'Point Break' with 'Alaska Is a Drag' Director Shaz Bennett
         </h4>
@@ -916,7 +952,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="cdbd7c7e9c024f45b76289805f65e67f">
         <h4>
           59 'Black Panther' with Director, Actor, and Dancer Delila Vallot
         </h4>
@@ -928,7 +964,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="0297685abd8f41958c8649b7117168c6">
         <h4>
           58 'Hush...Hush, Sweet Charlotte' with 'Clara's Ghost' Director Bridey Elliott
         </h4>
@@ -940,7 +976,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="7dd0fd25d0254b58864f35ff8817c2e2">
         <h4>
           57 'Leave Her to Heaven' with 'Dirty John' Showrunner Alexandra Cunningham
         </h4>
@@ -952,7 +988,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="978c72786fcb4ee69c9a696e392a5a32">
         <h4>
           56 'Funny Games' with 'The Long Dumb Road' Director Hannah Fidell
         </h4>
@@ -964,7 +1000,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="1973518840b64af68a6ae561d06b11dd">
         <h4>
           55 'Jennifer's Body' with 'Cam' Writer/Producer Isa Mazzei
         </h4>
@@ -976,7 +1012,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="5aa5a86868434206b38402d4a4d5785f">
         <h4>
           54 'The Mask' with Emily Heller
         </h4>
@@ -988,7 +1024,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f5e59ca1339f47cb81310a6bf7749b17">
         <h4>
           53 'The Host' with 'Unlovable' Director Suzi Yoonessi
         </h4>
@@ -1000,7 +1036,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f727959aeb90481dbc67c9fc805b282f">
         <h4>
           52 'The Skeleton Key' with 'Lez Bomb' Director Jenna Laurenzo
         </h4>
@@ -1012,7 +1048,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3dc022752cbd440290e200f69d7bce9c">
         <h4>
           51 'All That Jazz' with 'Party Girl' Director Daisy von Scherler Mayer
         </h4>
@@ -1024,7 +1060,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="76822b712cc64c6c89e78d183273eecb">
         <h4>
           50 'Black Swan' with 'Jinn' Director Nijla Mu'min
         </h4>
@@ -1036,7 +1072,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4171df2d764949fba14e1a26f6b5c8c2">
         <h4>
           49 '12 Monkeys' with 'Sadie' Director Megan Griffiths
         </h4>
@@ -1048,7 +1084,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="0f56d758ec30477191ed8020fc7b2a8a">
         <h4>
           48 'Matilda' with Documentary Producer Erikka Yancy
         </h4>
@@ -1060,7 +1096,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="1111c184d3974f3e94d545c6321a3864">
         <h4>
           47 LIVE FROM FANTASTIC FEST: 'The Bitter Tears of Petra von Kant' with 'Ladyworld' Director Amanda Kramer
         </h4>
@@ -1072,7 +1108,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="955b0b8083d34d3d9c4b5a07b6e6c4c2">
         <h4>
           46 'Freaks' with Jess Weixler
         </h4>
@@ -1084,7 +1120,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="a5a4d983f7df4b3fb15279cbaf2980ff">
         <h4>
           45 'Let the Right One In' with 'Nancy' Director Christina Choe
         </h4>
@@ -1096,7 +1132,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3db1e8564b4a4282a8a5d5bedee1f066">
         <h4>
           44 'Basket Case' with Brea Grant
         </h4>
@@ -1108,7 +1144,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="cca620d1fb5940baaad2daa1031546d7">
         <h4>
           43 'The Night of the Hunter' with 'Night Comes On' Director Jordana Spiro
         </h4>
@@ -1120,7 +1156,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="9f6bd8871cce44c1a075fe69a7fdc4ad">
         <h4>
           42 'Unbreakable' with 'Like Father' Director Lauren Miller Rogen
         </h4>
@@ -1132,7 +1168,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="025d018192d54c16a73ed82b5ecb6c66">
         <h4>
           41 'Young Frankenstein' with 'The Miseducation of Cameron Post' Director Desiree Akhavan
         </h4>
@@ -1144,7 +1180,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="e3a7effc0fe54c6fa7651197e31d4947">
         <h4>
           40 'The Innkeepers' with 'Summer of 84' Co-Director Anouk Whissell
         </h4>
@@ -1156,7 +1192,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="212d71d834c64235bcef5b0daedfd66a">
         <h4>
           39 'The Big Lebowski' with 'Never Goin' Back' Director Augustine Frizzell
         </h4>
@@ -1168,7 +1204,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="64c1f6e625d447a4865f246020f2c4f1">
         <h4>
           38 'Wild Tales' with 'Buster's Mal Heart' director Sarah Adina Smith
         </h4>
@@ -1180,7 +1216,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="c4ba06bae4e1495ca5562433bc52c9f8">
         <h4>
           37 The Matrix with Vera Miao
         </h4>
@@ -1192,7 +1228,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="99c02dbaef1e40f28c2ae5e7530187b5">
         <h4>
           36 Birth with Kate Berlant
         </h4>
@@ -1204,7 +1240,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="9a740913c51a45a7925fa4e4d06be0bb">
         <h4>
           35 Jurassic Park with The Writers of 'Lost in Space' - Vivian Lee, Kari Drake and Katherine Collins
         </h4>
@@ -1216,7 +1252,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="c49e39208a7c4c84bb134a3e9d537c56">
         <h4>
           34 Children of Men with The Last Man on Earth's Cleopatra Coleman
         </h4>
@@ -1228,7 +1264,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="da95cf71691a4d1a8a74cdcf63ecfb5f">
         <h4>
           33 Rear Window with 'The Killing' and 'Seven Seconds' Creator Veena Sud
         </h4>
@@ -1240,7 +1276,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="e39c1018fb2c4bedb03fea88e63b964b">
         <h4>
           32 Death Becomes Her with Angela Trimbur, Lauren Parks and Jenée LaMarque of 'The Feels'
         </h4>
@@ -1252,7 +1288,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="b9fbaaa4e1424c39813b57494d4599d7">
         <h4>
           31 Deep Rising with Rebekah McKendry
         </h4>
@@ -1264,7 +1300,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="36efdbbff9cb42c0af9856bd8af7ee9e">
         <h4>
           30 28 Days Later with 'Bob's Burgers' Writers/Producers Lizzie &amp; Wendy Molyneux
         </h4>
@@ -1276,7 +1312,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="5c87fd5cbd1d434fbbad8a8d358a610b">
         <h4>
           29 The Craft with 'UnREAL' Creator Sarah Gertrude Shapiro
         </h4>
@@ -1288,7 +1324,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="1cbb7996928c457f9d8e849d7d547d20">
         <h4>
           28 Being John Malkovich with 'The Magicians' creator Sera Gamble
         </h4>
@@ -1300,7 +1336,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ad773adb54c5b2fecba01096e1a36afa">
         <h4>
           27 'The Fly' with 'Divergent' &amp; 'Hell or High Water' Producer Rachel Shane
         </h4>
@@ -1312,7 +1348,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="8cf2cc41329bfe06f093c148982e0dca">
         <h4>
           26 'Carrie' with 'RBG' Directors Betsy West &amp; Julie Cohen
         </h4>
@@ -1324,7 +1360,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4b3cb97ba342a84f18088cce59afeda9">
         <h4>
           25 The Witches of Eastwick with Ramaa Mosley
         </h4>
@@ -1336,7 +1372,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4a198938598ac4f66f95886cda039343">
         <h4>
           24 The Big Sleep with Martha Coolidge
         </h4>
@@ -1348,7 +1384,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="605f2ce6ab3d827232a955856233b2e3">
         <h4>
           23 The Heat with Tamra Davis
         </h4>
@@ -1360,7 +1396,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="38349ef4d150234a0395420b7632f0ee">
         <h4>
           22 Fatal Attraction with Heather Graham
         </h4>
@@ -1372,7 +1408,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3146623c6b2c340026cbbf82c77e420e">
         <h4>
           21 The Silence of the Lambs with Liz Hannah
         </h4>
@@ -1384,7 +1420,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="684843158b4edc0d2b340f9b19512461">
         <h4>
           20 Monsters with Meera Menon
         </h4>
@@ -1396,7 +1432,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="a365ac63979a55efbdf32f1ad3781cae">
         <h4>
           19 Code 46 with Lynn Shelton
         </h4>
@@ -1408,7 +1444,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="ccf1782ae60d5960e08f43b9790e5915">
         <h4>
           18 The Witch Who Came from the Sea with Drea Clark
         </h4>
@@ -1420,7 +1456,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="66452dfb4a9b1fb9cb3ac2cc2ca65b4f">
         <h4>
           17 Invasion of the Body Snatchers with Leigh Janiak
         </h4>
@@ -1432,7 +1468,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="898738dad868eb6ee6fc4b1e47ae037e">
         <h4>
           16 Night of the Comet with Amber Benson
         </h4>
@@ -1444,7 +1480,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="011617fdc4d8d87ff2d8279d63f933bf">
         <h4>
           15 The Shining with Lin Shaye
         </h4>
@@ -1456,7 +1492,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="8b4e8ab7b27eea491c71ba7631d10820">
         <h4>
           14 Blood Simple with Julie Hébert
         </h4>
@@ -1468,7 +1504,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="302be484ebe86a818f0f4b112c362b58">
         <h4>
           13 Raw with Barbara Crampton
         </h4>
@@ -1480,7 +1516,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="46d8da4cdb48493f1ccad8de37de48e9">
         <h4>
           12 Set It Off with Tina Mabry
         </h4>
@@ -1492,7 +1528,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="0e1ffe9de523fe1b89fe1de6c130c0e7">
         <h4>
           11 Star Trek Generations with Marianna Palka
         </h4>
@@ -1504,7 +1540,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="9797d377dc82eaf95151d4bff3264a77">
         <h4>
           10 The Legacy with Lotti Pharriss Knowles
         </h4>
@@ -1516,7 +1552,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="548d40c4bc7524b07092098cef5ea88a">
         <h4>
           9 Snowpiercer with Trish Sie
         </h4>
@@ -1528,7 +1564,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="e7366c3c374571ef6cf5afca071734ab">
         <h4>
           8 Sudden Fear with Anna Biller
         </h4>
@@ -1540,7 +1576,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="f5d5a7f65581c54db7c83c374f169902">
         <h4>
           7 Rosemary's Baby with Jessie Nickson-Lopez
         </h4>
@@ -1552,7 +1588,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="053ccd64a05596bc7eec60fd57fe515b">
         <h4>
           6 Body Double with Sophia Takal
         </h4>
@@ -1564,7 +1600,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="9c2a1b9d5946c70466bbc48b021f819c">
         <h4>
           5 The Others with Anne Hamilton
         </h4>
@@ -1576,7 +1612,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="3f19ff94f5f727f03d6530c39bd28454">
         <h4>
           4 Pan's Labyrinth with Issa López
         </h4>
@@ -1588,7 +1624,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="dabd829e98d7cf3c121c5f7b406c4d06">
         <h4>
           3 The Invitation with Heather Matarazzo
         </h4>
@@ -1600,7 +1636,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="a2ec7085303220e2a6e3e71e2c4964f2">
         <h4>
           2 Near Dark with Karyn Kusama
         </h4>
@@ -1612,7 +1648,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="733c9e5f137f4936b97ef11a3c73e88d">
         <h4>
           1 Bone Tomahawk with Emily Gordon
         </h4>
@@ -1624,7 +1660,7 @@
         <p></p>
       </div>
 
-      <div class="episode">
+      <div class="episode" data-episode-id="4a28587032e2bcde362437886708edf7">
         <h4>
           0 Switchblade Sisters Preview
         </h4>
@@ -1636,10 +1672,10 @@
         <p></p>
       </div>
 
+              </div>
             </div>
           </div>
-      </div>
-      -->
+        </div>
       <!-- // Search results
       <div><h2>Showing search results for "film"</h2><ul class="search-results"><li class="show"><div class="podcast-show">
       <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts114/v4/75/97/ad/7597ade8-8710-d6d0-15ff-b65805b48502/mza_16653473462481274035.jpg/600x600bb.jpg">
