@@ -1,3 +1,5 @@
+user = new User
+
 view = new View('main-view')
 view.resume()
 
