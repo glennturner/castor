@@ -1,14 +1,15 @@
 class Podcast {
   #player
   #savedKey = 'C-SAVED'
-  #stateKey
-  static #stateKeyPrefix = 'C-P-'
+  #cacheKey
   #subscribedKey = 'C-SUBS'
+
+  static #cacheKeyPrefix = 'C-P-'
 
   constructor (args) {
     // This is usually the iTMS podcast collectionId.
     this.id = args.id
-    this.stateKey = this.id
+    this.cacheKey = this.id
 
     /*
     // Basic info
@@ -25,29 +26,27 @@ class Podcast {
     this.title = args.title
     this.pubDate = args.pubDate
     this.episodesType = args.episodesType
-    this.episodes = args.episodes || []
-
-    this.#player = new Player
+    this.episodes = args.episodes ? args.episodes.map(ep => new Episode(this.id, ep)) : []
   }
 
-  get state () {
-    return localStorage.getItem(this.stateKey) || {
+  get cache () {
+    return localStorage.getItem(this.cacheKey) || {
       episodes: {}
     }
   }
 
-  set state (state) {
+  set cache (cache) {
     localStorage.setItem(
-      this.stateKey, state
+      this.cacheKey, cache
     )
   }
 
-  get stateKey () {
-    return this.#stateKey
+  get cacheKey () {
+    return this.#cacheKey
   }
 
-  set stateKey (key) {
-    this.#stateKey = Podcast.podcastStateKey(key)
+  set cacheKey (key) {
+    this.#cacheKey = Podcast.podcastCacheKey(key)
   }
 
   subscribe () {
@@ -98,11 +97,11 @@ class Podcast {
 
     // Not 100% sure why `Player#togglePlayback` is not working here,
     // so we manually control pausing.
-    if (this.#player.playing && this.#player.episode.episodeUrl == ep.episodeUrl) {
-      this.#player.pause()
+    if (player.playing && player.episode.episodeUrl == ep.episodeUrl) {
+      player.pause()
     } else {
-      this.#player.episode = ep
-      this.#player.play()
+      player.episode = ep
+      player.play()
     }
   }
 
@@ -263,7 +262,7 @@ class Podcast {
             'click',
             (e) => {
               let id = e.currentTarget.dataset.episodeId
-              let ep = this._getEpisodeById(id)
+              let ep = this.getEpisodeById(id)
 
               this.playEpisode(ep)
             }
@@ -274,14 +273,18 @@ class Podcast {
       })
   }
 
-  static podcastStateKey (id) {
-    return Podcast.#stateKeyPrefix + id
+  getEpisodeById (id) {
+    return this.episodes.filter(ep => ep.id === id)[0]
+  }
+
+  static podcastCacheKey (id) {
+    return Podcast.#cacheKeyPrefix + id
   }
 
   static get (id) {
     let json = JSON.parse(
       localStorage.getItem(
-        Podcast.podcastStateKey(id)
+        Podcast.podcastCacheKey(id)
       )
     )
 
@@ -314,10 +317,6 @@ class Podcast {
     `
   }
 
-  _getEpisodeById (id) {
-    return this.episodes.filter(ep => ep.id === id)[0]
-  }
-
   _json () {
     return JSON.stringify(
       {
@@ -333,7 +332,6 @@ class Podcast {
         artwork: this.artwork,
         episodesType: this.episodesType,
         lastRetrieved: this.lastRetrieved,
-        state: this.state,
         episodes: this.episodes
       }
     )
@@ -357,8 +355,8 @@ class Podcast {
       })
   }
 
-  _storeFeed () {
-    this.state = this._json()
+  _cacheFeed () {
+    this.cache = this._json()
   }
 
   // Update podcast information via feed.
@@ -384,7 +382,7 @@ class Podcast {
         return new Episode(this.id, ep)
       })
 
-      this._storeFeed()
+      this._cacheFeed()
     })
   }
 }
