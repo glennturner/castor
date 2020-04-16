@@ -37,7 +37,7 @@ class Episode {
     return this.#episodeKeyPrefix + key
   }
 
-  get state () {
+  get _state () {
     this.podcast.state().episodes[this.#stateKey] || {}
   }
 
