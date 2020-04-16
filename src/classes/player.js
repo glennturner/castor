@@ -7,7 +7,7 @@ class Player {
   #playerId = 'player'
   #playerInterfaceId = 'player-ui'
   #playerUI
-  #stateKey = 'castorPlayerState'
+  #stateKey = 'C-PS'
 
   constructor (episode = undefined, opts = {}) {
     if (episode) {
@@ -17,6 +17,12 @@ class Player {
     this.#player = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
     this.#currentTime = opts.currentTime || 0
+
+    this.state = this.state || {}
+
+    if (this.state.podcastId) {
+      this._populate()
+    }
   }
 
   get playing () {
@@ -37,6 +43,19 @@ class Player {
     this.#player.load()
   }
 
+  get state () {
+    return JSON.parse(
+      localStorage.getItem(this.#stateKey)
+    )
+  }
+
+  set state (state) {
+    localStorage.setItem(
+      this.#stateKey,
+      JSON.stringify(state)
+    )
+  }
+
   play () {
     this.playing = true
     this.episode.playing = true
@@ -47,7 +66,10 @@ class Player {
 
     this.#player.play()
 
-    this._updateState()
+    this.state = {
+      podcastId: this.episode.podcast.id,
+      episodeId: this.episode.id
+    }
   }
 
   pause () {
@@ -71,12 +93,13 @@ class Player {
 
   /* Private */
 
-  _state () {
-    localStorage.getItem(this.#stateKey)
-  }
+  _populate () {
+    let podcast = Podcast.get(this.state.podcastId)
+    this.episode = podcast.getEpisodeById(this.state.episodeId)
+    console.log('EPISODE')
+    console.log(this.episode)
 
-  _updateState () {
-    localStorage.setItem(this.#stateKey, this._state())
+    this._updateGlobalPlayerUI()
   }
 
   _updateGlobalPlayerUI () {
