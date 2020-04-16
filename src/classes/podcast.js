@@ -2,13 +2,13 @@ class Podcast {
   #player
   #savedKey = 'C-SAVED'
   #stateKey
-  #stateKeyPrefix = 'C-P-'
+  static #stateKeyPrefix = 'C-P-'
   #subscribedKey = 'C-SUBS'
 
   constructor (args) {
     // This is usually the iTMS podcast collectionId.
     this.id = args.id
-    this.#stateKey = this.#stateKeyPrefix + this.id
+    this.stateKey = this.id
 
     /*
     // Basic info
@@ -31,15 +31,23 @@ class Podcast {
   }
 
   get state () {
-    return localStorage.getItem(this.#stateKey) || {
+    return localStorage.getItem(this.stateKey) || {
       episodes: {}
     }
   }
 
   set state (state) {
     localStorage.setItem(
-      this.id, state
+      this.stateKey, state
     )
+  }
+
+  get stateKey () {
+    return this.#stateKey
+  }
+
+  set stateKey (key) {
+    this.#stateKey = Podcast.podcastStateKey(key)
   }
 
   subscribe () {
@@ -150,7 +158,9 @@ class Podcast {
 
     showEle.addEventListener(
       'click',
-      (e) => this._showDetailedView
+      (e) => {
+        this._showDetailedView()
+      }
     )
 
     return showEle
@@ -264,8 +274,16 @@ class Podcast {
       })
   }
 
+  static podcastStateKey (id) {
+    return Podcast.#stateKeyPrefix + id
+  }
+
   static get (id) {
-    let json = JSON.parse(localStorage.getItem(id))
+    let json = JSON.parse(
+      localStorage.getItem(
+        Podcast.podcastStateKey(id)
+      )
+    )
 
     if (json) {
       return new Podcast(json)
