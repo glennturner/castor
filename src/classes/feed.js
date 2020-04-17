@@ -25,13 +25,16 @@ class Feed {
     let pubDate = xml.querySelector('channel > pubDate')
     let epType = xml.getElementsByTagName('itunes:type')
 
+    let buildDate = xml.querySelector('channel > lastBuildDate')
+    buildDate = buildDate || pubDate || ''
+
     let parsed = {
       title: xml.querySelector('channel > title').textContent,
       description: xml.querySelector('channel > description').innerHTML,
       copyright: copyright ? copyright.textContent : '',
       link: channelLink ? channelLink.textContent : undefined,
       pubDate: pubDate ? pubDate.textContent : undefined,
-      lastUpdated: xml.querySelector('channel > lastBuildDate').textContent,
+      lastUpdated: buildDate ? buildDate.textContent : '',
       artwork: this._getArtworkFromFeed(),
       author: xml.getElementsByTagName('itunes:author')[0].textContent,
       episodesType: epType.length ? epType[0].textContent : undefined,
