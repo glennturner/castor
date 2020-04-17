@@ -1,3 +1,5 @@
+subscriberNav = document.getElementById('subscribed-items')
+
 user = new User
 
 view = new View('main-view')

@@ -2,12 +2,20 @@ class User {
   #subscribedPodcastKey = 'C-SUB-P'
 
   constructor () {
+    this._renderSubscriberNav()
   }
 
   get subscribedPodcasts () {
-    return JSON.parse(
-      localStorage.getItem(this.#subscribedPodcastKey)
-    ) || []
+    let podcasts = (
+      JSON.parse(
+        localStorage.getItem(this.#subscribedPodcastKey)
+      ) || []
+    ).map(podcast => Podcast.get(podcast))
+
+    console.log('GET SUBED PODCASTS')
+    console.log(podcasts)
+
+    return podcasts
   }
 
   set subscribedPodcasts (ids) {
@@ -18,11 +26,13 @@ class User {
   }
 
   subscribe (podcastId) {
-    let subscribed = this.subscribedPodcasts
+    let subscribed = this.subscribedPodcasts.map(podcast => podcast.id)
 
     this.subscribedPodcasts = [...new Set(
       subscribed.concat([podcastId])
     )]
+
+    this._renderSubscriberNav()
   }
 
   unsubscribe (podcastId) {
@@ -31,6 +41,23 @@ class User {
     this.subscribedPodcasts = this.subscribedPodcasts.filter(item => item !== podcastId)
 
     console.log(this.subscribedPodcasts)
+    this._renderSubscriberNav()
+  }
 
+  /* Private */
+
+  _renderSubscriberNav () {
+    let html = ''
+    this.subscribedPodcasts.map(item => {
+      html += `
+        <div
+          class="list-group-item"
+        >
+          ${item.title}
+        </div>
+      `
+    })
+
+    subscriberNav.innerHTML = html
   }
 }
