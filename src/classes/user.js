@@ -6,11 +6,11 @@ class User {
   }
 
   get subscribedPodcasts () {
-    let podcasts = (
-      JSON.parse(
-        localStorage.getItem(this.#subscribedPodcastKey)
-      ) || []
-    ).map(podcast => Podcast.get(podcast))
+    let podcasts = this.subscribedPodcastIds().map(
+      podcast => Podcast.get(podcast)
+    // Yeah. Bad DB issue.
+    // @todo Fix.
+    ).filter(podcast => podcast !== undefined)
 
     console.log('GET SUBED PODCASTS')
     console.log(podcasts)
@@ -36,18 +36,25 @@ class User {
   }
 
   unsubscribe (podcastId) {
-    console.log('UNSUB')
-    console.log(podcastId)
-    this.subscribedPodcasts = this.subscribedPodcasts.filter(item => item !== podcastId)
+    console.log('UNSUB ' + podcastId)
+    // this.subscribedPodcasts = this.subscribedPodcasts.filter(item => (item.id != podcastId))
 
     console.log(this.subscribedPodcasts)
     this._renderSubscriberNav()
+  }
+
+  subscribedPodcastIds () {
+    return JSON.parse(
+      localStorage.getItem(this.#subscribedPodcastKey)
+    ) || []
   }
 
   /* Private */
 
   _renderSubscriberNav () {
     let html = ''
+    console.log('RENDER SUB NAV')
+    console.log(this.subscribedPodcasts)
     this.subscribedPodcasts.map(item => {
       html += `
         <div

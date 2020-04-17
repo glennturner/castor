@@ -62,7 +62,9 @@ class Podcast {
   }
 
   subscribed () {
-    return user.subscribedPodcasts.includes(this.id)
+    console.log('IS SUBBED? ' + this.id)
+    console.log(user.subscribedPodcastIds().includes(this.id))
+    return user.subscribedPodcastIds().includes(this.id)
   }
 
   archive () {
