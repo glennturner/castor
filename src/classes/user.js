@@ -12,9 +12,6 @@ class User {
     // @todo Fix.
     ).filter(podcast => podcast !== undefined)
 
-    console.log('GET SUBED PODCASTS')
-    console.log(podcasts)
-
     return podcasts
   }
 
@@ -36,10 +33,10 @@ class User {
   }
 
   unsubscribe (podcastId) {
-    console.log('UNSUB ' + podcastId)
-    // this.subscribedPodcasts = this.subscribedPodcasts.filter(item => (item.id != podcastId))
+    this.subscribedPodcasts = this.subscribedPodcasts.filter(
+      item => item.id !== podcastId
+    ).map(item => item.id)
 
-    console.log(this.subscribedPodcasts)
     this._renderSubscriberNav()
   }
 
@@ -53,18 +50,23 @@ class User {
 
   _renderSubscriberNav () {
     let html = ''
-    console.log('RENDER SUB NAV')
-    console.log(this.subscribedPodcasts)
     this.subscribedPodcasts.map(item => {
       html += `
-        <div
-          class="list-group-item"
+        <a
+          href="#"
+          class="list-group-item list-group-item-action"
+          data-podcast-id="${item.id}"
         >
           ${item.title}
-        </div>
+        </a>
       `
     })
 
     subscriberNav.innerHTML = html
+    subscriberNav.querySelectorAll('.list-group-item-action').forEach(ele => {
+      ele.addEventListener('click', (e) => {
+        Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
+      })
+    })
   }
 }
