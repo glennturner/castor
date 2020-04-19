@@ -50,7 +50,7 @@ class User {
 
   _renderSubscriberNav () {
     let html = ''
-    this.subscribedPodcasts.map(item => {
+    this.subscribedPodcasts.sort(sortByTitle).map(item => {
       html += `
         <a
           href="#"
