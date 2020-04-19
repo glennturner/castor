@@ -7,8 +7,8 @@ class Itunes {
     const entity = 'podcast'
     opts.explicit = opts.explicit === undefined ? true : opts.explicit
 
+    // @see https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/
     const args = {
-      attribute: 'titleTerm',
       entity: entity,
       explicit: opts.explicit,
       limit: 50,
