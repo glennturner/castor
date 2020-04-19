@@ -61,19 +61,19 @@ app.on('activate', () => {
 /* Sandbox required modules */
 ipcMain.on('hash', (event, str) => {
   let hashedStr = ncrypto.createHash('md5').update(str).digest('hex')
-  mainWindow.webContents.send('hashed', hashedStr);
-});
+  mainWindow.webContents.send('hashed', hashedStr)
+})
 
-ipcMain.on('saveFile', (event, f) => {
+ipcMain.on('saveEpisode', (event, f) => {
   /*
   fs.readFile("path/to/file", (error, data) => {
     // Do something with file contents
 
     // Send result back to renderer process
-    mainWindow.webContents.send("fromMain", responseObj);
-  });
+    mainWindow.webContents.send("fromMain", responseObj)
+  })
   */
-});
+})
 
 /* Menus */
 const isMac = process.platform === 'darwin'
