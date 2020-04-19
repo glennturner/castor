@@ -1,8 +1,6 @@
 class Podcast {
   #player
-  #savedKey = 'C-SAVED'
   #cacheKey
-  #subscribedKey = 'C-SUBS'
 
   static #cacheKeyPrefix = 'C-P-'
 
@@ -11,13 +9,7 @@ class Podcast {
     this.id = args.id
     this.cacheKey = this.id
 
-    /*
-    // Basic info
-    // Usually supplied by iTunes.
-
-      Pre-populate?
-    */
-
+    // Basic info, usually supplied by iTunes.
     this.author = args.identity
     this.artwork = args.artwork
     this.copyright = args.copyright
@@ -62,8 +54,6 @@ class Podcast {
   }
 
   subscribed () {
-    console.log('IS SUBBED? ' + this.id)
-    console.log(user.subscribedPodcastIds().includes(this.id))
     return user.subscribedPodcastIds().includes(this.id)
   }
 
