@@ -95,6 +95,10 @@ nav input {
   list-style-type: none;
 }
 
+.list-group-item-action {
+  cursor: default;
+}
+
 /* Views */
 #main-view {
   margin-top: 80px;
