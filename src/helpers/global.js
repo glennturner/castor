@@ -11,3 +11,23 @@ function checksum(s) {
   }
   return hash;
 }
+
+function sortByTitle (a, b) {
+  return sortByProp('title', a, b)
+}
+
+function sortByProp (prop, a, b) {
+  let propA = a[prop].toUpperCase()
+  let propB = b[prop].toUpperCase()
+
+  if (propA < propB) {
+    return -1
+  }
+
+  if (propA > propB) {
+    return 1
+  }
+
+  // names must be equal
+  return 0
+}
