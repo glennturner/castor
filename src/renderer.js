@@ -1,3 +1,4 @@
+// Should be moved to `User` initialization.
 subscriberNav = document.getElementById('subscribed-items')
 
 user = new User
