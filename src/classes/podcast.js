@@ -279,6 +279,8 @@ class Podcast {
     return this.episodes.filter(ep => ep.id === id)[0]
   }
 
+  /* Static */
+
   static podcastCacheKey (id) {
     return Podcast.#cacheKeyPrefix + id
   }
@@ -299,6 +301,10 @@ class Podcast {
     let podcast = Podcast.get(args.id)
 
     return podcast || new Podcast(args)
+  }
+
+  static showDetailedViewById (id) {
+    Podcast.get(id)._showDetailedView()
   }
 
   /* Private */
