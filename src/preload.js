@@ -10,7 +10,8 @@ contextBridge.exposeInMainWorld(
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
-        'hash'
+        'hash',
+        'saveEpisode'
       ];
 
       if (validChannels.includes(channel)) {
@@ -19,7 +20,8 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
-        'hashed'
+        'hashed',
+        'episodeSaved'
       ];
 
       if (validChannels.includes(channel)) {
