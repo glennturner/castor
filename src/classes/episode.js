@@ -37,7 +37,9 @@ class Episode {
     return this.#episodeKeyPrefix + key
   }
 
-  get _state () {
+  // We use the podcast state to track this, but the state was moved to cache.
+  // Re-enable podcast state handling.
+  get state () {
     this.podcast.state().episodes[this.#stateKey] || {}
   }
 
@@ -53,7 +55,7 @@ class Episode {
 
   set currentTime (currentTime) {
     console.log('SET CURRENT TIME! ' + currentTime)
-    this.state.currentTime = currentTime
+    // this.state.currentTime = currentTime
   }
 
   get played () {
