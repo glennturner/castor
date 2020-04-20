@@ -5,6 +5,9 @@
     <title>Castor</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="helpers/global.js"></script>
     <script src="classes/user.js"></script>
     <script src="classes/feed.js"></script>
@@ -71,7 +74,7 @@
       <main
         id="main-view"
       >
-        <!-- Podcast show view -->
+        <!-- Podcast show view
         <main id="main-view"><nav></nav><div class="podcast-show-detailed">
           <div class="podcast-show-details">
             <div class="podcast-show-artwork">
@@ -103,7 +106,6 @@
                   })
                 </script>
 
-                <!-- Modal -->
                 <dialog id="podcastOptions">
                   <form method="dialog">
                     <menu>
@@ -1664,409 +1666,35 @@
             </div>
           </div>
         </div>
-      <!-- // Search results
-      <div><h2>Showing search results for "film"</h2><ul class="search-results"><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts114/v4/75/97/ad/7597ade8-8710-d6d0-15ff-b65805b48502/mza_16653473462481274035.jpg/600x600bb.jpg">
+      -->
+      <!-- // Search results -->
+      <nav><button class="btn btn-primary">&lt;</button></nav><div><h2>Showing search results for "Switchblade Sisters"</h2><ul class="search-results"><li class="show"><div class="podcast-show">
+      <img src="https://cdn.simplecast.com/images/be052949-6926-4d69-a2e0-7ebc07eaf977/3dcd6604-20da-42dc-a2b1-548c4d8fe29b/3000x3000/squarelogo.png?aid=rss_feed">
       <div class="title">
-        Film Sack
+        Switchblade Sisters
       </div>
-      <div class="identity">
-        Scott Johnson
+      <div class="author">
+        undefined
       </div>
 
       <div class="capsule-player">
         <span class="btn btn-primary btn-play">
           ▹
         </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/d1/f0/f2/d1f0f20c-d4b9-27e5-c571-7c94590ba3f2/mza_6708085367975020972.jpg/600x600bb.jpg">
-      <div class="title">
-        The Film Reroll
+        <div class="dropdown">
+        &gt;
+          <button class="btn btn-settings btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            ⋯
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
       </div>
-      <div class="identity">
-        Reroll Radio
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is3-ssl.mzstatic.com/image/thumb/Podcasts/v4/9f/ee/80/9fee8027-0feb-321d-37d5-6d2dd05042ce/mza_1315637890258675940.jpg/600x600bb.jpg">
-      <div class="title">
-        Lakeshore Records : FREE Music Videos, Movie Trailers, Film Extras and More!
-      </div>
-      <div class="identity">
-        noreply@blogger.com (lakeshore records video podcast)
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/b1/93/5e/b1935e43-90c8-5640-d8ed-5eb431080c4a/mza_1140450017853132096.jpg/600x600bb.jpg">
-      <div class="title">
-        The Empire Film Podcast
-      </div>
-      <div class="identity">
-        Empire Magazine
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/91/f1/fd/91f1fdf7-0eb3-a85e-6597-e3419291e6c5/mza_7355701871354807873.jpg/600x600bb.jpg">
-      <div class="title">
-        Kermode and Mayo's Film Review
-      </div>
-      <div class="identity">
-        BBC Radio 5 live
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fb/5b/85/fb5b858a-9e85-5da9-c010-870a44da2838/mza_9144438520870267228.jpg/600x600bb.jpg">
-      <div class="title">
-        Film Junk Podcast
-      </div>
-      <div class="identity">
-        FilmJunk.com
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/d5/db/fc/d5dbfcbf-77de-98f7-9bfc-e72be73fc004/mza_1785181100444858450.jpg/600x600bb.jpg">
-      <div class="title">
-        Science Fiction Film Podcast
-      </div>
-      <div class="identity">
-        LSG Media
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts124/v4/ad/e8/a6/ade8a6c3-7a0c-9e11-a89f-58092bd1797b/mza_8410292528342337505.jpg/600x600bb.jpg">
-      <div class="title">
-        Peak Human - Unbiased Nutrition Info for Optimum Health, Fitness &amp; Living
-      </div>
-      <div class="identity">
-        Brian Sanders - Filmmaker of Food Lies &amp; Health Coach
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/7b/d3/3d/7bd33dbc-e294-f5e3-0dca-bcc568f29b11/mza_1468512184683010144.jpg/600x600bb.jpg">
-      <div class="title">
-        DIS-Order: Every Disney Film
-      </div>
-      <div class="identity">
-        Real Fans 4 Real Movies
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts4/v4/1d/ad/70/1dad709b-1903-f00f-ef38-a567eaa4f0a5/mza_8708323588467164034.jpg/600x600bb.jpg">
-      <div class="title">
-        Philosophy In Film and Other Media - Video
-      </div>
-      <div class="identity">
-        Instructor: Prof. Irving Singer
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/78/8e/4f/788e4ff9-1cc0-a6ac-95c0-de4a3b6b48b2/mza_3158768273783652075.jpg/600x600bb.jpg">
-      <div class="title">
-        Comedy Film Nerds
-      </div>
-      <div class="identity">
-        Comedy Film Nerds
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/fb/92/ef/fb92ef0b-623b-307d-c621-d0b633030b6a/mza_2569411263562193470.jpg/600x600bb.jpg">
-      <div class="title">
-        The No Film School Podcast
-      </div>
-      <div class="identity">
-        No Film School
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/f0/ba/c9/f0bac9d1-bf86-6f56-4e54-adae514e6ed2/mza_7117452933370321090.jpg/600x600bb.jpg">
-      <div class="title">
-        The Film Riot Podcast
-      </div>
-      <div class="identity">
-        Ryan Connolly
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/2e/12/6f/2e126ff6-400a-f670-3f2d-4b76ac2fe698/mza_15659996240729297648.jpg/600x600bb.jpg">
-      <div class="title">
-        Nightmare On Film Street
-      </div>
-      <div class="identity">
-        FANGORIA Podcast Network
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is5-ssl.mzstatic.com/image/thumb/Podcasts/1e/fc/43/tns.cszdosux.jpg/600x600bb.jpg">
-      <div class="title">
-        Film Studies
-      </div>
-      <div class="identity">
-        Stanford University
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts123/v4/36/cc/aa/36ccaad1-86f5-5056-b720-044cf9da9bd9/mza_6203669250496905774.jpg/600x600bb.jpg">
-      <div class="title">
-        Adult Film Star Network
-      </div>
-      <div class="identity">
-        Adult Film Star Network
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is5-ssl.mzstatic.com/image/thumb/Podcasts123/v4/90/b5/f4/90b5f4c6-1991-7435-90f0-b2b183eaff04/mza_2433773951631585920.jpg/600x600bb.jpg">
-      <div class="title">
-        Greg Proops Film Club
-      </div>
-      <div class="identity">
-        Greg Proops
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts113/v4/97/3b/5a/973b5aee-06ef-9e7b-9ea1-6c1e1b44ecbb/mza_3371923537375963673.png/600x600bb.jpg">
-      <div class="title">
-        The Curzon Film Podcast
-      </div>
-      <div class="identity">
-        Curzon Cinemas
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/3c/23/8c/3c238caa-6274-6353-e841-de76816c2344/mza_4429835773853298035.jpg/600x600bb.jpg">
-      <div class="title">
-        The Film Comment Podcast
-      </div>
-      <div class="identity">
-        Film Comment Magazine
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts4/v4/78/d1/44/78d14487-9099-ce06-6202-a4049381307e/mza_6772319560622488484.jpg/600x600bb.jpg">
-      <div class="title">
-        Out of the Past: Investigating Film Noir
-      </div>
-      <div class="identity">
-        Clute and Edwards
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/6a/5d/c4/6a5dc449-579f-c9fd-a64c-2781ad12c1d1/mza_7133847741889651906.jpg/600x600bb.jpg">
-      <div class="title">
-        The Film Programme
-      </div>
-      <div class="identity">
-        BBC Radio 4
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is4-ssl.mzstatic.com/image/thumb/Podcasts3/v4/cd/7e/38/cd7e38d8-bb6e-53ff-bc0b-86d08c777003/mza_8249360023867047023.jpg/600x600bb.jpg">
-      <div class="title">
-        Film Photography Podcast
-      </div>
-      <div class="identity">
-        Michael Raso
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts113/v4/46/b9/84/46b9840f-2ea2-9b90-cd57-44fea3cc99ac/mza_3875603236754910541.png/600x600bb.jpg">
-      <div class="title">
-        The Indie Film Place Podcast
-      </div>
-      <div class="identity">
-        Director/Filmmaker Russ Cootey
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is2-ssl.mzstatic.com/image/thumb/Podcasts/06/0e/61/ps.hqggyysh.jpg/600x600bb.jpg">
-      <div class="title">
-        Tribeca Film Festival: “Talihina Sky: The Story of Kings of Leon”
-      </div>
-      <div class="identity">
-        Apple Inc.
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
-    </div></li><li class="show"><div class="podcast-show">
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/b3/b9/e1/b3b9e123-bf67-21c2-e661-13b4ef356a15/mza_1063766402955075610.jpg/600x600bb.jpg">
-      <div class="title">
-        Fuds On Film
-      </div>
-      <div class="identity">
-        Craig Eastman, Drew Tavendale, Scott Morris for Fuds On Film
-      </div>
-
-      <div class="capsule-player">
-        <span class="btn btn-primary btn-play">
-          ▹
-        </span>
-        <span class="btn btn-secondary btn-settings">
-          ⋯
-      </span></div>
     </div></li></ul></div>
-    /search results-->
+    <!-- /search results-->
 
       <!--
         <div id="searchResults">
