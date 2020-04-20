@@ -124,10 +124,25 @@ class Podcast {
         >
           &#9657;
         </span>
-        <span
-          class="btn btn-secondary btn-settings"
+        <div
+          class="dropdown">
         >
-          &#8943;
+          <button
+            class="btn btn-settings btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            &#8943;
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
       </div>
     `
 
@@ -139,18 +154,25 @@ class Podcast {
       }
     )
 
+    /*
     showEle.querySelectorAll('.btn-settings')[0].addEventListener(
       'click',
       (e) => {
         // this.showCapsuleSettings()
-        e.stopPropagation()
+        //e.stopPropagation()
       }
     )
+    */
 
     showEle.addEventListener(
       'click',
       (e) => {
-        this._showDetailedView()
+        console.log('CURRENT TARGET')
+        console.log(e.target.classList)
+
+        if (e.currentTarget == e.target) {
+          this._showDetailedView()
+        }
       }
     )
 
