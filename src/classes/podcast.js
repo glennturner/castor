@@ -155,7 +155,7 @@ class Podcast {
     )
 
     /*
-    showEle.querySelectorAll('.btn-settings')[0].addEventListener(
+    showEle.querySelector('.btn-settings').addEventListener(
       'click',
       (e) => {
         // this.showCapsuleSettings()
@@ -164,7 +164,7 @@ class Podcast {
     )
     */
 
-    showEle.addEventListener(
+    showEle.querySelector('img').addEventListener(
       'click',
       (e) => {
         console.log('CURRENT TARGET')
