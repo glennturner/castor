@@ -200,12 +200,22 @@ nav .list-item-group {
 }
 
 nav.podcast-options {
-  text-align: right;
+  margin: 0.5rem 0;
+  text-align: center;
   width: 100%;
 }
 
 .podcast-show-detailed .podcast-show-artwork {
   margin-right: 2rem;
+}
+
+/* Detailed Podcast */
+.podcast-episodes-view-by {
+  text-align: center;
+}
+
+.podcast-show-detailed .episode {
+  display: flex;
 }
 
 /* Dialog */
