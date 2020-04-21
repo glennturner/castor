@@ -1,8 +1,4 @@
 class Episode {
-  #episodeKeyPrefix = 'C-P-'
-  #stateKey
-  #state = {}
-
   constructor (podcastId, args = {}) {
     this.podcastId = podcastId
 
@@ -16,8 +12,6 @@ class Episode {
     this.pubDate = args.pubDate
     this.title = args.title
 
-    this.#stateKey = this.#episodeKeyPrefix + this.id
-
     this.playing = false
   }
 
@@ -29,24 +23,16 @@ class Episode {
     this.podcastId = podcastId
   }
 
-  get stateKey () {
-    return this.#episodeKeyPrefix + this.podcastId
-  }
-
-  set stateKey (key) {
-    return this.#episodeKeyPrefix + key
-  }
-
   // We use the podcast state to track this, but the state was moved to cache.
   // Re-enable podcast state handling.
   get state () {
-    this.podcast.state().episodes[this.#stateKey] || {}
+    this.podcast.state.episodes[this.id] || {}
   }
 
   set state (state) {
-    let podcastState = this.podcast.state()
-    podcastState.episodes[this.#stateKey] = state
-    this.podcast.setState(podcastState)
+    let podcastState = this.podcast.state
+    podcastState.episodes[this.id] = state
+    this.podcast.state = podcastState
   }
 
   get currentTime () {
@@ -63,9 +49,7 @@ class Episode {
   }
 
   set played (played) {
-    let state = this.state
-    state.played = played
-    this.state = state
+    this.state.played = played
   }
 
   get saved () {
@@ -73,9 +57,15 @@ class Episode {
   }
 
   set saved (saved) {
-    let state = this.state
-    state.saved = saved
-    this.state = state
+    this.state.saved = saved
+  }
+
+  get currentTime () {
+    return this.state.currentTime
+  }
+
+  set currentTime (currentTime) {
+    this.state.currentTime = currentTime
   }
 
   /*
