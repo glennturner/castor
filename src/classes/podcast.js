@@ -1,13 +1,16 @@
 class Podcast {
   #player
   #cacheKey
+  #stateKey
 
   static #cacheKeyPrefix = 'C-P-'
+  static #stateKeyPrefix = 'C-P-S-'
 
   constructor (args) {
     // This is usually the iTMS podcast collectionId.
     this.id = args.id
     this.cacheKey = this.id
+    this.stateKey = this.id
 
     // Basic info, usually supplied by iTunes.
     this.author = args.identity
@@ -19,6 +22,18 @@ class Podcast {
     this.pubDate = args.pubDate
     this.episodesType = args.episodesType
     this.episodes = args.episodes ? args.episodes.map(ep => new Episode(this.id, ep)) : []
+  }
+
+  get state () {
+    return localStorage.getItem(this.stateKey) || {
+      episodes: {}
+    }
+  }
+
+  set state (state) {
+    localStorage.setItem(
+      this.stateKey, state
+    )
   }
 
   get cache () {
@@ -39,6 +54,14 @@ class Podcast {
 
   set cacheKey (key) {
     this.#cacheKey = Podcast.podcastCacheKey(key)
+  }
+
+  get stateKey () {
+    return this.#stateKey
+  }
+
+  set stateKey (key) {
+    this.#stateKey = Podcast.podcastStateKey(key)
   }
 
   subscribe () {
@@ -128,7 +151,7 @@ class Podcast {
           class="dropdown">
         >
           <button
-            class="btn btn-settings btn-secondary dropdown-toggle"
+            class="btn btn-settings btn-secondary"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -200,16 +223,6 @@ class Podcast {
                 src="${this.artwork}"
                 class="artwork"
               />
-            </div>
-            <div
-              class="podcast-show-content"
-            >
-              <h2>
-                ${this.title}
-              </h2>
-              <h3>
-                ${this.author}
-              </h3>
               <nav
                 class="podcast-options"
               >
@@ -223,34 +236,46 @@ class Podcast {
                   ${this.subscribed() ? 'Unsubscribe' : 'Subscribe'}
                 </button>
 
-                <button
-                  id="podcast-options-btn"
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  data-toggle="modal"
-                  data-target="#podcast-options"
+                <span
+                  class="dropdown"
                 >
-                  Options
-                </button>
-
-                <!-- Modal -->
-                <dialog id="podcastOptions">
-                  <form method="dialog">
-                    <menu>
-                      <button
-                        class="btn btn-danger"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        id="savePodcastOptions"
-                        class="btn btn-primary"
-                      >
-                        Confirm
-                      </button>
-                    </menu>
-                  </form>
-                </dialog>
+                  <button
+                    class="btn btn-settings btn-sm btn-primary"
+                    type="button"
+                    id="podcastDropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Options
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="podcastDropdownMenuButton">
+                    <a class="dropdown-item" href="#">Refresh</a>
+                    <a class="dropdown-item" href="#">Mark All as Played</a>
+                  </div>
+                </span>
+              </nav>
+            </div>
+            <div
+              class="podcast-show-content"
+            >
+              <h2>
+                ${this.title}
+              </h2>
+              <h3>
+                ${this.author}
+              </h3>
+              <nav
+                class="podcast-episodes-view-by"
+              >
+                <div
+                  class="btn-group"
+                  role="group"
+                  aria-label="Episode List"
+                >
+                  <button type="button" class="btn btn-sm btn-primary">Unplayed</button>
+                  <button type="button" class="btn btn-sm btn-light">Feed</button>
+                </div>
               </nav>
               <div
                 class="episodes"
@@ -265,15 +290,9 @@ class Podcast {
           this.subscribed() ? this.unsubscribe() : this.subscribe()
         })
 
-        detailedEle.querySelector('#podcast-options-btn').addEventListener('click', () => {
-          podcastOptions.showModal()
-        })
-
-        console.log('subscribed? ' + this.subscribed())
-
         detailedEle.querySelectorAll('.episode').forEach(ele => {
           ele.addEventListener(
-            'click',
+            'dblclick',
             (e) => {
               let id = e.currentTarget.dataset.episodeId
               let ep = this.getEpisodeById(id)
@@ -295,6 +314,10 @@ class Podcast {
 
   static podcastCacheKey (id) {
     return Podcast.#cacheKeyPrefix + id
+  }
+
+  static podcastStateKey (id) {
+    return Podcast.#stateKeyPrefix + id
   }
 
   static get (id) {
@@ -322,17 +345,44 @@ class Podcast {
   /* Private */
 
   _detailedEp (ep) {
+    console.log('GET EP STATE')
+    console.log(ep.state)
     return `
       <div
         class="episode"
         data-episode-id="${ep.id}"
       >
-        <h4>
-          ${ep.episodeNum} ${ep.title}
-        </h4>
-        <p>
-          ${ep.description}
-        </p>
+        <div
+          class="episode-metadata"
+        >
+          <h4>
+            ${ep.episodeNum} ${ep.title}
+          </h4>
+          <p>
+            ${ep.description}
+          </p>
+        </div>
+        <div
+          class="episode-options"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              class="btn btn-settings btn-secondary"
+              type="button"
+              id="episodeDropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              &#8943;
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="episodeDropdownMenuButton">
+              <a class="dropdown-item" href="#">Mark as Played</a>
+            </div>
+          </div>
+        </diV>
       </div>
     `
   }
