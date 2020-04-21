@@ -4,6 +4,9 @@ const {
   Menu,
   ipcMain
 } = require('electron')
+
+const contextMenu = require('electron-context-menu')
+
 const path = require('path')
 const http  = require('http')
 const fs = require('fs')
@@ -90,7 +93,7 @@ const template = [
 if (process.platform === 'darwin') {
     template.unshift(
       {
-        label: app.getName(),
+        label: app.name,
         submenu:
         [
           {role: 'about'},
@@ -106,3 +109,23 @@ if (process.platform === 'darwin') {
     }
   )
 }
+
+// Example context menu. Will pr
+contextMenu({
+	prepend: (defaultActions, params, browserWindow) => [
+		{
+			label: 'Rainbow',
+			// Only show it when right-clicking images
+			visible: params.mediaType === 'image'
+		},
+		{
+			label: 'Search Google for “{selection}”',
+			// Only show it when right-clicking text
+			visible: params.selectionText.trim().length > 0,
+			click: () => {
+				shell.openExternal(`https://google.com/search?q=${encodeURIComponent(params.selectionText)}`)
+			}
+		}
+	]
+})
+
