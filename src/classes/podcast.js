@@ -117,6 +117,7 @@ class Podcast {
 
   /* Move to `Episode`? */
   async playEpisode (ep) {
+    player.episode = ep
     // ep.episodeUrl = 'http://localhost:5000/podcast'
 
     // Not 100% sure why `Player#togglePlayback` is not working here,
@@ -124,7 +125,6 @@ class Podcast {
     if (player.playing && player.episode.episodeUrl == ep.episodeUrl) {
       player.pause()
     } else {
-      player.episode = ep
       player.play()
     }
   }

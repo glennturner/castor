@@ -26,7 +26,7 @@ class Episode {
   // We use the podcast state to track this, but the state was moved to cache.
   // Re-enable podcast state handling.
   get state () {
-    this.podcast.state.episodes[this.id] || {}
+    return this.podcast.state.episodes[this.id] || {}
   }
 
   set state (state) {
@@ -36,15 +36,12 @@ class Episode {
     console.log('PODCAST STATE')
     console.log(this.podcast.state.episodes)
     let podcastState = this.podcast.state
-    podcastState.episodes[this.id] = {
-      [this.id]: state
-    }
+    podcastState.episodes[this.id] = state
 
-    this.podcast.state = podcastState
+    this.podcast.state.episodes[this.id] = podcastState.episodes[this.id]
 
     console.log('PODCAST STATE 2')
     console.log(this.podcast.state.episodes)
-    return this.podcast.state.episodes[this.id]
   }
 
   get currentTime () {
@@ -77,7 +74,14 @@ class Episode {
   }
 
   set currentTime (currentTime) {
-    this.state.currentTime = currentTime
+    let state = this.state
+
+    console.log('SET CURRENT TIME: ' + currentTime)
+    console.log(state)
+
+    state.currentTime = currentTime
+    this.state = state
+    console.log(this.state)
   }
 
   /*

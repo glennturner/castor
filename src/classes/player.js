@@ -72,7 +72,8 @@ class Player {
 
     this.state = {
       podcastId: this.episode.podcast.id,
-      episodeId: this.episode.id
+      episodeId: this.episode.id,
+      currentTime: this.#currentTime
     }
   }
 
@@ -88,7 +89,11 @@ class Player {
 
     this.#player.pause()
 
-    this._updateState()
+    this.state = {
+      podcastId: this.episode.podcast.id,
+      episodeId: this.episode.id,
+      currentTime: this.#currentTime
+    }
   }
 
   togglePlayback () {
