@@ -31,6 +31,10 @@ class Player {
 
   set playing (state) {
     this.#playing = state ? true : false
+
+    this.episode.state = {
+      currentTime: this.#currentTime
+    }
   }
 
   get episode () {

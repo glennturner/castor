@@ -30,9 +30,21 @@ class Episode {
   }
 
   set state (state) {
+    console.log('SET EP STATE')
+    console.log(state)
+
+    console.log('PODCAST STATE')
+    console.log(this.podcast.state.episodes)
     let podcastState = this.podcast.state
-    podcastState.episodes[this.id] = state
+    podcastState.episodes[this.id] = {
+      [this.id]: state
+    }
+
     this.podcast.state = podcastState
+
+    console.log('PODCAST STATE 2')
+    console.log(this.podcast.state.episodes)
+    return this.podcast.state.episodes[this.id]
   }
 
   get currentTime () {

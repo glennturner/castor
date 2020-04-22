@@ -25,14 +25,23 @@ class Podcast {
   }
 
   get state () {
-    return localStorage.getItem(this.stateKey) || {
-      episodes: {}
+    let state = localStorage.getItem(this.stateKey)
+
+    if (!state) {
+      console.log('UNDEF PODCAST STATE')
+      state = this.state = {
+        episodes: {}
+      }
+    } else {
+      state = JSON.parse(state)
     }
+
+    return state
   }
 
   set state (state) {
     localStorage.setItem(
-      this.stateKey, state
+      this.stateKey, JSON.stringify(state)
     )
   }
 
@@ -345,8 +354,6 @@ class Podcast {
   /* Private */
 
   _detailedEp (ep) {
-    console.log('GET EP STATE')
-    console.log(ep.state)
     return `
       <div
         class="episode"
