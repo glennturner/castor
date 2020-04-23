@@ -16,7 +16,6 @@ class Player {
 
     this.#player = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
-    this.#currentTime = opts.currentTime || 0
 
     this.state = this.state || {}
 
@@ -31,6 +30,17 @@ class Player {
 
   set playing (state) {
     this.#playing = state ? true : false
+
+    this.#player.src = this.episode.episodeUrl
+    console.log('SET PLAYING')
+    console.log(this.#player.currentTime)
+    this._updateGlobalPlayerUI()
+
+    this.state = {
+      podcastId: this.episode.podcast.id,
+      episodeId: this.episode.id,
+      currentTime: this.#currentTime
+    }
 
     this.episode.state = {
       currentTime: this.#currentTime
@@ -58,42 +68,31 @@ class Player {
       this.#stateKey,
       JSON.stringify(state)
     )
+
+    if (this.episode) {
+      this.episode.state.currentTime = this.#currentTime
+    }
   }
 
-  play () {
+  play (e) {
     this.playing = true
     this.episode.playing = true
-
-    this.#player.src = this.episode.episodeUrl
-    this.#player.currentTime = this.#currentTime
-    this._updateGlobalPlayerUI()
+    console.log('PLAY EV')
+    console.log(e)
 
     this.#player.play()
-
-    this.state = {
-      podcastId: this.episode.podcast.id,
-      episodeId: this.episode.id,
-      currentTime: this.#currentTime
-    }
   }
 
-  pause () {
-    console.log('PAUSE!')
-    console.log(this.episode)
-
+  pause (e) {
     this.playing = false
-    this.episode.pause = false
+    this.episode.playing = false
 
-    this.#currentTime = this.#player.currentTime
-    this.episode.currentTime = this.#currentTime
+    console.log('PAUSE EV')
+    console.log(e)
+    console.log('CURR TIME: ')
+    console.log(this.#player.currentTime)
 
     this.#player.pause()
-
-    this.state = {
-      podcastId: this.episode.podcast.id,
-      episodeId: this.episode.id,
-      currentTime: this.#currentTime
-    }
   }
 
   togglePlayback () {
@@ -105,8 +104,6 @@ class Player {
   _populate () {
     let podcast = Podcast.get(this.state.podcastId)
     this.episode = podcast.getEpisodeById(this.state.episodeId)
-    console.log('EPISODE')
-    console.log(this.episode)
 
     this._updateGlobalPlayerUI()
   }
@@ -120,10 +117,10 @@ class Player {
   }
 
   _setEvents () {
-    this.#player.removeEventListener('play', this._onPlay)
-    this.#player.removeEventListener('pause', this._onPause)
+    this.#player.removeEventListener('play', this.play)
+    this.#player.removeEventListener('pause', this.pause)
 
-    this.#player.addEventListener('play', this._onPlay)
-    this.#player.addEventListener('pause', this._onPause)
+    this.#player.addEventListener('play', this.play)
+    this.#player.addEventListener('pause', this.pause)
   }
 }
