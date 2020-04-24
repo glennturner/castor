@@ -22,6 +22,8 @@ class Player {
     if (this.state.podcastId) {
       this._populate()
     }
+
+    this._setEvents()
   }
 
   get playing () {
@@ -33,7 +35,7 @@ class Player {
 
     this.#player.src = this.episode.episodeUrl
     console.log('SET PLAYING')
-    console.log(this.#player.currentTime)
+    console.log(this.#currentTime)
     this._updateGlobalPlayerUI()
 
     this.state = {
@@ -74,23 +76,17 @@ class Player {
     }
   }
 
-  play (e) {
+  play () {
     this.playing = true
     this.episode.playing = true
-    console.log('PLAY EV')
-    console.log(e)
 
     this.#player.play()
+    // this.#player.src = this.episode.episodeUrl
   }
 
-  pause (e) {
+  pause () {
     this.playing = false
     this.episode.playing = false
-
-    console.log('PAUSE EV')
-    console.log(e)
-    console.log('CURR TIME: ')
-    console.log(this.#player.currentTime)
 
     this.#player.pause()
   }
@@ -116,11 +112,22 @@ class Player {
     `
   }
 
+  _setCurrentTime (e) {
+    console.log('SET CURRENT TIME')
+    console.log(e.target.currentTime)
+    this.#currentTime = e.target.currentTime
+  }
+
   _setEvents () {
     this.#player.removeEventListener('play', this.play)
     this.#player.removeEventListener('pause', this.pause)
 
-    this.#player.addEventListener('play', this.play)
-    this.#player.addEventListener('pause', this.pause)
+    this.#player.addEventListener('play', (e) => {
+      this._setCurrentTime(e)
+    })
+
+    this.#player.addEventListener('pause', (e) => {
+      this._setCurrentTime(e)
+    })
   }
 }

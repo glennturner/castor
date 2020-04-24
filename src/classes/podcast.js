@@ -28,7 +28,6 @@ class Podcast {
     let state = localStorage.getItem(this.stateKey)
 
     if (!state) {
-      console.log('UNDEF PODCAST STATE')
       state = this.state = {
         episodes: {}
       }
@@ -118,6 +117,8 @@ class Podcast {
   /* Move to `Episode`? */
   async playEpisode (ep) {
     player.episode = ep
+    console.log('PLAY EP')
+    console.log(player)
     // ep.episodeUrl = 'http://localhost:5000/podcast'
 
     // Not 100% sure why `Player#togglePlayback` is not working here,
@@ -199,9 +200,6 @@ class Podcast {
     showEle.querySelector('img').addEventListener(
       'click',
       (e) => {
-        console.log('CURRENT TARGET')
-        console.log(e.target.classList)
-
         if (e.currentTarget == e.target) {
           this._showDetailedView()
         }
