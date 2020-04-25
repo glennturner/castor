@@ -114,20 +114,13 @@ class Podcast {
     })
   }
 
-  /* Move to `Episode`? */
+  /* Move to `Episode` or `Player`? */
   async playEpisode (ep) {
-    player.episode = ep
-    console.log('PLAY EP')
-    console.log(player)
-    // ep.episodeUrl = 'http://localhost:5000/podcast'
+    player.podcast = this.id
+    player.episode = ep.id
+    player.audioPlayer.src = ep.episodeUrl
 
-    // Not 100% sure why `Player#togglePlayback` is not working here,
-    // so we manually control pausing.
-    if (player.playing && player.episode.episodeUrl == ep.episodeUrl) {
-      player.pause()
-    } else {
-      player.play()
-    }
+    player.audioPlayer.play()
   }
 
   capsule () {

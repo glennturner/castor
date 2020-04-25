@@ -1,62 +1,61 @@
 class Player {
-  #currentTime
-  #episode
-  #history
-  #player
-  #playing = false
   #playerId = 'player'
   #playerInterfaceId = 'player-ui'
   #playerUI
   #stateKey = 'C-PS'
 
-  constructor (episode = undefined, opts = {}) {
-    if (episode) {
-      this.episode = episode
-    }
-
-    this.#player = document.getElementById(this.#playerId)
+  constructor (episodeId = undefined, opts = {}) {
+    this.audioPlayer = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
 
     this.state = this.state || {}
 
-    if (this.state.podcastId) {
-      this._populate()
+    this.state.episode = episodeId || this.state.episodeId
+
+    if (this.state.episodeId) {
+      this.state.podcast = this.episode.podcastId
+      this._updateGlobalPlayerUI()
     }
 
     this._setEvents()
   }
 
-  get playing () {
-    return this.#playing
+  get currentTime () {
+    return this.state.currentTime
   }
 
-  set playing (state) {
-    this.#playing = state ? true : false
+  set currentTime (currentTime) {
+    let state = this.state
+    state.currentTime = currentTime
 
-    this.#player.src = this.episode.episodeUrl
-    console.log('SET PLAYING')
-    console.log(this.#currentTime)
-    this._updateGlobalPlayerUI()
-
-    this.state = {
-      podcastId: this.episode.podcast.id,
-      episodeId: this.episode.id,
-      currentTime: this.#currentTime
-    }
-
-    this.episode.state = {
-      currentTime: this.#currentTime
-    }
+    this.state = state
   }
 
   get episode () {
-    return this.#episode
+    return this.podcast.getEpisodeById(this.state.episodeId)
   }
 
-  set episode (ep) {
-    this.#episode = ep
+  set episode (episodeId) {
+    let state = this.state
+    state.episodeId = episodeId
 
-    this.#player.load()
+    this.state = state
+    console.log('SET EPISODE PODCAST: ' + this.episode.podcastId)
+    this.podcast = this.episode.podcastId
+
+    this._updateGlobalPlayerUI()
+  }
+
+  get podcast () {
+    return Podcast.get(this.state.podcastId)
+  }
+
+  set podcast (podcastId) {
+    let state = this.state
+    state.podcastId = podcastId
+
+    console.log('SET PODCAST: ' + podcastId)
+    this.state = state
   }
 
   get state () {
@@ -65,45 +64,26 @@ class Player {
     )
   }
 
-  set state (state) {
+  set state (obj) {
+    console.log('SAVE STATE')
+    console.log(obj)
     localStorage.setItem(
       this.#stateKey,
-      JSON.stringify(state)
+      JSON.stringify({
+        currentTime: obj.currentTime,
+        episodeId: obj.episodeId,
+        podcastId: obj.podcastId
+      })
     )
 
-    if (this.episode) {
-      this.episode.state.currentTime = this.#currentTime
+    /*
+    if (this.podcast) {
+      this.episode.currentTime = this.state.currentTime
     }
-  }
-
-  play () {
-    this.playing = true
-    this.episode.playing = true
-
-    this.#player.play()
-    // this.#player.src = this.episode.episodeUrl
-  }
-
-  pause () {
-    this.playing = false
-    this.episode.playing = false
-
-    this.#player.pause()
-  }
-
-  togglePlayback () {
-    this.playing === true ? this.pause() : this.play()
+    */
   }
 
   /* Private */
-
-  _populate () {
-    let podcast = Podcast.get(this.state.podcastId)
-    this.episode = podcast.getEpisodeById(this.state.episodeId)
-
-    this._updateGlobalPlayerUI()
-  }
-
   _updateGlobalPlayerUI () {
     document.getElementById(
       'podcast-display-name'
@@ -115,18 +95,14 @@ class Player {
   _setCurrentTime (e) {
     console.log('SET CURRENT TIME')
     console.log(e.target.currentTime)
-    this.#currentTime = e.target.currentTime
+    this.currentTime = e.target.currentTime
   }
 
   _setEvents () {
-    this.#player.removeEventListener('play', this.play)
-    this.#player.removeEventListener('pause', this.pause)
+    this.audioPlayer.removeEventListener('play', this.play)
+    this.audioPlayer.removeEventListener('pause', this.pause)
 
-    this.#player.addEventListener('play', (e) => {
-      this._setCurrentTime(e)
-    })
-
-    this.#player.addEventListener('pause', (e) => {
+    this.audioPlayer.addEventListener('timeupdate', (e) => {
       this._setCurrentTime(e)
     })
   }
