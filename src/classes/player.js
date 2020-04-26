@@ -78,6 +78,8 @@ class Player {
   }
 
   playEpisode (ep) {
+    this._activateEp(this.episode.id, ep.id)
+
     this.podcast = ep.podcastId
     this.episode = ep.id
 
@@ -96,6 +98,19 @@ class Player {
   }
 
   /* Private */
+  _activateEp(priorEpId, currentEpId) {
+    console.log('PRIOR EP: ' + priorEpId)
+    console.log('CURRENT EP: ' + currentEpId)
+
+    let className = 'active'
+    if (document.getElementById(priorEpId)) {
+      document.getElementById(priorEpId).classList.remove(className)
+    }
+
+    let currentEp = document.getElementById(currentEpId)
+    currentEp.classList.add(className)
+  }
+
   _updateGlobalPlayerUI () {
     document.getElementById(
       'podcast-display-name'

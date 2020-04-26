@@ -11,6 +11,7 @@ class Episode {
     this.link = args.link
     this.pubDate = args.pubDate
     this.title = args.title
+    this.playing = false
   }
 
   get podcast () {
@@ -31,16 +32,6 @@ class Episode {
     podcastState.episodes[this.id] = state
 
     this.podcast.state = podcastState
-  }
-
-  get playing () {
-    return this.state.playing
-  }
-
-  set playing (playing) {
-    let currentState = this.state
-    currentState.playing = playing
-    this.state = currentState
   }
 
   get played () {
@@ -88,6 +79,55 @@ class Episode {
       pubDate: this.pubDate,
       title: this.title
     }
+  }
+
+  detailedHTML () {
+    return `
+      <div
+        class="episode ${
+          this.isActive() ? 'active' : ''
+        }"
+        id="${this.id}"
+        data-episode-id="${this.id}"
+      >
+        <div
+          class="episode-metadata"
+        >
+          <h4>
+            ${this.episodeNum} ${this.title}
+          </h4>
+          <p>
+            ${this.description}
+          </p>
+        </div>
+        <div
+          class="episode-options"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              class="btn btn-settings btn-secondary"
+              type="button"
+              id="episodeDropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              &#8943;
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="episodeDropdownMenuButton">
+              <a class="dropdown-item" href="#">Mark as Played</a>
+            </div>
+          </div>
+        </diV>
+      </div>
+    `
+  }
+
+  isActive () {
+    console.log('PLAYING? ' + this.playing)
+    return this.id === player.state.episodeId
   }
 }
 

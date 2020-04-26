@@ -218,6 +218,10 @@ nav.podcast-options {
   display: flex;
 }
 
+.episode.active {
+  background-color: #f9f9f9;
+}
+
 /* Dialog */
 dialog {
   border-color: #ccc;

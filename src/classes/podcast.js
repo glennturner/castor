@@ -196,105 +196,109 @@ class Podcast {
   async detailed () {
     return await this._update()
       .then(() => {
-        let detailedEle = document.createElement('div')
-        detailedEle.className = 'podcast-show-detailed'
+        return this._detailedEpList()
+      })
+  }
 
-        let eps = this.episodes.map(ep => {
-            return this._detailedEp(ep)
-          }).join('')
+  _detailedEpList () {
+    let detailedEle = document.createElement('div')
+    detailedEle.className = 'podcast-show-detailed'
 
-        detailedEle.innerHTML = `
-          <div
-            class="podcast-show-details"
+    let eps = this.episodes.map(ep => {
+        return this._detailedEp(ep)
+      }).join('')
+
+    detailedEle.innerHTML = `
+      <div
+        class="podcast-show-details"
+      >
+        <div
+          class="podcast-show-artwork"
+        >
+          <img
+            src="${this.artwork}"
+            class="artwork"
+          />
+          <nav
+            class="podcast-options"
+          >
+            <button
+              id="podcast-subscribe-toggle"
+              type="button"
+              class="btn btn-sm btn-primary"
+              data-toggle="modal"
+              data-target="#podcast-options"
+            >
+              ${this.subscribed() ? 'Unsubscribe' : 'Subscribe'}
+            </button>
+
+            <span
+              class="dropdown"
+            >
+              <button
+                class="btn btn-settings btn-sm btn-primary"
+                type="button"
+                id="podcastDropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Options
+              </button>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="podcastDropdownMenuButton">
+                <a class="dropdown-item" href="#">Refresh</a>
+                <a class="dropdown-item" href="#">Mark All as Played</a>
+              </div>
+            </span>
+          </nav>
+        </div>
+        <div
+          class="podcast-show-content"
+        >
+          <h2>
+            ${this.title}
+          </h2>
+          <h3>
+            ${this.author}
+          </h3>
+          <nav
+            class="podcast-episodes-view-by"
           >
             <div
-              class="podcast-show-artwork"
+              class="btn-group"
+              role="group"
+              aria-label="Episode List"
             >
-              <img
-                src="${this.artwork}"
-                class="artwork"
-              />
-              <nav
-                class="podcast-options"
-              >
-                <button
-                  id="podcast-subscribe-toggle"
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  data-toggle="modal"
-                  data-target="#podcast-options"
-                >
-                  ${this.subscribed() ? 'Unsubscribe' : 'Subscribe'}
-                </button>
-
-                <span
-                  class="dropdown"
-                >
-                  <button
-                    class="btn btn-settings btn-sm btn-primary"
-                    type="button"
-                    id="podcastDropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Options
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="podcastDropdownMenuButton">
-                    <a class="dropdown-item" href="#">Refresh</a>
-                    <a class="dropdown-item" href="#">Mark All as Played</a>
-                  </div>
-                </span>
-              </nav>
+              <button type="button" class="btn btn-sm btn-primary">Unplayed</button>
+              <button type="button" class="btn btn-sm btn-light">Feed</button>
             </div>
-            <div
-              class="podcast-show-content"
-            >
-              <h2>
-                ${this.title}
-              </h2>
-              <h3>
-                ${this.author}
-              </h3>
-              <nav
-                class="podcast-episodes-view-by"
-              >
-                <div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Episode List"
-                >
-                  <button type="button" class="btn btn-sm btn-primary">Unplayed</button>
-                  <button type="button" class="btn btn-sm btn-light">Feed</button>
-                </div>
-              </nav>
-              <div
-                class="episodes"
-              >
-        ` + eps + `
-              </div>
-            </div>
+          </nav>
+          <div
+            class="episodes"
+          >
+    ` + eps + `
           </div>
-        `
+        </div>
+      </div>
+    `
 
-        detailedEle.querySelector('#podcast-subscribe-toggle').addEventListener('click', () => {
-          this.subscribed() ? this.unsubscribe() : this.subscribe()
-        })
+    detailedEle.querySelector('#podcast-subscribe-toggle').addEventListener('click', () => {
+      this.subscribed() ? this.unsubscribe() : this.subscribe()
+    })
 
-        detailedEle.querySelectorAll('.episode').forEach(ele => {
-          ele.addEventListener(
-            'dblclick',
-            (e) => {
-              let id = e.currentTarget.dataset.episodeId
-              let ep = this.getEpisodeById(id)
+    detailedEle.querySelectorAll('.episode').forEach(ele => {
+      ele.addEventListener(
+        'dblclick',
+        (e) => {
+          let id = e.currentTarget.dataset.episodeId
+          let ep = this.getEpisodeById(id)
 
-              player.playEpisode(ep)
-            }
-          )
-        })
+          player.playEpisode(ep)
+        }
+      )
+    })
 
-        return detailedEle
-      })
+    return detailedEle
   }
 
   getEpisodeById (id) {
@@ -335,45 +339,9 @@ class Podcast {
 
   /* Private */
 
+  // Move to `Episode`?
   _detailedEp (ep) {
-    return `
-      <div
-        class="episode"
-        data-episode-id="${ep.id}"
-      >
-        <div
-          class="episode-metadata"
-        >
-          <h4>
-            ${ep.episodeNum} ${ep.title}
-          </h4>
-          <p>
-            ${ep.description}
-          </p>
-        </div>
-        <div
-          class="episode-options"
-        >
-          <div
-            class="dropdown"
-          >
-            <button
-              class="btn btn-settings btn-secondary"
-              type="button"
-              id="episodeDropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              &#8943;
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="episodeDropdownMenuButton">
-              <a class="dropdown-item" href="#">Mark as Played</a>
-            </div>
-          </div>
-        </diV>
-      </div>
-    `
+    return ep.detailedHTML()
   }
 
   _json () {
