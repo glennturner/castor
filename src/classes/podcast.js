@@ -114,15 +114,6 @@ class Podcast {
     })
   }
 
-  /* Move to `Episode` or `Player`? */
-  async playEpisode (ep) {
-    player.podcast = this.id
-    player.episode = ep.id
-    player.audioPlayer.src = ep.episodeUrl
-
-    player.audioPlayer.play()
-  }
-
   capsule () {
     let showEle = document.createElement('div')
     showEle.className = 'podcast-show'
@@ -297,7 +288,7 @@ class Podcast {
               let id = e.currentTarget.dataset.episodeId
               let ep = this.getEpisodeById(id)
 
-              this.playEpisode(ep)
+              player.playEpisode(ep)
             }
           )
         })

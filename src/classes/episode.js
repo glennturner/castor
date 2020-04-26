@@ -23,14 +23,23 @@ class Episode {
     this.podcastId = podcastId
   }
 
+  get currentTime () {
+    return this.state.currentTime
+  }
+
+  set currentTime (currentTime) {
+    let state = this.state
+    state.currentTime = currentTime
+
+    this.state = state
+  }
+
   // We use the podcast state to track this, but the state was moved to cache.
-  // Re-enable podcast state handling.
   get state () {
     return this.podcast.state.episodes[this.id] || {}
   }
 
   set state (state) {
-    console.log(this.podcast.state.episodes)
     let podcastState = this.podcast.state
     podcastState.episodes[this.id] = state
 

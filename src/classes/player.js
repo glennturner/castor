@@ -3,10 +3,15 @@ class Player {
   #playerInterfaceId = 'player-ui'
   #playerUI
   #stateKey = 'C-PS'
+  #timeElapsed = 0
+  // Only update via `playing` event every five seconds.
+  // @see `Player#_setCurrentTime`
+  #timeElapsedThreshold = 5
 
   constructor (episodeId = undefined, opts = {}) {
     this.audioPlayer = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
+    this.playing = false
 
     this.state = this.state || {}
 
@@ -20,28 +25,26 @@ class Player {
     this._setEvents()
   }
 
-  get currentTime () {
-    return this.state.currentTime
-  }
-
-  set currentTime (currentTime) {
-    let state = this.state
-    state.currentTime = currentTime
-
-    this.state = state
-  }
-
   get episode () {
     return this.podcast.getEpisodeById(this.state.episodeId)
   }
 
   set episode (episodeId) {
+    // Ep has changed, so reset elapsed time and reset play state.
+    if (!this.episode || this.episode.id != episodeId) {
+      this.#timeElapsed = 0
+      this.playing = false
+    }
+
     let state = this.state
     state.episodeId = episodeId
 
     this.state = state
-    console.log('SET EPISODE PODCAST: ' + this.episode.podcastId)
     this.podcast = this.episode.podcastId
+    this.audioPlayer.src = this.episode.episodeUrl
+    if (this.episode.state.currentTime) {
+      this.audioPlayer.currentTime = this.episode.state.currentTime
+    }
 
     this._updateGlobalPlayerUI()
   }
@@ -54,7 +57,6 @@ class Player {
     let state = this.state
     state.podcastId = podcastId
 
-    console.log('SET PODCAST: ' + podcastId)
     this.state = state
   }
 
@@ -65,22 +67,29 @@ class Player {
   }
 
   set state (obj) {
-    console.log('SAVE STATE')
-    console.log(obj)
     localStorage.setItem(
       this.#stateKey,
       JSON.stringify({
-        currentTime: obj.currentTime,
         episodeId: obj.episodeId,
         podcastId: obj.podcastId
       })
     )
+  }
 
-    /*
-    if (this.podcast) {
-      this.episode.currentTime = this.state.currentTime
+  playEpisode (ep) {
+    this.podcast = ep.podcastId
+    this.episode = ep.id
+
+    this.audioPlayer.src = this.episode.episodeUrl
+
+    if (this.playing) {
+      // Pause event is only triggered upon clicking the audio player pause,
+      // so we fake playing here.
+      this.playing = false
+      this.audioPlayer.pause()
+    } else {
+      this.audioPlayer.play()
     }
-    */
   }
 
   /* Private */
@@ -92,18 +101,31 @@ class Player {
     `
   }
 
-  _setCurrentTime (e) {
-    console.log('SET CURRENT TIME')
-    console.log(e.target.currentTime)
-    this.currentTime = e.target.currentTime
+  _setCurrentTime (currentTime) {
+    this.#timeElapsed = currentTime
+    this.episode.currentTime = currentTime
   }
 
   _setEvents () {
-    this.audioPlayer.removeEventListener('play', this.play)
-    this.audioPlayer.removeEventListener('pause', this.pause)
+    this.audioPlayer.addEventListener('play', () => {
+      this.playing = true
+    })
+
+    this.audioPlayer.addEventListener('pause', () => {
+      this.playing = false
+    })
 
     this.audioPlayer.addEventListener('timeupdate', (e) => {
-      this._setCurrentTime(e)
+      let currentTime = e.target.currentTime
+
+      // Throttle updates
+      if (this._shouldUpdateCurrentTime(currentTime)) {
+        this._setCurrentTime(currentTime)
+      }
     })
+  }
+
+  _shouldUpdateCurrentTime (currentTime) {
+    return (currentTime - this.#timeElapsed) > this.#timeElapsedThreshold
   }
 }
