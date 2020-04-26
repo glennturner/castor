@@ -11,8 +11,6 @@ class Episode {
     this.link = args.link
     this.pubDate = args.pubDate
     this.title = args.title
-
-    this.playing = false
   }
 
   get podcast () {
@@ -21,17 +19,6 @@ class Episode {
 
   set podcast (podcastId) {
     this.podcastId = podcastId
-  }
-
-  get currentTime () {
-    return this.state.currentTime
-  }
-
-  set currentTime (currentTime) {
-    let state = this.state
-    state.currentTime = currentTime
-
-    this.state = state
   }
 
   // We use the podcast state to track this, but the state was moved to cache.
@@ -46,13 +33,13 @@ class Episode {
     this.podcast.state = podcastState
   }
 
-  get currentTime () {
-    return this.state.currentTime
+  get playing () {
+    return this.state.playing
   }
 
-  set currentTime (currentTime) {
+  set playing (playing) {
     let currentState = this.state
-    currentState.currentTime = currentTime
+    currentState.playing = playing
     this.state = currentState
   }
 
@@ -61,15 +48,9 @@ class Episode {
   }
 
   set played (played) {
-    this.state.played = played
-  }
-
-  get saved () {
-    return this.state.saved
-  }
-
-  set saved (saved) {
-    this.state.saved = saved
+    let currentState = this.state
+    currentState.played = played
+    this.state = currentState
   }
 
   get currentTime () {
@@ -77,10 +58,10 @@ class Episode {
   }
 
   set currentTime (currentTime) {
-    let state = this.state
+    let currentState = this.state
 
-    state.currentTime = currentTime
-    this.state = state
+    currentState.currentTime = currentTime
+    this.state = currentState
   }
 
   /*

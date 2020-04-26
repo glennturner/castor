@@ -4,6 +4,7 @@ class Player {
   #playerUI
   #stateKey = 'C-PS'
   #timeElapsed = 0
+
   // Only update via `playing` event every five seconds.
   // @see `Player#_setCurrentTime`
   #timeElapsedThreshold = 5
@@ -11,8 +12,8 @@ class Player {
   constructor (episodeId = undefined, opts = {}) {
     this.audioPlayer = document.getElementById(this.#playerId)
     this.#playerUI = document.getElementById(this.#playerInterfaceId)
-    this.playing = false
 
+    this.playing = false
     this.state = this.state || {}
 
     this.state.episode = episodeId || this.state.episodeId
@@ -86,8 +87,10 @@ class Player {
       // Pause event is only triggered upon clicking the audio player pause,
       // so we fake playing here.
       this.playing = false
+      this.episode.playing = false
       this.audioPlayer.pause()
     } else {
+      this.episode.playing = true
       this.audioPlayer.play()
     }
   }
@@ -107,22 +110,35 @@ class Player {
   }
 
   _setEvents () {
-    this.audioPlayer.addEventListener('play', () => {
-      this.playing = true
-    })
+    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) })
+    this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) })
 
-    this.audioPlayer.addEventListener('pause', () => {
-      this.playing = false
-    })
+    this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) })
+    this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) })
 
-    this.audioPlayer.addEventListener('timeupdate', (e) => {
-      let currentTime = e.target.currentTime
+    this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
+    this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
+  }
 
-      // Throttle updates
-      if (this._shouldUpdateCurrentTime(currentTime)) {
-        this._setCurrentTime(currentTime)
-      }
-    })
+  // Should improve this, as invoking `audioPlayer.pause()` will cause a delayed offset.
+  // But, for now, it's fine.
+  _onTimeUpdate (e, forceUpdate = false) {
+    let currentTime = e.target.currentTime
+
+    // Throttle updates
+    if (this._shouldUpdateCurrentTime(currentTime) || forceUpdate) {
+      this._setCurrentTime(currentTime)
+    }
+  }
+
+  _setPlay (e) {
+    this.playing = true
+    this._onTimeUpdate(e, true)
+  }
+
+  _setPause (e) {
+    this.playing = false
+    this._onTimeUpdate(e, true)
   }
 
   _shouldUpdateCurrentTime (currentTime) {
