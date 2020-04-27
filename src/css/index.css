@@ -214,6 +214,16 @@ nav.podcast-options {
   text-align: center;
 }
 
+.podcast-episodes-view-by .btn-light,
+.episode-header-col .badge-light {
+  background-color: rgba(0, 0, 0, 0.10);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+.podcast-show-artwork img {
+  border-radius: 5px;
+}
+
 .podcast-show-detailed .episode {
   display: flex;
 }
@@ -224,11 +234,11 @@ nav.podcast-options {
 }
 
 .episode-description {
-  margin: 0 0 0 1rem;
+  margin: 0 1rem;
 }
 
 .episode.active {
-  background-color: #f9f9f9;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .episode-header {
