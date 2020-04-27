@@ -3,8 +3,11 @@ class Podcast {
   #cacheKey
   #stateKey
 
+  static prefKey = 'C-PF'
+
   static #cacheKeyPrefix = 'C-P-'
   static #stateKeyPrefix = 'C-P-S-'
+  static #unplayedFilterVal = 'unplayed'
 
   constructor (args) {
     // This is usually the iTMS podcast collectionId.
@@ -22,6 +25,26 @@ class Podcast {
     this.pubDate = args.pubDate
     this.episodesType = args.episodesType
     this.episodes = args.episodes ? args.episodes.map(ep => new Episode(this.id, ep)) : []
+  }
+
+  get filterEpisodesBy () {
+    return this.prefs.filterEpisodesBy || 'none'
+  }
+
+  set filterEpisodesBy (filterBy) {
+    this._setPref('filterEpisodesBy', filterBy)
+  }
+
+  get prefs () {
+    return JSON.parse(
+      localStorage.getItem(Podcast.prefKey)
+    ) || {}
+  }
+
+  set prefs (prefs) {
+    localStorage.setItem(Podcast.prefKey,
+      JSON.stringify(prefs)
+    )
   }
 
   get state () {
@@ -75,13 +98,13 @@ class Podcast {
   subscribe () {
     user.subscribe(this.id)
 
-    this._showDetailedView()
+    this.refresh()
   }
 
   unsubscribe () {
     user.unsubscribe(this.id)
 
-    this._showDetailedView()
+    this.refresh()
   }
 
   subscribed () {
@@ -91,17 +114,32 @@ class Podcast {
   archive () {
     user.archive(this.id)
 
-    this._showDetailedView()
+    this.refresh()
   }
 
   unarchive () {
     user.unarchive(this.id)
 
-    this._showDetailedView()
+    this.refresh()
   }
 
   archived () {
     return true
+  }
+
+  unplayedCount () {
+    return this.unplayedEpisodes().length
+  }
+
+  unplayedEpisodes () {
+    return this.episodes.filter(item => !item.played)
+  }
+
+  // Eventually we should optimize this to allow for refreshing
+  // specific elements, but this is fine for now.
+  refresh (e) {
+    this._showDetailedView(e)
+    user.refresh()
   }
 
   async getFeed () {
@@ -185,7 +223,7 @@ class Podcast {
       'click',
       (e) => {
         if (e.currentTarget == e.target) {
-          this._showDetailedView()
+          this._showDetailedView(e)
         }
       }
     )
@@ -196,15 +234,29 @@ class Podcast {
   async detailed () {
     return await this._update()
       .then(() => {
-        return this._detailedEpList()
+        return this._detailedEpList(
+          {
+            filterEpisodesBy: this.filterEpisodesBy
+          }
+        )
       })
   }
 
-  _detailedEpList () {
+  _filterEpList (filterType = undefined) {
+    filterType = filterType || this.filterEpisodesBy
+
+    if (this.filterEpisodesBy === Podcast.#unplayedFilterVal) {
+      return this.unplayedEpisodes()
+    } else {
+      return this.episodes
+    }
+  }
+
+  _detailedEpList (opts = {}) {
     let detailedEle = document.createElement('div')
     detailedEle.className = 'podcast-show-detailed'
 
-    let eps = this.episodes.map(ep => {
+    let eps = this._filterEpList().map(ep => {
         return this._detailedEp(ep)
       }).join('')
 
@@ -246,8 +298,9 @@ class Podcast {
                 Options
               </button>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="podcastDropdownMenuButton">
-                <a class="dropdown-item" href="#">Refresh</a>
-                <a class="dropdown-item" href="#">Mark All as Played</a>
+                <a class="dropdown-item refresh-podcast" href="#">Refresh</a>
+                <a class="dropdown-item mark-podcast-as-played" href="#">Mark All as Played</a>
+                <a class="dropdown-item mark-podcast-as-unplayed" href="#">Mark All as Unplayed</a>
               </div>
             </span>
           </nav>
@@ -269,8 +322,25 @@ class Podcast {
               role="group"
               aria-label="Episode List"
             >
-              <button type="button" class="btn btn-sm btn-primary">Unplayed</button>
-              <button type="button" class="btn btn-sm btn-light">Feed</button>
+              <button
+                type="button"
+                class="btn btn-sm btn-${this._unplayedFilter() ? 'primary' : 'light'}"
+                data-ep-list-filter="unplayed"
+              >
+                Unplayed
+                <span
+                  class="badge badge-secondary"
+                >
+                  ${this.unplayedCount()}
+                </span>
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-${!this._unplayedFilter() ? 'primary' : 'light'}"
+                data-ep-list-filter="none"
+              >
+                Feed
+              </button>
             </div>
           </nav>
           <div
@@ -298,7 +368,69 @@ class Podcast {
       )
     })
 
+    detailedEle.querySelectorAll('.mark-episode-played').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          let id = e.currentTarget.dataset.episodeId
+          let ep = this.getEpisodeById(id)
+
+          ep.played = true
+          this.refresh(e)
+        }
+      )
+    })
+
+    detailedEle.querySelectorAll('.mark-episode-unplayed').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          let id = e.currentTarget.dataset.episodeId
+          let ep = this.getEpisodeById(id)
+
+          ep.played = false
+          this.refresh(e)
+        }
+      )
+    })
+
+    detailedEle.querySelectorAll('[data-ep-list-filter]').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          this._setPref('filterEpisodesBy', e.target.dataset.epListFilter)
+          this.refresh()
+        }
+      )
+    })
+
+    detailedEle.querySelectorAll('.mark-podcast-as-played').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          console.log('MARK PODCAST AS PLAYED')
+          this.episodes.map(ep => { ep.played = true })
+          this.refresh()
+        }
+      )
+    })
+
+    detailedEle.querySelectorAll('.mark-podcast-as-unplayed').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          console.log('MARK PODCAST AS UNPLAYED')
+          this.episodes.map(ep => { ep.played = false })
+          this.refresh()
+        }
+      )
+    })
+
     return detailedEle
+  }
+
+  _unplayedFilter () {
+    return this.prefs.filterEpisodesBy === Podcast.#unplayedFilterVal
   }
 
   getEpisodeById (id) {
@@ -364,13 +496,20 @@ class Podcast {
     )
   }
 
+  _setPref (key, val) {
+    let prefs = this.prefs
+
+    prefs[key] = val
+    this.prefs = prefs
+  }
+
   _shouldUpdate () {
     let now = new Date
 
     return true
   }
 
-  _showDetailedView () {
+  _showDetailedView (e = undefined) {
     this.detailed()
       .then((ele) => {
         view.change('podcast',
@@ -379,7 +518,21 @@ class Podcast {
             podcastId: this.id
           }
         )
+
+        if (e) {
+          this._scrollToElement(e)
+        }
       })
+  }
+
+  // When we implement refreshing partials, this should be unnecessary.
+  _scrollToElement(e) {
+    let qs = e.target.dataset.focusQuery
+    let ele = document.querySelector(qs)
+
+    if (ele) {
+      ele.scrollIntoView({ block: 'center' })
+    }
   }
 
   _cacheFeed () {

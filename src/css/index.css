@@ -218,8 +218,35 @@ nav.podcast-options {
   display: flex;
 }
 
+.episode-title {
+  display: inline-block;
+  padding: 0 0.5rem;
+}
+
+.episode-description {
+  margin: 0 0 0 1rem;
+}
+
 .episode.active {
   background-color: #f9f9f9;
+}
+
+.episode-header {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+}
+
+.episode-metadata-icon {
+  text-align: center;
+}
+
+.episode-metadata-icon .bi {
+  width: 35px;
+  fill: #0069d9;
+}
+
+.episode.active .episode-title {
+  margin-left: -0.5rem;
 }
 
 /* Dialog */

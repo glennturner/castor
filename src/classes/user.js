@@ -46,6 +46,10 @@ class User {
     ) || []
   }
 
+  refresh () {
+    this._renderSubscriberNav()
+  }
+
   /* Private */
 
   _renderSubscriberNav () {
@@ -58,6 +62,12 @@ class User {
           data-podcast-id="${item.id}"
         >
           ${item.title}
+
+          <span
+            class="badge badge-primary"
+          >
+            ${item.unplayedCount()}
+          </span>
         </a>
       `
     })

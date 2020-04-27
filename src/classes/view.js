@@ -69,7 +69,7 @@ class View {
 
     if (this._canGoBack()) {
       let back = document.createElement('button')
-      back.classList = 'btn btn-primary'
+      back.classList = 'btn btn-sm btn-primary'
       back.innerHTML = '<'
       back.addEventListener('click', () => { this.back() })
       nav.appendChild(back)

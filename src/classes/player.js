@@ -31,7 +31,7 @@ class Player {
   }
 
   set episode (episodeId) {
-    // Ep has changed, so reset elapsed time and reset play state.
+    // Ep has changed, so reset elapsed time, reset play state, and refresh view.
     if (!this.episode || this.episode.id != episodeId) {
       this.#timeElapsed = 0
       this.playing = false
@@ -75,10 +75,12 @@ class Player {
         podcastId: obj.podcastId
       })
     )
+
+    this.podcast.refresh()
   }
 
   playEpisode (ep) {
-    this._activateEp(this.episode.id, ep.id)
+    this._activateEp(this.state.episodeId, ep.id)
 
     this.podcast = ep.podcastId
     this.episode = ep.id
@@ -99,11 +101,8 @@ class Player {
 
   /* Private */
   _activateEp(priorEpId, currentEpId) {
-    console.log('PRIOR EP: ' + priorEpId)
-    console.log('CURRENT EP: ' + currentEpId)
-
     let className = 'active'
-    if (document.getElementById(priorEpId)) {
+    if (priorEpId && document.getElementById(priorEpId)) {
       document.getElementById(priorEpId).classList.remove(className)
     }
 

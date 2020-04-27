@@ -22,7 +22,7 @@ let mainWindow
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 2000,
+    width: 2300,
     height: 600,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
