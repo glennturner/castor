@@ -47,6 +47,17 @@ class Podcast {
     )
   }
 
+  get lastOpenedAt () {
+    this.prefs.lastOpenedAt
+  }
+
+  set lastOpenedAt (lastOpenedAt) {
+    let state = this.state
+
+    state.lastOpenedAt = lastOpenedAt
+    this.state = state
+  }
+
   get state () {
     let state = localStorage.getItem(this.stateKey)
 
@@ -308,12 +319,12 @@ class Podcast {
         <div
           class="podcast-show-content"
         >
-          <h2>
-            ${this.title}
-          </h2>
           <h3>
+            ${this.title}
+          </h4>
+          <h6>
             ${this.author}
-          </h3>
+          </h6>
           <nav
             class="podcast-episodes-view-by"
           >
@@ -518,6 +529,8 @@ class Podcast {
             podcastId: this.id
           }
         )
+
+        this.lastOpenedAt = new Date
 
         if (e) {
           this._scrollToElement(e)
