@@ -27,4 +27,16 @@ class Itunes {
       return response.json()
     })
   }
+
+  static parsePlaylist (xml) {
+    console.log('PARSE PLAYLIST')
+  }
+
+  static isPlaylist (xml, mainWindow) {
+  }
 }
+
+if (typeof(module) !== 'undefined') {
+  module.exports = Itunes
+}
+

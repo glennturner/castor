@@ -1,7 +1,10 @@
 const {
   app,
   BrowserWindow,
+  dialog,
+  globalShortcut,
   Menu,
+  Tray,
   ipcMain
 } = require('electron')
 
@@ -11,13 +14,16 @@ const path = require('path')
 const http  = require('http')
 const fs = require('fs')
 const ncrypto = require('crypto')
+const DOMParser = require('xmldom')
+
+const Itunes = require('./services/itunes')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
 }
 
-let mainWindow
+let mainWindow, tray
 
 const createWindow = () => {
   // Create the browser window.
@@ -37,6 +43,98 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
+
+  // macOS Dock.
+  let dockIcon = path.join(__dirname, './assets/images/dock-icon.png')
+  app.dock.setIcon(dockIcon)
+
+  /* Menus */
+  const isMac = process.platform === 'darwin'
+
+  const template = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Import',
+          click: (e) => { importOPML(e) }
+        },
+        {
+          label: 'Export',
+          click: (e) => { exportOPML(e) }
+        },
+        isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+    }
+  ]
+
+  if (process.platform === 'darwin') {
+      template.unshift(
+        {
+          label: app.name,
+          submenu:
+          [
+            {role: 'about'},
+            {type: 'separator'},
+            {role: 'services', submenu: []},
+            {type: 'separator'},
+            {role: 'hide'},
+            {role: 'hideothers'},
+            {role: 'unhide'},
+            {type: 'separator'},
+            {role: 'quit'}
+          ]
+      }
+    )
+  }
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+
+  ipcMain.on('parseXML', (event, str) => {
+    str = new DOMParser().parseFromString(str)
+    console.log('PARSE XML')
+    console.log(str)
+    mainWindow.webContents.send('parsedXML', str)
+  })
+
+  function isPlaylist (xml) {
+    console.log('IS PLAYLIST')
+    mainWindow.api.receive('hashed', (data) => {
+      console.log(`Received ${data} from main process`);
+    })
+    mainWindow.webContents.send('hash', "some data")
+  }
+
+  function importOPML (e) {
+    console.log('IMPORT OPML')
+    console.log(e)
+    dialog.showOpenDialog(
+      {
+        filters: [
+          {
+            name: 'OPML Files',
+            extensions: ['txt', 'xml', 'opml']
+          }
+        ],
+        properties: ['openFile', 'multiSelections']
+      }
+    ).then(dialog => {
+      if (dialog.canceled) { return }
+      console.log('ITUNES')
+      console.log(Itunes)
+
+      for (let file of dialog.filePaths) {
+        let xml = fs.readFileSync(file, 'utf-8')
+        isPlaylist(xml)
+      }
+    })
+  }
+
+  function exportOPML (e) {
+    console.log('EXPORT OPML')
+    console.log(e)
+  }
 }
 
 // This method will be called when Electron has finished
@@ -78,39 +176,7 @@ ipcMain.on('saveEpisode', (event, f) => {
   */
 })
 
-/* Menus */
-const isMac = process.platform === 'darwin'
-
-const template = [
-  {
-    label: 'File',
-    submenu: [
-      isMac ? { role: 'close' } : { role: 'quit' }
-    ]
-  }
-]
-
-if (process.platform === 'darwin') {
-    template.unshift(
-      {
-        label: app.name,
-        submenu:
-        [
-          {role: 'about'},
-          {type: 'separator'},
-          {role: 'services', submenu: []},
-          {type: 'separator'},
-          {role: 'hide'},
-          {role: 'hideothers'},
-          {role: 'unhide'},
-          {type: 'separator'},
-          {role: 'quit'}
-        ]
-    }
-  )
-}
-
-// Example context menu. Will pr
+// Example context menu.
 contextMenu({
 	prepend: (defaultActions, params, browserWindow) => [
 		{
