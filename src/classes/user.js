@@ -2,6 +2,7 @@ class User {
   #subscribedPodcastKey = 'C-SUB-P'
 
   constructor () {
+    this._subscribedItemsEle = document.getElementById('subscribed-items')
     this._renderSubscriberNav()
   }
 
@@ -54,26 +55,41 @@ class User {
 
   _renderSubscriberNav () {
     let html = ''
+
     this.subscribedPodcasts.sort(sortByTitle).map(item => {
+      let unplayedBadge = ''
+      let unplayedCount = item.unplayedCount()
+
+      if (unplayedCount) {
+        unplayedBadge = `
+          <span
+            class="subscribed-podcast-unplayed-count"
+          >
+            <span
+              class="badge badge-primary"
+            >
+              ${unplayedCount}
+            </span>
+          </span>`
+      }
       html += `
         <a
           href="#"
           class="list-group-item list-group-item-action"
           data-podcast-id="${item.id}"
         >
-          ${item.title}
-
           <span
-            class="badge badge-primary"
+            class="subscribed-podcast-title"
           >
-            ${item.unplayedCount()}
+            ${item.title}
           </span>
+          ${unplayedBadge}
         </a>
       `
     })
 
-    subscriberNav.innerHTML = html
-    subscriberNav.querySelectorAll('.list-group-item-action').forEach(ele => {
+    this._subscribedItemsEle.innerHTML = html
+    this._subscribedItemsEle.querySelectorAll('.list-group-item-action').forEach(ele => {
       ele.addEventListener('click', (e) => {
         Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
       })

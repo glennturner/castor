@@ -103,6 +103,22 @@ nav .list-item-group {
   cursor: default;
 }
 
+#subscribed-items .list-group-item {
+  white-space: nowrap;
+}
+
+#subscribed-items .subscribed-podcast-title {
+  display: inline-block;
+  width: 205px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#subscribed-items .subscribed-podcast-unplayed-count {
+  float: right;
+}
+
 /* Views */
 #main-view {
   margin-top: 80px;
