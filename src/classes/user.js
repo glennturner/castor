@@ -60,23 +60,29 @@ class User {
       let unplayedBadge = ''
       let unplayedCount = item.unplayedCount()
 
+      console.log('VIEW HISTORY')
+      console.log(View.history())
+      let active = View.history().podcastId === item.id
+
       if (unplayedCount) {
         unplayedBadge = `
           <span
             class="subscribed-podcast-unplayed-count"
           >
             <span
-              class="badge badge-primary"
+              class="badge badge-${active ? 'light' : 'primary'}"
             >
               ${unplayedCount}
             </span>
           </span>`
       }
+
       html += `
         <a
           href="#"
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action ${active ? 'active' : ''}"
           data-podcast-id="${item.id}"
+          title="${item.title}"
         >
           <span
             class="subscribed-podcast-title"
