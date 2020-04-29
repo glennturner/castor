@@ -2,8 +2,9 @@ class Player {
   #playerId = 'player'
   #playerInterfaceId = 'player-ui'
   #playerUI
-  #stateKey = 'C-PS'
   #timeElapsed = 0
+
+  static #stateKey = 'C-PS'
 
   // Only update via `playing` event every five seconds.
   // @see `Player#_setCurrentTime`
@@ -62,14 +63,12 @@ class Player {
   }
 
   get state () {
-    return JSON.parse(
-      localStorage.getItem(this.#stateKey)
-    )
+    return Player.state()
   }
 
   set state (obj) {
     localStorage.setItem(
-      this.#stateKey,
+      Player.#stateKey,
       JSON.stringify({
         episodeId: obj.episodeId,
         podcastId: obj.podcastId
@@ -97,6 +96,15 @@ class Player {
       this.episode.playing = true
       this.audioPlayer.play()
     }
+  }
+
+  /* Static */
+
+  // Convenience method.
+  static state() {
+    return JSON.parse(
+      localStorage.getItem(Player.#stateKey)
+    ) || {}
   }
 
   /* Private */
