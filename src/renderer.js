@@ -4,7 +4,6 @@ view = new View('main-view')
 view.resume()
 
 player = new Player
-podcast = undefined
 
 document.getElementById('search').addEventListener('submit', (e) => {
   let searchTerm = document.getElementById('search-input').value
