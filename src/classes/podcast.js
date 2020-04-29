@@ -340,7 +340,7 @@ class Podcast {
               >
                 Unplayed
                 <span
-                  class="badge badge-secondary"
+                  class="badge badge-${this._unplayedFilter() ? 'light' : 'secondary'}"
                 >
                   ${this.unplayedCount()}
                 </span>
