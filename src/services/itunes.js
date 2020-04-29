@@ -33,6 +33,12 @@ class Itunes {
   }
 
   static isPlaylist (xml, mainWindow) {
+    console.log('IS PLAYLIST')
+    console.log(mainWindow)
+    window.receive('parsedXML', (data) => {
+      console.log(`Received ${data} from main process`);
+    })
+    window.send('parseXML', "some data")
   }
 }
 
