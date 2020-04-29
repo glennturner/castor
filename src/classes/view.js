@@ -1,9 +1,10 @@
 class View {
   #currentPage = 0
   #debug = false
-  #historyKey = 'C-HIS'
   #pages = []
   #parent
+
+  static #historyKey = 'C-HIS'
 
   constructor (parentId, opts={}) {
     this.#parent = document.getElementById(parentId)
@@ -52,6 +53,16 @@ class View {
       this._doChange(history)
     }
   }
+
+  /* Static */
+
+  static history () {
+    return JSON.parse(
+      localStorage.getItem(View.#historyKey) || '{}'
+    )
+  }
+
+  /* Private */
 
   _setHistory (opts) {
     console.log('SET HISTORY')
@@ -110,17 +121,13 @@ class View {
   }
 
   _getHistory () {
-    let json = localStorage.getItem(this.#historyKey)
-
-    if (json) {
-      return JSON.parse(json)
-    }
+    return View.history()
   }
 
   // We only store the latest page.
   _storeHistory () {
     localStorage.setItem(
-      this.#historyKey,
+      View.#historyKey,
       JSON.stringify(
         this.#pages[this.#pages.length - 1]
       )
