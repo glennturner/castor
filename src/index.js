@@ -14,7 +14,7 @@ const path = require('path')
 const http  = require('http')
 const fs = require('fs')
 const ncrypto = require('crypto')
-const DOMParser = require('xmldom')
+const DOMParser = require('xmldom').DOMParser
 
 const Itunes = require('./services/itunes')
 
@@ -47,94 +47,6 @@ const createWindow = () => {
   // macOS Dock.
   let dockIcon = path.join(__dirname, './assets/images/dock-icon.png')
   app.dock.setIcon(dockIcon)
-
-  /* Menus */
-  const isMac = process.platform === 'darwin'
-
-  const template = [
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'Import',
-          click: (e) => { importOPML(e) }
-        },
-        {
-          label: 'Export',
-          click: (e) => { exportOPML(e) }
-        },
-        isMac ? { role: 'close' } : { role: 'quit' }
-      ]
-    }
-  ]
-
-  if (process.platform === 'darwin') {
-      template.unshift(
-        {
-          label: app.name,
-          submenu:
-          [
-            {role: 'about'},
-            {type: 'separator'},
-            {role: 'services', submenu: []},
-            {type: 'separator'},
-            {role: 'hide'},
-            {role: 'hideothers'},
-            {role: 'unhide'},
-            {type: 'separator'},
-            {role: 'quit'}
-          ]
-      }
-    )
-  }
-
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-
-  ipcMain.on('parseXML', (event, str) => {
-    str = new DOMParser().parseFromString(str)
-    console.log('PARSE XML')
-    console.log(str)
-    mainWindow.webContents.send('parsedXML', str)
-  })
-
-  function isPlaylist (xml) {
-    console.log('IS PLAYLIST')
-    mainWindow.api.receive('hashed', (data) => {
-      console.log(`Received ${data} from main process`);
-    })
-    mainWindow.webContents.send('hash', "some data")
-  }
-
-  function importOPML (e) {
-    console.log('IMPORT OPML')
-    console.log(e)
-    dialog.showOpenDialog(
-      {
-        filters: [
-          {
-            name: 'OPML Files',
-            extensions: ['txt', 'xml', 'opml']
-          }
-        ],
-        properties: ['openFile', 'multiSelections']
-      }
-    ).then(dialog => {
-      if (dialog.canceled) { return }
-      console.log('ITUNES')
-      console.log(Itunes)
-
-      for (let file of dialog.filePaths) {
-        let xml = fs.readFileSync(file, 'utf-8')
-        isPlaylist(xml)
-      }
-    })
-  }
-
-  function exportOPML (e) {
-    console.log('EXPORT OPML')
-    console.log(e)
-  }
 }
 
 // This method will be called when Electron has finished
@@ -175,6 +87,90 @@ ipcMain.on('saveEpisode', (event, f) => {
   })
   */
 })
+
+ipcMain.on('parseXML', (event, str) => {
+  str = new DOMParser().parseFromString(str)
+  console.log('PARSE XML')
+  console.log(str)
+  mainWindow.webContents.send('parsedXML', str)
+})
+
+function importOPML (e) {
+  console.log('IMPORT OPML')
+  dialog.showOpenDialog(
+    {
+      filters: [
+        {
+          name: 'OPML Files',
+          extensions: ['txt', 'xml', 'opml']
+        }
+      ],
+      properties: ['openFile', 'multiSelections']
+    }
+  ).then((dialog) => {
+    if (dialog.canceled) { return }
+
+    for (let file of dialog.filePaths) {
+      let xml = fs.readFileSync(file, 'utf-8')
+      let parser = new DOMParser
+      if (Itunes.isPlaylist(xml, parser)) {
+        let playlist = Itunes.parsePlaylist(xml, parser)
+        console.log(playlist)
+      // OPML
+      } else {
+        console.error('Currently unsupported')
+      }
+    }
+  })
+}
+
+function exportOPML (e) {
+  console.log('EXPORT OPML')
+  console.log(e)
+}
+
+/* Menus */
+const isMac = process.platform === 'darwin'
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Import',
+        click: (e) => { importOPML(e) }
+      },
+      {
+        label: 'Export',
+        click: (e) => { exportOPML(e) }
+      },
+      isMac ? { role: 'close' } : { role: 'quit' }
+    ]
+  }
+]
+
+if (process.platform === 'darwin') {
+    template.unshift(
+      {
+        label: app.name,
+        submenu:
+        [
+          {role: 'about'},
+          {type: 'separator'},
+          {role: 'services', submenu: []},
+          {type: 'separator'},
+          {role: 'hide'},
+          {role: 'hideothers'},
+          {role: 'unhide'},
+          {type: 'separator'},
+          {role: 'quit'}
+        ]
+    }
+  )
+}
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 
 // Example context menu.
 contextMenu({
