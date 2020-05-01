@@ -144,7 +144,7 @@ class Player {
   }
 
   _setEvents () {
-    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e)  })
+    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) })
     this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) })
 
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) })
