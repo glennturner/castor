@@ -3,6 +3,9 @@ class Podcast {
   #cacheKey
   #stateKey
 
+  // In seconds.
+  static #updateFrequency = 1800
+
   static prefKey = 'C-PF'
 
   static #cacheKeyPrefix = 'C-P-'
@@ -79,7 +82,9 @@ class Podcast {
   }
 
   get cache () {
-    return localStorage.getItem(this.cacheKey) || {
+    return JSON.parse(
+      localStorage.getItem(this.cacheKey)
+    ) || {
       episodes: {}
     }
   }
@@ -109,13 +114,13 @@ class Podcast {
   subscribe () {
     user.subscribe(this.id)
 
-    this.refresh()
+    this.refreshView()
   }
 
   unsubscribe () {
     user.unsubscribe(this.id)
 
-    this.refresh()
+    this.refreshView()
   }
 
   subscribed () {
@@ -125,13 +130,13 @@ class Podcast {
   archive () {
     user.archive(this.id)
 
-    this.refresh()
+    this.refreshView()
   }
 
   unarchive () {
     user.unarchive(this.id)
 
-    this.refresh()
+    this.refreshView()
   }
 
   archived () {
@@ -146,11 +151,16 @@ class Podcast {
     return this.episodes.filter(item => !item.played)
   }
 
+  refresh (e) {
+    this._update(true)
+    this.refreshView(e)
+  }
+
   // Eventually we should optimize this to allow for refreshing
   // specific elements, but this is fine for now.
-  refresh (e) {
+  refreshView (e) {
     this._showDetailedView(e)
-    user.refresh()
+    user.refreshView()
   }
 
   async getFeed () {
@@ -234,6 +244,7 @@ class Podcast {
       'click',
       (e) => {
         if (e.currentTarget == e.target) {
+          view.loading()
           this._showDetailedView(e)
         }
       }
@@ -379,6 +390,15 @@ class Podcast {
       )
     })
 
+    detailedEle.querySelectorAll('.refresh-podcast').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          this.refresh(e)
+        }
+      )
+    })
+
     detailedEle.querySelectorAll('.mark-episode-played').forEach(ele => {
       ele.addEventListener(
         'click',
@@ -387,7 +407,7 @@ class Podcast {
           let ep = this.getEpisodeById(id)
 
           ep.played = true
-          this.refresh(e)
+          this.refreshView(e)
         }
       )
     })
@@ -400,7 +420,7 @@ class Podcast {
           let ep = this.getEpisodeById(id)
 
           ep.played = false
-          this.refresh(e)
+          this.refreshView(e)
         }
       )
     })
@@ -410,7 +430,7 @@ class Podcast {
         'click',
         (e) => {
           this._setPref('filterEpisodesBy', e.target.dataset.epListFilter)
-          this.refresh()
+          this.refreshView()
         }
       )
     })
@@ -421,7 +441,7 @@ class Podcast {
         (e) => {
           console.log('MARK PODCAST AS PLAYED')
           this.episodes.map(ep => { ep.played = true })
-          this.refresh()
+          this.refreshView()
         }
       )
     })
@@ -432,7 +452,7 @@ class Podcast {
         (e) => {
           console.log('MARK PODCAST AS UNPLAYED')
           this.episodes.map(ep => { ep.played = false })
-          this.refresh()
+          this.refreshView()
         }
       )
     })
@@ -515,9 +535,13 @@ class Podcast {
   }
 
   _shouldUpdate () {
-    let now = new Date
+    if (!this.cache.lastUpdated) {
+      return true
+    }
 
-    return true
+    let intv = new Date - (Podcast.#updateFrequency * 1000)
+
+    return intv > Date.parse(this.cache.lastUpdated)
   }
 
   _showDetailedView (e = undefined) {
@@ -552,28 +576,33 @@ class Podcast {
     this.cache = this._json()
   }
 
+  _populate (parsed) {
+    this.title = parsed.title
+    this.author = parsed.author
+    this.description = parsed.description
+    this.copyright = parsed.copyright
+    this.pubDate = parsed.pubDate
+    this.link = parsed.link
+    this.artwork = parsed.artwork
+    this.episodesType = parsed.episodesType
+
+    this.episodes = parsed.episodes.map((ep) => {
+      return new Episode(this.id, ep)
+    })
+  }
+
   // Update podcast information via feed.
   async _update (forceUpdate = false) {
     // Don't update if already updated.
-    if (this._shouldUpdate() && forceUpdate) {
+    if (!this._shouldUpdate() && !forceUpdate) {
+      this._populate(this.cache)
       return
     }
 
     return await this.getFeed().then((parsed) => {
-      this.title = parsed.title
-      this.author = parsed.author
-      this.description = parsed.description
-      this.copyright = parsed.copyright
-      this.pubDate = parsed.pubDate
-      this.lastUpdated = parsed.lastUpdated || new Date
-      this.link = parsed.link
-      this.artwork = parsed.artwork
-      this.episodesType = parsed.episodesType
+      this.lastUpdated = new Date
       this.lastRetrieved = new Date
-
-      this.episodes = parsed.episodes.map((ep) => {
-        return new Episode(this.id, ep)
-      })
+      this._populate(parsed)
 
       this._cacheFeed()
     })
