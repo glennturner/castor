@@ -47,8 +47,30 @@ class User {
     ) || []
   }
 
-  refresh () {
+  refreshView () {
     this._renderSubscriberNav()
+  }
+
+  get opml () {
+  }
+
+  set opml (xml) {
+    return `<?xml version="1.0" encoding="ISO-8859-1"?>
+<opml version="2.0">
+	<head>
+		<title>mySubscriptions.opml</title>
+		<dateCreated>Sat, 18 Jun 2005 12:11:52 GMT</dateCreated>
+		<dateModified>Tue, 02 Aug 2005 21:42:48 GMT</dateModified>
+		<ownerName>Dave Winer</ownerName>
+		<ownerEmail>dave@scripting.com</ownerEmail>
+		<expansionState></expansionState>
+		<vertScrollState>1</vertScrollState>
+		<windowTop>61</windowTop>
+		<windowLeft>304</windowLeft>
+		<windowBottom>562</windowBottom>
+		<windowRight>842</windowRight>
+		</head>
+	<body>`
   }
 
   /* Private */
@@ -60,8 +82,6 @@ class User {
       let unplayedBadge = ''
       let unplayedCount = item.unplayedCount()
 
-      console.log('VIEW HISTORY')
-      console.log(View.history())
       let active = View.history().podcastId === item.id
 
       if (unplayedCount) {
