@@ -24,6 +24,16 @@ class View {
     )
   }
 
+  loading () {
+    this.#parent.innerHTML = `
+      <div class="main-loader d-flex justify-content-center">
+        <div class="spinner-border text-secondary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    `
+  }
+
   // `opts` are primarily for history use:
   //   - query: usually a search term
   //   - podcastId
@@ -43,6 +53,7 @@ class View {
     this.#parent.appendChild(html)
 
     this._storeHistory()
+    user.refreshView()
   }
 
   // Uses the last stored page.
@@ -80,8 +91,13 @@ class View {
 
     if (this._canGoBack()) {
       let back = document.createElement('button')
-      back.classList = 'btn btn-sm btn-primary'
-      back.innerHTML = '<'
+      back.classList = 'btn btn-sm btn-light'
+      back.innerHTML = `
+        <svg class="bi bi-chevron-left" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 010 .708L5.707 8l5.647 5.646a.5.5 0 01-.708.708l-6-6a.5.5 0 010-.708l6-6a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+        </svg>
+      `
+
       back.addEventListener('click', () => { this.back() })
       nav.appendChild(back)
     }
