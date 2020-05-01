@@ -1,6 +1,7 @@
 user = new User
 
 view = new View('main-view')
+view.loading()
 view.resume()
 
 player = new Player
@@ -17,6 +18,7 @@ document.getElementById('search').addEventListener('submit', (e) => {
 function search (searchTerm) {
   let itunes = new Itunes()
 
+  view.loading()
   itunes.search(searchTerm).then((resp) => {
     let podcasts = resp.results.map((item) => {
       return Podcast.getOrInitialize({
