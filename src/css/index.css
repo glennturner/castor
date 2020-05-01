@@ -130,6 +130,12 @@ nav .list-item-group {
   padding: 0.5rem;
 }
 
+#main-view .spinner-border {
+  margin-top: calc(25vh);
+  height: calc(25vh);
+  width: calc(25vh);
+}
+
 /* Podcasts */
 /*
 .search-results,
@@ -244,9 +250,20 @@ nav.podcast-options {
   display: flex;
 }
 
+.episode-metadata {
+  width: 100%;
+}
+
 .episode-title {
   display: inline-block;
+  margin: 0;
   padding: 0 0.5rem;
+}
+
+.episode-date {
+  font-size: 0.7rem;
+  margin: 0 0.5rem;
+  opacity: 0.5;
 }
 
 .episode-description {
