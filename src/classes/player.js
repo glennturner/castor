@@ -21,6 +21,8 @@ class Player {
 
     if (this.state.episodeId) {
       this.state.podcast = this.episode.podcastId
+      this.src = this.episode.episodeUrl
+      this.audioPlayer.currentTime = this.episode.currentTime || 0
       this._updateGlobalPlayerUI()
     }
 
@@ -75,7 +77,15 @@ class Player {
       })
     )
 
-    this.podcast.refresh()
+    this.podcast.refreshView()
+  }
+
+  get src () {
+    return this.audioPlayer.src
+  }
+
+  set src (src) {
+    this.audioPlayer.src = src
   }
 
   playEpisode (ep) {
@@ -84,7 +94,7 @@ class Player {
     this.podcast = ep.podcastId
     this.episode = ep.id
 
-    this.audioPlayer.src = this.episode.episodeUrl
+    this.src = this.episode.episodeUrl
 
     if (this.playing) {
       // Pause event is only triggered upon clicking the audio player pause,
@@ -119,6 +129,8 @@ class Player {
   }
 
   _updateGlobalPlayerUI () {
+    this.audioPlayer.focus()
+
     document.getElementById(
       'podcast-display-name'
     ).innerHTML = `
@@ -132,7 +144,7 @@ class Player {
   }
 
   _setEvents () {
-    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) })
+    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e)  })
     this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) })
 
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) })
@@ -140,6 +152,16 @@ class Player {
 
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
+
+    this.audioPlayer.addEventListener('blur', (e) => {
+      if (!e.relatedTarget || !(
+        e.relatedTarget instanceof HTMLInputElement
+      )) {
+        e.target.focus()
+      }
+    })
+
+    // @todo Improve audio player focus after blur. (For instance, after input element blur.)
   }
 
   // Should improve this, as invoking `audioPlayer.pause()` will cause a delayed offset.
