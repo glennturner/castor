@@ -28,17 +28,18 @@ class Itunes {
     })
   }
 
-  static parsePlaylist (xml) {
+  // Should use IPC to handling parsing via `xmldom`
+  // but, for now, we're passing in the parser.
+  static parsePlaylist (xml, parser) {
     console.log('PARSE PLAYLIST')
   }
 
-  static isPlaylist (xml, mainWindow) {
-    console.log('IS PLAYLIST')
-    console.log(mainWindow)
-    window.receive('parsedXML', (data) => {
-      console.log(`Received ${data} from main process`);
-    })
-    window.send('parseXML', "some data")
+  // Should use IPC to handling parsing via `xmldom`
+  // but, for now, we're passing in the parser.
+  static isPlaylist (str, parser) {
+    let xml = parser.parseFromString(str)
+
+    return xml.getElementsByTagName('plist').length > 0
   }
 }
 
