@@ -55,6 +55,12 @@ class Episode {
     this.state = currentState
   }
 
+  pubDateDisplay () {
+    return new Date(
+      Date.parse(this.pubDate)
+    ).toLocaleDateString()
+  }
+
   /*
     `json` and `obj` currently aren't being used,
     due to how it's being serialized when storing the episode's
@@ -144,7 +150,12 @@ class Episode {
               >
                 ${icons} ${this.episodeNum} ${this.title}
               </h5>
+
               ${playedBadge}
+
+              <h6 class="episode-date">
+                ${this.pubDateDisplay()}
+              </h6>
             </div>
             <div
               class="episode-header-col"
