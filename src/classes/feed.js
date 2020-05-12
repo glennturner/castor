@@ -53,7 +53,7 @@ class Feed {
         {
           id: item.querySelector('guid').textContent,
           title: item.querySelector('title').textContent,
-          description: item.querySelector('description').textContent,
+          description: item.querySelector('description') ? item.querySelector('description').textContent : undefined,
           pubDate: item.querySelector('pubDate').textContent,
           author: author ? author.textContent : undefined,
           link: link ? link.textContent : undefined,
