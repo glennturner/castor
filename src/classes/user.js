@@ -91,6 +91,12 @@ class User {
     }
   }
 
+  /* Static */
+
+  static exportOPML () {
+    console.log('EXPORT SUBS!')
+  }
+
   /* Private */
 
   _activateListItemBadge (ele) {
@@ -157,4 +163,8 @@ class User {
       })
     })
   }
+}
+
+if (typeof(module) !== 'undefined') {
+  module.exports = User
 }
