@@ -177,6 +177,9 @@ class Podcast {
     let showEle = document.createElement('div')
     showEle.className = 'podcast-show'
 
+    let isSubscribed = user.subscribedPodcasts.filter(podcast => podcast.id === this.id)
+    isSubscribed = isSubscribed[0] || undefined
+
     showEle.innerHTML = `
       <img
         src="${this.artwork}"
@@ -214,31 +217,32 @@ class Podcast {
             &#8943;
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a
+              class="dropdown-item podcast-subscribe-toggle"
+              data-podcast-id="${this.id}"
+              href="#"
+            >` + (
+              isSubscribed ? 'Unsubscribe' : 'Subscribe'
+            ) + `</a>
           </div>
         </div>
       </div>
     `
 
-    showEle.querySelectorAll('.btn-play')[0].addEventListener(
+    showEle.querySelector('.podcast-subscribe-toggle').addEventListener('click', (e) => {
+      let podcast = Podcast.get(e.target.dataset.podcastId)
+      this.subscribed() ? this.unsubscribe() : this.subscribe()
+      view.loading()
+      this._showDetailedView(e)
+    })
+
+    showEle.querySelector('.btn-play').addEventListener(
       'click',
       (e) => {
         this.playLatest()
         e.stopPropagation()
       }
     )
-
-    /*
-    showEle.querySelector('.btn-settings').addEventListener(
-      'click',
-      (e) => {
-        // this.showCapsuleSettings()
-        //e.stopPropagation()
-      }
-    )
-    */
 
     showEle.querySelector('img').addEventListener(
       'click',
@@ -439,7 +443,6 @@ class Podcast {
       ele.addEventListener(
         'click',
         (e) => {
-          console.log('MARK PODCAST AS PLAYED')
           this.episodes.map(ep => { ep.played = true })
           this.refreshView()
         }
@@ -450,7 +453,6 @@ class Podcast {
       ele.addEventListener(
         'click',
         (e) => {
-          console.log('MARK PODCAST AS UNPLAYED')
           this.episodes.map(ep => { ep.played = false })
           this.refreshView()
         }
