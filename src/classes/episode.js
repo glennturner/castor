@@ -148,7 +148,7 @@ class Episode {
               <h5
                 class="episode-title"
               >
-                ${icons} ${this.episodeNum} ${this.title}
+                ${icons} ${this.title}
               </h5>
 
               ${playedBadge}
