@@ -39,8 +39,6 @@ class View {
   //   - podcastId
   //   - episodeId
   change (type, html, opts) {
-    this.#parent.innerHTML = this._viewNav().outerHTML + html.outerHTML
-
     this._setHistory(
       {
         episodeId: opts.episodeId,
@@ -49,6 +47,10 @@ class View {
         type: type
       }
     )
+
+    this.#parent.innerHTML = ''
+    this.#parent.appendChild(this._viewNav())
+    this.#parent.appendChild(html)
 
     this._storeHistory()
     user.updateSubscriberNav(opts)
