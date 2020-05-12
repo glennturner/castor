@@ -84,8 +84,11 @@ class User {
     }
 
     active = this._subscribedItemsEle.querySelector("[data-podcast-id='" + opts.podcastId + "']")
-    active.classList.add('active')
-    this._activateListItemBadge(active.querySelector(qs))
+
+    if (active) {
+      active.classList.add('active')
+      this._activateListItemBadge(active.querySelector(qs))
+    }
   }
 
   /* Private */
