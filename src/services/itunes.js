@@ -30,8 +30,16 @@ class Itunes {
 
   // Should use IPC to handling parsing via `xmldom`
   // but, for now, we're passing in the parser.
-  static parsePlaylist (xml, parser) {
+  static parsePlaylist (str, parser) {
     console.log('PARSE PLAYLIST')
+
+    let xml = parser.parseFromString(str)
+    let eps = xml.getElementsByTagName('plist')[0].firstChild.nextSibling.childNodes//.filter(item => item.nodeName === 'dict')
+    console.log(eps)
+    for (let i in eps) {
+      let key = eps[i].textContent
+      console.log(key)
+    }
   }
 
   // Should use IPC to handling parsing via `xmldom`
