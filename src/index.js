@@ -17,6 +17,7 @@ const ncrypto = require('crypto')
 const DOMParser = require('xmldom').DOMParser
 
 const Itunes = require('./services/itunes')
+const User = require('./classes/user')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -90,8 +91,6 @@ ipcMain.on('saveEpisode', (event, f) => {
 
 ipcMain.on('parseXML', (event, str) => {
   str = new DOMParser().parseFromString(str)
-  console.log('PARSE XML')
-  console.log(str)
   mainWindow.webContents.send('parsedXML', str)
 })
 
@@ -113,7 +112,9 @@ function importOPML (e) {
     for (let file of dialog.filePaths) {
       let xml = fs.readFileSync(file, 'utf-8')
       let parser = new DOMParser
+      console.log('OPEN FILE ' + file)
       if (Itunes.isPlaylist(xml, parser)) {
+        console.log('IS ITUNES PLAYLIST')
         let playlist = Itunes.parsePlaylist(xml, parser)
         console.log(playlist)
       // OPML
@@ -127,6 +128,20 @@ function importOPML (e) {
 function exportOPML (e) {
   console.log('EXPORT OPML')
   console.log(e)
+  dialog.showSaveDialog(
+    {
+      filters: [
+        {
+          name: 'OPML Files',
+          extensions: ['txt', 'xml', 'opml']
+        }
+      ]
+    }
+  ).then((dialog) => {
+    if (dialog.canceled) { return }
+
+    User.exportOPML()
+  })
 }
 
 /* Menus */
