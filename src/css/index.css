@@ -59,6 +59,10 @@ nav#player-ui #podcast-display-name {
   height: 2.75rem;
 }
 
+nav#player-ui #podcast-display-name img {
+  max-width: 45px;
+}
+
 nav .list-group-item:first-child,
 nav .list-group-item:last-child {
   /*
@@ -219,6 +223,7 @@ nav .list-item-group {
 }
 
 .podcast-show-content {
+  width: 100%;
 }
 
 nav.podcast-options {
@@ -232,6 +237,7 @@ nav.podcast-options {
 }
 
 /* Detailed Podcast */
+
 .podcast-episodes-view-by {
   text-align: center;
 }
@@ -290,6 +296,18 @@ nav.podcast-options {
 
 .episode.active .episode-title {
   margin-left: -0.5rem;
+}
+
+.sm-podcast-img {
+  border-radius: 3px;
+  margin-right: 0.2rem;
+  max-height: 2rem;
+  max-width: 2rem;
+}
+
+/* See .sm-podcast-img -- overrides correcting padding. */
+.subscribed-podcast-unplayed-count .badge {
+  padding-bottom: 0.25rem;
 }
 
 /* Dialog */
