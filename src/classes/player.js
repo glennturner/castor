@@ -134,7 +134,7 @@ class Player {
     document.getElementById(
       'podcast-display-name'
     ).innerHTML = `
-    ${this.episode.title}<br />${this.episode.podcast.title} &ndash; ${this.episode.pubDisplayDate()}
+      ${this.episode.title}<br />${this.episode.podcast.title} &ndash; ${this.episode.pubDisplayDate()}
     `
   }
 
