@@ -595,16 +595,15 @@ class Podcast {
   async _update (forceUpdate = false) {
     // Don't update if already updated.
     if (!this._shouldUpdate() && !forceUpdate) {
-      this._populate(this.cache)
-      return
+      return await this._populate(this.cache)
+    } else {
+      return await this.getFeed().then((parsed) => {
+        this.lastUpdated = new Date
+        this.lastRetrieved = new Date
+        this._populate(parsed)
+
+        this._cacheFeed()
+      })
     }
-
-    return await this.getFeed().then((parsed) => {
-      this.lastUpdated = new Date
-      this.lastRetrieved = new Date
-      this._populate(parsed)
-
-      this._cacheFeed()
-    })
   }
 }
