@@ -73,7 +73,32 @@ class User {
 	<body>`
   }
 
+  // This currently only toggles active podcasts.
+  // Eventually it should be tweaked to handle other list item changes.
+  updateSubscriberNav (opts) {
+    let active = this._subscribedItemsEle.querySelector('.list-group-item.active')
+    let qs = '.subscribed-podcast-unplayed-count .badge'
+    if (active) {
+      active.classList.remove('active')
+      this._deactivateListItemBadge(active.querySelector(qs))
+    }
+
+    active = this._subscribedItemsEle.querySelector("[data-podcast-id='" + opts.podcastId + "']")
+    active.classList.add('active')
+    this._activateListItemBadge(active.querySelector(qs))
+  }
+
   /* Private */
+
+  _activateListItemBadge (ele) {
+    ele.classList.remove('badge-primary')
+    ele.classList.add('badge-light')
+  }
+
+  _deactivateListItemBadge (ele) {
+    ele.classList.remove('badge-light')
+    ele.classList.add('badge-primary')
+  }
 
   _renderSubscriberNav () {
     let html = ''
@@ -100,13 +125,17 @@ class User {
       html += `
         <a
           href="#"
-          class="list-group-item list-group-item-action ${active ? 'active' : ''}"
+          class="list-group-item list-group-item-action ${active ? 'active' : ''} d-flex justify-content-between align-items-center"
           data-podcast-id="${item.id}"
           title="${item.title}"
         >
           <span
             class="subscribed-podcast-title"
           >
+            <img
+              src="${item.artwork}"
+              class="sm-podcast-img"
+            />
             ${item.title}
           </span>
           ${unplayedBadge}
@@ -116,6 +145,10 @@ class User {
 
     this._subscribedItemsEle.innerHTML = html
     this._subscribedItemsEle.querySelectorAll('.list-group-item-action').forEach(ele => {
+      ele.removeEventListener('click', (e) => {
+        Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
+      })
+
       ele.addEventListener('click', (e) => {
         Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
       })
