@@ -39,6 +39,8 @@ class View {
   //   - podcastId
   //   - episodeId
   change (type, html, opts) {
+    user.updateSubscriberNav(opts)
+
     this._setHistory(
       {
         episodeId: opts.episodeId,
@@ -53,7 +55,6 @@ class View {
     this.#parent.appendChild(html)
 
     this._storeHistory()
-    user.updateSubscriberNav(opts)
   }
 
   // Uses the last stored page.
@@ -76,7 +77,6 @@ class View {
   /* Private */
 
   _setHistory (opts) {
-    console.log('SET HISTORY')
     // We store page history as JSON, so this kind of comparison is OK.
     if (
       JSON.stringify(opts) !== JSON.stringify(this.#pages[this.#pages.length - 1])
