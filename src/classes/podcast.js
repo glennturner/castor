@@ -233,7 +233,9 @@ class Podcast {
       let podcast = Podcast.get(e.target.dataset.podcastId)
       this.subscribed() ? this.unsubscribe() : this.subscribe()
       view.loading()
+
       this._showDetailedView(e)
+      user.refreshView()
     })
 
     showEle.querySelector('.btn-play').addEventListener(
