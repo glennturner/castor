@@ -125,6 +125,18 @@ function importOPML (e) {
   })
 }
 
+function reset (e) {
+  console.log('RESET!')
+}
+
+function backup (e) {
+  console.log('BACKUP!')
+}
+
+function restore (e) {
+  console.log('RESTORE!')
+}
+
 function exportOPML (e) {
   console.log('EXPORT OPML')
   console.log(e)
@@ -152,12 +164,24 @@ const template = [
     label: 'File',
     submenu: [
       {
-        label: 'Import',
+        label: 'Import OPML',
         click: (e) => { importOPML(e) }
       },
       {
-        label: 'Export',
+        label: 'Export OPML',
         click: (e) => { exportOPML(e) }
+      },
+      {
+        label: 'Backup',
+        click: (e) => { backup(e) }
+      },
+      {
+        label: 'Restore from Backup',
+        click: (e) => { restore(e) }
+      },
+      {
+        label: 'Reset (DEBUG)',
+        click: (e) => { reset(e) }
       },
       isMac ? { role: 'close' } : { role: 'quit' }
     ]
