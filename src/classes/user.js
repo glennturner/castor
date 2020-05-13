@@ -1,9 +1,23 @@
 class User {
   #subscribedPodcastKey = 'C-SUB-P'
+  #refreshMS = 900000
 
   constructor () {
     this._subscribedItemsEle = document.getElementById('subscribed-items')
     this._renderSubscriberNav()
+    this._addEvents()
+  }
+
+  get prefs () {
+    return JSON.parse(
+      localStorage.getItem(Podcast.prefKey)
+    ) || {}
+  }
+
+  set prefs (prefs) {
+    localStorage.setItem(Podcast.prefKey,
+      JSON.stringify(prefs)
+    )
   }
 
   get subscribedPodcasts () {
@@ -49,6 +63,28 @@ class User {
 
   refreshView () {
     this._renderSubscriberNav()
+  }
+
+  refreshSubscriptions () {
+    return new Promise(resolve => {
+      let i = 0
+      let threshold = this.subscribedPodcasts.length
+
+      this.subscribedPodcasts.map((podcast) => {
+        podcast.update(true).then(() => {
+          i += 1
+
+          if (i === threshold) {
+            let prefs = this.prefs
+            prefs.lastRefreshedAt = new Date
+
+            this.prefs = prefs
+            this.refreshView()
+            resolve()
+          }
+        })
+      })
+    })
   }
 
   get opml () {
@@ -109,6 +145,28 @@ class User {
     ele.classList.add('badge-primary')
   }
 
+  _addEvents () {
+    // Set refresh subscription intverval.
+    setInterval(() => {
+      let e = {
+        target: document.querySelector('.refresh-subscribed-podcasts')
+      }
+
+      this._invokeRefresh(e)
+    }, this.#refreshMS)
+
+    document.querySelector('.refresh-subscribed-podcasts').addEventListener('click', (e) => {
+      this._invokeRefresh(e)
+    })
+  }
+
+  _invokeRefresh (e) {
+    e.target.classList.add('rotate')
+    this.refreshSubscriptions().then(() => {
+      e.target.classList.remove('rotate')
+    })
+  }
+
   _renderSubscriberNav () {
     let html = ''
 
@@ -151,6 +209,18 @@ class User {
         </a>
       `
     })
+
+    let lastRefreshedAt = this.prefs.lastRefreshedAt
+    if (lastRefreshedAt) {
+      let refreshedLocal = new Date(lastRefreshedAt).toLocaleString()
+      html += `
+        <p
+          class="last-refreshed-at"
+        >
+          Last refreshed at<br />
+          ${refreshedLocal}
+        </p>`
+    }
 
     this._subscribedItemsEle.innerHTML = html
     this._subscribedItemsEle.querySelectorAll('.list-group-item-action').forEach(ele => {
