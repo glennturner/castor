@@ -152,7 +152,7 @@ class Podcast {
   }
 
   refresh (e) {
-    this._update(true)
+    this.update(true)
     this.refreshView(e)
   }
 
@@ -168,7 +168,7 @@ class Podcast {
   }
 
   async playLatest () {
-    return await this._update().then(() => {
+    return await this.update().then(() => {
       this.playEpisode(this.episodes[0])
     })
   }
@@ -260,7 +260,7 @@ class Podcast {
   }
 
   async detailed () {
-    return await this._update()
+    return await this.update()
       .then(() => {
         return this._detailedEpList(
           {
@@ -472,6 +472,22 @@ class Podcast {
     return this.episodes.filter(ep => ep.id === id)[0]
   }
 
+  // Update podcast information via feed.
+  async update (forceUpdate = false) {
+    // Don't update if already updated.
+    if (!this._shouldUpdate() && !forceUpdate) {
+      return await this._populate(this.cache)
+    } else {
+      return await this.getFeed().then((parsed) => {
+        this.lastUpdated = new Date
+        this.lastRetrieved = new Date
+        this._populate(parsed)
+
+        this._cacheFeed()
+      })
+    }
+  }
+
   /* Static */
 
   static podcastCacheKey (id) {
@@ -593,21 +609,5 @@ class Podcast {
     this.episodes = parsed.episodes.map((ep) => {
       return new Episode(this.id, ep)
     })
-  }
-
-  // Update podcast information via feed.
-  async _update (forceUpdate = false) {
-    // Don't update if already updated.
-    if (!this._shouldUpdate() && !forceUpdate) {
-      return await this._populate(this.cache)
-    } else {
-      return await this.getFeed().then((parsed) => {
-        this.lastUpdated = new Date
-        this.lastRetrieved = new Date
-        this._populate(parsed)
-
-        this._cacheFeed()
-      })
-    }
   }
 }
