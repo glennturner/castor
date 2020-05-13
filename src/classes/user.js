@@ -116,14 +116,18 @@ class User {
     let qs = '.subscribed-podcast-unplayed-count .badge'
     if (active) {
       active.classList.remove('active')
-      this._deactivateListItemBadge(active.querySelector(qs))
+      if (active = active.querySelector(qs)) {
+        this._deactivateListItemBadge(active)
+      }
     }
 
     active = this._subscribedItemsEle.querySelector("[data-podcast-id='" + opts.podcastId + "']")
 
     if (active) {
       active.classList.add('active')
-      this._activateListItemBadge(active.querySelector(qs))
+      if (active = active.querySelector(qs)) {
+        this._activateListItemBadge(active)
+      }
     }
   }
 
