@@ -127,6 +127,26 @@ function importOPML (e) {
   })
 }
 
+function restoreBackup (e) {
+  console.log('IMPORT BACKUP')
+  dialog.showOpenDialog(
+    {
+      filters: [
+        {
+          name: 'JSON Files',
+          extensions: ['json']
+        }
+      ],
+      properties: ['openFile']
+    }
+  ).then((dialog) => {
+    if (dialog.canceled) { return }
+
+    console.log('RESTORE')
+    let db = fs.readFileSync(dialog.filePaths[0], 'utf-8')
+  })
+}
+
 function reset (e) {
   let opts = {
     buttons: [ 'Yes', 'Cancel' ],
@@ -140,7 +160,7 @@ function reset (e) {
   })
 }
 
-function backup (e) {
+function exportBackup (e) {
   dialog.showSaveDialog(
     {
       defaultPath: '~/Podcasts ' + new Date().toUTCString() + '.json',
@@ -156,10 +176,6 @@ function backup (e) {
 
     mainWindow.webContents.send('exportBackup', dialog.filePath)
   })
-}
-
-function restore (e) {
-  console.log('RESTORE!')
 }
 
 function exportOPML (e) {
@@ -202,7 +218,7 @@ const template = [
       },
       {
         label: 'Export OPML',
-        accelerator: 'CmdOrCtrl+O',
+        accelerator: 'CmdOrCtrl+E',
         click: (e) => { exportOPML(e) }
       },
       isMac ? { role: 'close' } : { role: 'quit' }
@@ -226,12 +242,12 @@ const template = [
       {
         label: 'Backup',
         accelerator: 'CmdOrCtrl+B',
-        click: (e) => { backup(e) }
+        click: (e) => { exportBackup(e) }
       },
       {
         label: 'Restore from Backup',
         accelerator: 'CmdOrCtrl+/',
-        click: (e) => { restore(e) }
+        click: (e) => { restoreBackup(e) }
       },
       {
         type: 'separator'
