@@ -66,3 +66,17 @@ function searchResults (podcasts) {
 
   return list
 }
+
+window.api.receive('exportOPML', (filename) => {
+  let user = new User
+  let xml = user.exportOPML()
+
+  console.log('WINDOW API EXPORT OPML: ' + filename)
+  console.log(xml)
+
+  window.api.send('exportOPML', {
+    filename: filename,
+    xml: xml
+  })
+})
+
