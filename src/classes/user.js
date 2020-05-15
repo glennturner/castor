@@ -37,6 +37,11 @@ class User {
     )
   }
 
+  static reset () {
+    // localStorage.clear()
+    window.location.reload()
+  }
+
   subscribe (podcastId) {
     let subscribed = this.subscribedPodcasts.map(podcast => podcast.id)
 
