@@ -96,15 +96,27 @@ class Player {
 
     this.src = this.episode.episodeUrl
 
+    this.toggle()
+  }
+
+  pause () {
+    // Pause event is only triggered upon clicking the audio player pause,
+    // so we fake playing here.
+    this.playing = false
+    this.episode.playing = false
+    this.audioPlayer.pause()
+  }
+
+  play () {
+    this.episode.playing = true
+    this.audioPlayer.play()
+  }
+
+  toggle () {
     if (this.playing) {
-      // Pause event is only triggered upon clicking the audio player pause,
-      // so we fake playing here.
-      this.playing = false
-      this.episode.playing = false
-      this.audioPlayer.pause()
+      this.pause()
     } else {
-      this.episode.playing = true
-      this.audioPlayer.play()
+      this.play()
     }
   }
 
@@ -141,9 +153,15 @@ class Player {
     `
 
     document.getElementById(
-      'podcast-display-name'
+      'podcast-display-title'
     ).innerHTML = `
-      ${this.episode.title}<br />${this.episode.podcast.title} &ndash; ${this.episode.pubDisplayDate()}
+      ${this.episode.title}
+    `
+
+    document.getElementById(
+      'podcast-display-artist-name'
+    ).innerHTML = `
+      ${this.episode.podcast.title} &ndash; ${this.episode.pubDisplayDate()}
     `
   }
 
@@ -204,14 +222,30 @@ class Player {
   _setPlay (e) {
     this.playing = true
     this._onTimeUpdate(e, true)
+    this._showPause()
   }
 
   _setPause (e) {
     this.playing = false
     this._onTimeUpdate(e, true)
+    this._showPlay()
+  }
+
+  _showPlay () {
+    document.getElementById('play-icon').style.display = 'inline-block'
+    document.getElementById('pause-icon').style.display = 'none'
+  }
+
+  _showPause () {
+    document.getElementById('play-icon').style.display = 'none'
+    document.getElementById('pause-icon').style.display = 'inline-block'
   }
 
   _shouldUpdateCurrentTime (currentTime) {
     return (currentTime - this.#timeElapsed) > this.#timeElapsedThreshold
   }
+}
+
+if (typeof(module) !== 'undefined') {
+  module.exports = Player
 }
