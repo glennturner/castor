@@ -5,7 +5,8 @@ const {
   globalShortcut,
   Menu,
   Tray,
-  ipcMain
+  ipcMain,
+  ipcRenderer
 } = require('electron')
 
 const contextMenu = require('electron-context-menu')
@@ -126,7 +127,16 @@ function importOPML (e) {
 }
 
 function reset (e) {
-  console.log('RESET!')
+  let opts = {
+    buttons: [ 'Yes', 'Cancel' ],
+    message: 'Resetting the app will delete all stored content and reset all of your prefs. Are you sure you want to continue?'
+  }
+
+  dialog.showMessageBox(opts).then(resp => {
+    if (resp.response === 0) {
+      mainWindow.webContents.send('reset', true)
+    }
+  })
 }
 
 function backup (e) {
@@ -165,22 +175,27 @@ const template = [
     submenu: [
       {
         label: 'Import OPML',
+        accelerator: 'CmdOrCtrl+I',
         click: (e) => { importOPML(e) }
       },
       {
         label: 'Export OPML',
+        accelerator: 'CmdOrCtrl+O',
         click: (e) => { exportOPML(e) }
       },
       {
         label: 'Backup',
+        accelerator: 'CmdOrCtrl+B',
         click: (e) => { backup(e) }
       },
       {
         label: 'Restore from Backup',
+        accelerator: 'CmdOrCtrl+/',
         click: (e) => { restore(e) }
       },
       {
         label: 'Reset (DEBUG)',
+        accelerator: 'CmdOrCtrl+Shift+R',
         click: (e) => { reset(e) }
       },
       isMac ? { role: 'close' } : { role: 'quit' }
@@ -228,5 +243,11 @@ contextMenu({
 			}
 		}
 	]
+})
+
+app.whenReady().then(() => {
+  globalShortcut.register('Cmd+Up', () => {
+    mainWindow.webContents.send('togglePlay', true)
+  })
 })
 
