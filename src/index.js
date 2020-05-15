@@ -141,7 +141,21 @@ function reset (e) {
 }
 
 function backup (e) {
-  console.log('BACKUP!')
+  dialog.showSaveDialog(
+    {
+      defaultPath: '~/Podcasts ' + new Date().toUTCString() + '.json',
+      filters: [
+        {
+          name: 'JSON Files',
+          extensions: ['json']
+        }
+      ]
+    }
+  ).then((dialog) => {
+    if (dialog.canceled) { return }
+
+    mainWindow.webContents.send('exportBackup', dialog.filePath)
+  })
 }
 
 function restore (e) {
@@ -151,6 +165,7 @@ function restore (e) {
 function exportOPML (e) {
   dialog.showSaveDialog(
     {
+      defaultPath: '~/Podcasts.opml',
       filters: [
         {
           name: 'OPML Files',
@@ -165,8 +180,12 @@ function exportOPML (e) {
   })
 }
 
-ipcMain.on('exportOPML', (event, argvs) => {
+ipcMain.on('saveOPML', (event, argvs) => {
   fs.writeFile(argvs.filename, argvs.xml, 'utf8', () => {})
+})
+
+ipcMain.on('saveBackup', (event, argvs) => {
+  fs.writeFile(argvs.filename, argvs.json, 'utf8', () => {})
 })
 
 /* Menus */

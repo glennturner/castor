@@ -13,7 +13,8 @@ contextBridge.exposeInMainWorld(
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
-        'exportOPML',
+        'saveBackup',
+        'saveOPML',
         'hash',
         'reset',
         'saveEpisode',
@@ -26,6 +27,7 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
+        'exportBackup',
         'exportOPML',
         'hashed',
         'resetCompleted',

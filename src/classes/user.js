@@ -167,6 +167,10 @@ class User {
     return xml
   }
 
+  exportBackup () {
+    return JSON.stringify(localStorage)
+  }
+
   /* Static */
 
   /* Private */

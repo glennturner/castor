@@ -71,12 +71,19 @@ window.api.receive('exportOPML', (filename) => {
   let user = new User
   let xml = user.exportOPML()
 
-  console.log('WINDOW API EXPORT OPML: ' + filename)
-  console.log(xml)
-
-  window.api.send('exportOPML', {
+  window.api.send('saveOPML', {
     filename: filename,
     xml: xml
+  })
+})
+
+window.api.receive('exportBackup', (filename) => {
+  let user = new User
+  let json = user.exportBackup()
+
+  window.api.send('saveBackup', {
+    filename: filename,
+    json: json
   })
 })
 
