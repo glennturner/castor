@@ -4,7 +4,6 @@ const {
 } = require('electron')
 
 const Podcast = require('./classes/podcast')
-const Player = require('./classes/player')
 const User = require('./classes/user')
 
 // Expose protected methods that allow the renderer process to use
@@ -14,6 +13,7 @@ contextBridge.exposeInMainWorld(
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
+        'exportOPML',
         'hash',
         'reset',
         'saveEpisode',
@@ -26,6 +26,7 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
+        'exportOPML',
         'hashed',
         'resetCompleted',
         'episodeSaved',
@@ -55,3 +56,4 @@ ipcRenderer.on('togglePlay', () => {
     audioPlayer.pause()
   }
 })
+
