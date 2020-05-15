@@ -132,6 +132,15 @@ class Player {
     this.audioPlayer.focus()
 
     document.getElementById(
+      'podcast-display-artwork-cont'
+    ).innerHTML = `
+      <img
+        src="${this.episode.podcast.artwork}"
+        class="artwork podcast-icon"
+      >
+    `
+
+    document.getElementById(
       'podcast-display-name'
     ).innerHTML = `
       ${this.episode.title}<br />${this.episode.podcast.title} &ndash; ${this.episode.pubDisplayDate()}
@@ -172,6 +181,23 @@ class Player {
     // Throttle updates
     if (this._shouldUpdateCurrentTime(currentTime) || forceUpdate) {
       this._setCurrentTime(currentTime)
+      this._expireCurrentEp(currentTime)
+    }
+  }
+
+  _expireCurrentEp (currentTime) {
+    let duration = this.audioPlayer.duration
+    let threshold = duration * 0.05
+    let priorPlayStatus = this.episode.played
+    let expire = duration - currentTime <= threshold
+
+    if (!this.episode.played) {
+      this.episode.played = expire
+    }
+
+    if (priorPlayStatus != this.episode.played) {
+      this.podcast.refreshView()
+      user.refreshSubscriptions()
     }
   }
 
