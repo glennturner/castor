@@ -5,8 +5,7 @@ const {
   globalShortcut,
   Menu,
   Tray,
-  ipcMain,
-  ipcRenderer
+  ipcMain
 } = require('electron')
 
 const contextMenu = require('electron-context-menu')
@@ -18,6 +17,8 @@ const ncrypto = require('crypto')
 const DOMParser = require('xmldom').DOMParser
 
 const Itunes = require('./services/itunes')
+const Podcast = require('./classes/podcast')
+const Player = require('./classes/player')
 const User = require('./classes/user')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -148,8 +149,6 @@ function restore (e) {
 }
 
 function exportOPML (e) {
-  console.log('EXPORT OPML')
-  console.log(e)
   dialog.showSaveDialog(
     {
       filters: [
@@ -162,9 +161,13 @@ function exportOPML (e) {
   ).then((dialog) => {
     if (dialog.canceled) { return }
 
-    User.exportOPML()
+    mainWindow.webContents.send('exportOPML', dialog.filePath)
   })
 }
+
+ipcMain.on('exportOPML', (event, argvs) => {
+  fs.writeFile(argvs.filename, argvs.xml, 'utf8', () => {})
+})
 
 /* Menus */
 const isMac = process.platform === 'darwin'
@@ -183,6 +186,24 @@ const template = [
         accelerator: 'CmdOrCtrl+O',
         click: (e) => { exportOPML(e) }
       },
+      isMac ? { role: 'close' } : { role: 'quit' }
+    ]
+  },
+  {
+    label: 'Controls',
+    submenu: [
+      {
+        label: 'Play/Pause',
+        accelerator: 'Space',
+        click: (e) => {
+          mainWindow.webContents.send('togglePlay', true)
+        }
+      }
+    ]
+  },
+  {
+    label: 'Utilities',
+    submenu: [
       {
         label: 'Backup',
         accelerator: 'CmdOrCtrl+B',
@@ -194,11 +215,13 @@ const template = [
         click: (e) => { restore(e) }
       },
       {
+        type: 'separator'
+      },
+      {
         label: 'Reset (DEBUG)',
         accelerator: 'CmdOrCtrl+Shift+R',
         click: (e) => { reset(e) }
-      },
-      isMac ? { role: 'close' } : { role: 'quit' }
+      }
     ]
   }
 ]
