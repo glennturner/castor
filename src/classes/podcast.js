@@ -22,7 +22,9 @@ class Podcast {
     this.author = args.identity
     this.artwork = args.artwork
     this.copyright = args.copyright
+    this.description = args.description
     this.feed = args.feed
+    this.language = args.language || 'en'
     this.link = args.link
     this.title = args.title
     this.pubDate = args.pubDate
@@ -537,6 +539,7 @@ class Podcast {
         description: this.description,
         copyright: this.copyright,
         pubDate: this.pubDate,
+        language: this.language,
         lastUpdated: this.lastUpdated,
         link: this.link,
         artwork: this.artwork,
@@ -602,6 +605,7 @@ class Podcast {
     this.description = parsed.description
     this.copyright = parsed.copyright
     this.pubDate = parsed.pubDate
+    this.language = parsed.language,
     this.link = parsed.link
     this.artwork = parsed.artwork
     this.episodesType = parsed.episodesType
