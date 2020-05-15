@@ -136,11 +136,38 @@ class User {
     }
   }
 
-  /* Static */
+  exportOPML (title = 'podcasts.opml') {
+    let subscrXML = ''
+    this.subscribedPodcasts.forEach(item => {
+      subscrXML += `
+        <outline
+          text="${item.title}"
+          description="${item.description}"
+          htmlUrl="${item.link}"
+          language="${item.language}"
+          title="${item.title}"
+          type="rss"
+          version="RSS"
+          xmlUrl="${item.feed}"
+        />
+`
+    })
 
-  static exportOPML () {
-    console.log('EXPORT SUBS!')
+    let xml = `<?xml version="1.0" encoding="ISO-8859-1"?>
+<opml version="2.0">
+  <head>
+    <title>${title}</title>
+    <dateCreated>${new Date}</dateCreated>
+    </head>
+  <body>
+    ${subscrXML}
+  </body>
+</opml>`
+
+    return xml
   }
+
+  /* Static */
 
   /* Private */
 
