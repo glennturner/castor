@@ -220,3 +220,6 @@ class Episode {
   }
 }
 
+if (typeof(module) !== 'undefined') {
+  module.exports = Episode
+}

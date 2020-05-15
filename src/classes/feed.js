@@ -87,3 +87,7 @@ class Feed {
     }
   }
 }
+
+if (typeof(module) !== 'undefined') {
+  module.exports = Feed
+}

@@ -611,3 +611,7 @@ class Podcast {
     })
   }
 }
+
+if (typeof(module) !== 'undefined') {
+  module.exports = Podcast
+}

@@ -58,7 +58,7 @@ class View {
   }
 
   // Uses the last stored page.
-  resume() {
+  resume () {
     let history = this._getHistory()
 
     if (history) {
@@ -149,4 +149,8 @@ class View {
       )
     )
   }
+}
+
+if (typeof(module) !== 'undefined') {
+  module.exports = View
 }
