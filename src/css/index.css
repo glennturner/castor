@@ -45,6 +45,7 @@ nav#player-ui {
   top: 0;
   left: 280px;
   text-align: center;
+  min-width: 600px;
   width: calc(100vw - 280px);
 }
 
@@ -55,10 +56,21 @@ nav#player-ui audio {
   width: 100%;
 }
 
+nav#player-ui .player-add-controls,
+nav#player-ui #podcast-display-cont {
+  display: inline-block;
+}
+
+nav#player-ui #podcast-display-cont {
+  text-align: left;
+  width: calc(33vw);
+}
+
 nav#player-ui #podcast-display-data {
   display: flex;
   justify-content: center;
   margin-top: 0.5rem;
+  min-width: 350px;
 }
 
 nav#player-ui #podcast-display-name {
@@ -68,6 +80,54 @@ nav#player-ui #podcast-display-name {
 nav#player-ui #podcast-display-data img {
   margin-right: 0.5rem;
   max-width: 45px;
+}
+
+nav#player-ui .player-add-controls {
+  display: inline-block;
+  font-size: 3rem;
+  position: absolute;
+  top: 0;
+  left: 15%;
+}
+
+nav#player-ui .skip-back,
+nav#player-ui .jump-fwd {
+  font-size: 2rem;
+  position: relative;
+}
+
+nav#player-ui #pause-icon {
+  display: none;
+}
+
+nav#player-ui .btn-num {
+  position: absolute;
+  top: 1rem;
+  font-size: 0.7rem;
+}
+
+nav#player-ui .skip-back .btn-num {
+  left: 0.62rem;
+}
+
+nav#player-ui .jump-fwd .btn-num {
+  left: 0.55rem;
+}
+
+nav#player-ui .play-pause {
+  font-size: 3rem;
+}
+
+nav#player-ui #podcast-display-name > * {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(33vw);
+}
+
+nav#player-ui #podcast-display-name {
+  text-align: center;
 }
 
 nav .list-group-item:first-child,
@@ -132,7 +192,7 @@ nav .list-item-group {
   float: right;
 }
 
-nav .refresh-subscribed-podcasts {
+nav .subscribed-podcasts-options {
   float: right;
   margin-right: 0.4rem;
 }
@@ -355,5 +415,11 @@ dialog {
   }
   to {
     transform: rotate(359deg);
+  }
+}
+
+@media only screen and (max-width: 900px)  {
+  nav#player-ui .player-add-controls {
+    display: none;
   }
 }
