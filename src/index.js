@@ -4,6 +4,7 @@ const {
   dialog,
   globalShortcut,
   Menu,
+  shell,
   Tray,
   ipcMain
 } = require('electron')
@@ -43,9 +44,6 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'))
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
 
   // macOS Dock.
   let dockIcon = path.join(__dirname, './assets/images/dock-icon.png')
@@ -96,6 +94,11 @@ ipcMain.on('parseXML', (event, str) => {
   mainWindow.webContents.send('parsedXML', str)
 })
 
+
+ipcMain.on('openURL', (event, url) => {
+  shell.openExternal(url)
+})
+
 function importOPML (e) {
   console.log('IMPORT OPML')
   dialog.showOpenDialog(
@@ -142,8 +145,8 @@ function restoreBackup (e) {
   ).then((dialog) => {
     if (dialog.canceled) { return }
 
-    console.log('RESTORE')
     let db = fs.readFileSync(dialog.filePaths[0], 'utf-8')
+    mainWindow.webContents.send('restoreBackup', JSON.parse(db))
   })
 }
 
@@ -204,6 +207,14 @@ ipcMain.on('saveBackup', (event, argvs) => {
   fs.writeFile(argvs.filename, argvs.json, 'utf8', () => {})
 })
 
+ipcMain.on('subscribeByUrl', (event, args) => {
+  console.log('SEND URL TO MAIN WINDOW: ')
+  console.log(args)
+  let hashedId = ncrypto.createHash('md5').update(args.url).digest('hex')
+
+  mainWindow.webContents.send('subscribeByUrl', hashedId, args.url)
+})
+
 /* Menus */
 const isMac = process.platform === 'darwin'
 
@@ -211,6 +222,16 @@ const template = [
   {
     label: 'File',
     submenu: [
+      {
+        label: 'Add Show By URL...',
+        accelerator: 'CmdOrCtrl+A',
+        click: () => {
+          mainWindow.webContents.send('promptURL', true)
+        }
+      },
+      {
+        type: 'separator'
+      },
       {
         label: 'Import OPML',
         accelerator: 'CmdOrCtrl+I',
@@ -220,6 +241,9 @@ const template = [
         label: 'Export OPML',
         accelerator: 'CmdOrCtrl+E',
         click: (e) => { exportOPML(e) }
+      },
+      {
+        type: 'separator'
       },
       isMac ? { role: 'close' } : { role: 'quit' }
     ]
@@ -242,12 +266,12 @@ const template = [
       {
         label: 'Backup',
         accelerator: 'CmdOrCtrl+B',
-        click: (e) => { exportBackup(e) }
+        click: exportBackup
       },
       {
         label: 'Restore from Backup',
         accelerator: 'CmdOrCtrl+/',
-        click: (e) => { restoreBackup(e) }
+        click: restoreBackup
       },
       {
         type: 'separator'
@@ -255,7 +279,14 @@ const template = [
       {
         label: 'Reset (DEBUG)',
         accelerator: 'CmdOrCtrl+Shift+R',
-        click: (e) => { reset(e) }
+        click: reset
+      },
+      {
+        label: 'Show Inspector (DEBUG)',
+        accelerator: 'CmdOrCtrl+I',
+        click: (e) => {
+          mainWindow.webContents.openDevTools()
+        }
       }
     ]
   }
