@@ -37,11 +37,6 @@ class User {
     )
   }
 
-  static reset () {
-    // localStorage.clear()
-    window.location.reload()
-  }
-
   subscribe (podcastId) {
     let subscribed = this.subscribedPodcasts.map(podcast => podcast.id)
 
@@ -90,28 +85,6 @@ class User {
         })
       })
     })
-  }
-
-  get opml () {
-  }
-
-  set opml (xml) {
-    return `<?xml version="1.0" encoding="ISO-8859-1"?>
-<opml version="2.0">
-	<head>
-		<title>mySubscriptions.opml</title>
-		<dateCreated>Sat, 18 Jun 2005 12:11:52 GMT</dateCreated>
-		<dateModified>Tue, 02 Aug 2005 21:42:48 GMT</dateModified>
-		<ownerName>Dave Winer</ownerName>
-		<ownerEmail>dave@scripting.com</ownerEmail>
-		<expansionState></expansionState>
-		<vertScrollState>1</vertScrollState>
-		<windowTop>61</windowTop>
-		<windowLeft>304</windowLeft>
-		<windowBottom>562</windowBottom>
-		<windowRight>842</windowRight>
-		</head>
-	<body>`
   }
 
   // This currently only toggles active podcasts.
@@ -209,6 +182,10 @@ class User {
 
   _renderSubscriberNav () {
     let html = ''
+
+    function sortByUnplayed (a, b) {
+      return b.unplayedCount() - a.unplayedCount()
+    }
 
     this.subscribedPodcasts.sort(sortByTitle).map(item => {
       let unplayedBadge = ''
