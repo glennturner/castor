@@ -234,10 +234,7 @@ class Podcast {
     showEle.querySelector('.podcast-subscribe-toggle').addEventListener('click', (e) => {
       let podcast = Podcast.get(e.target.dataset.podcastId)
       this.subscribed() ? this.unsubscribe() : this.subscribe()
-      view.loading()
-
-      this._showDetailedView(e)
-      user.refreshView()
+      show(e)
     })
 
     showEle.querySelector('.btn-play').addEventListener(
@@ -259,6 +256,13 @@ class Podcast {
     )
 
     return showEle
+  }
+
+  show (e = null) {
+    view.loading()
+
+    this._showDetailedView(e)
+    user.refreshView()
   }
 
   async detailed () {
@@ -459,6 +463,20 @@ class Podcast {
         (e) => {
           this.episodes.map(ep => { ep.played = false })
           this.refreshView()
+        }
+      )
+    })
+
+    detailedEle.querySelectorAll('.episode-description a').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          window.api.send(
+            'openURL',
+            e.currentTarget.getAttribute('href')
+          )
+
+          e.preventDefault()
         }
       )
     })
