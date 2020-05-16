@@ -143,8 +143,6 @@ class Player {
   }
 
   _updateGlobalPlayerUI () {
-    this.audioPlayer.focus()
-
     document.getElementById(
       'podcast-display-artwork-cont'
     ).innerHTML = `
@@ -182,8 +180,10 @@ class Player {
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
 
+    /*
     this.audioPlayer.removeEventListener('blur', (e) => this._focusPlayer)
     this.audioPlayer.addEventListener('blur', (e) => this._focusPlayer)
+    */
 
     // @todo Improve audio player focus after blur. (For instance, after input element blur.)
   }
