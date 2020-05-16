@@ -35,6 +35,9 @@ coverage
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+# Packages
+castor-darwin-x64
+
 # Dependency directories
 node_modules/
 jspm_packages/
