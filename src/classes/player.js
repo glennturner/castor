@@ -77,7 +77,9 @@ class Player {
       })
     )
 
-    this.podcast.refreshView()
+    if (this.podcast) {
+      this.podcast.refreshView()
+    }
   }
 
   get src () {
@@ -180,15 +182,20 @@ class Player {
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
 
-    this.audioPlayer.addEventListener('blur', (e) => {
-      if (!e.relatedTarget || !(
-        e.relatedTarget instanceof HTMLInputElement
-      )) {
-        e.target.focus()
-      }
-    })
+    this.audioPlayer.removeEventListener('blur', (e) => this._focusPlayer)
+    this.audioPlayer.addEventListener('blur', (e) => this._focusPlayer)
 
     // @todo Improve audio player focus after blur. (For instance, after input element blur.)
+  }
+
+  _focusPlayer (e) {{
+    console.log('FOCUS PLAYER')
+    if (!e.relatedTarget || !(
+      e.relatedTarget instanceof HTMLInputElement
+    )) {
+      e.target.focus()
+    }
+  }
   }
 
   // Should improve this, as invoking `audioPlayer.pause()` will cause a delayed offset.
