@@ -1,8 +1,12 @@
 const {
   contextBridge,
+  ipcMain,
   ipcRenderer
 } = require('electron')
 
+const Dialogs = require('dialogs')
+
+const Feed = require('./classes/feed')
 const Podcast = require('./classes/podcast')
 const User = require('./classes/user')
 
@@ -13,12 +17,14 @@ contextBridge.exposeInMainWorld(
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
-        'saveBackup',
-        'saveOPML',
         'hash',
+        'openURL',
+        'parseXML',
         'reset',
+        'saveBackup',
         'saveEpisode',
-        'parseXML'
+        'saveOPML',
+        'togglePlay'
       ]
 
       if (validChannels.includes(channel)) {
@@ -27,12 +33,15 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
+        'episodeSaved',
         'exportBackup',
         'exportOPML',
         'hashed',
+        'parsedXML',
+        'promptURL',
         'resetCompleted',
-        'episodeSaved',
-        'parsedXML'
+        'restoreBackup',
+        'subscribeByUrl'
       ]
 
       if (validChannels.includes(channel)) {
@@ -59,3 +68,14 @@ ipcRenderer.on('togglePlay', () => {
   }
 })
 
+ipcRenderer.on('promptURL', (args) => {
+  const dialogs = Dialogs()
+    dialogs.prompt(
+      'Enter a URL to add your subscribed podcasts below.',
+      url => {
+        ipcRenderer.send('subscribeByUrl', {
+          url: url
+        })
+      }
+    )
+})
