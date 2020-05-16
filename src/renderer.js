@@ -87,3 +87,29 @@ window.api.receive('exportBackup', (filename) => {
   })
 })
 
+window.api.receive('restoreBackup', json => {
+  localStorage.clear()
+  Object.keys(json).forEach(key => {
+    localStorage.setItem(key, json[key])
+  })
+  window.location.reload()
+})
+
+window.api.receive('subscribeByUrl', (id, url) => {
+  let podcast = new Podcast({
+    id: id,
+    feed: url
+  })
+
+  podcast.getFeed().then((resp) => {
+    podcast.subscribe()
+  }).catch(err => {
+    console.log('THROW ERROW')
+    console.log(err)
+  })
+})
+
+window.api.receive('togglePlay', () => {
+  player.toggle()
+})
+
