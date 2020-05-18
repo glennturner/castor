@@ -243,10 +243,6 @@ class Player {
     document.getElementById('pause-icon').style.display = 'inline-block'
   }
 
-  _isInputFocused () {
-    return document.activeElement.tagName === 'INPUT'
-  }
-
   _shouldUpdateCurrentTime (currentTime) {
     return (currentTime - this.#timeElapsed) > this.#timeElapsedThreshold
   }
