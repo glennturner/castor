@@ -171,25 +171,20 @@ class Player {
   }
 
   _setEvents () {
-    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) })
-    this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) })
+    this._removeEvents()
 
-    this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) })
-    this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) })
+    this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) }, true)
+    this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) }, true)
+    this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
+  }
 
-    this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
-    this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) })
-
-    /*
-    this.audioPlayer.removeEventListener('blur', (e) => this._focusPlayer)
-    this.audioPlayer.addEventListener('blur', (e) => this._focusPlayer)
-    */
-
-    // @todo Improve audio player focus after blur. (For instance, after input element blur.)
+  _removeEvents () {
+    this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) }, true)
+    this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) }, true)
+    this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
   }
 
   _focusPlayer (e) {{
-    console.log('FOCUS PLAYER')
     if (!e.relatedTarget || !(
       e.relatedTarget instanceof HTMLInputElement
     )) {
@@ -246,6 +241,10 @@ class Player {
   _showPause () {
     document.getElementById('play-icon').style.display = 'none'
     document.getElementById('pause-icon').style.display = 'inline-block'
+  }
+
+  _isInputFocused () {
+    return document.activeElement.tagName === 'INPUT'
   }
 
   _shouldUpdateCurrentTime (currentTime) {
