@@ -206,7 +206,7 @@ class Podcast {
           &#9657;
         </span>
         <div
-          class="dropdown">
+          class="dropdown"
         >
           <button
             class="btn btn-settings btn-secondary"
@@ -233,8 +233,11 @@ class Podcast {
 
     showEle.querySelector('.podcast-subscribe-toggle').addEventListener('click', (e) => {
       let podcast = Podcast.get(e.target.dataset.podcastId)
-      this.subscribed() ? this.unsubscribe() : this.subscribe()
-      show(e)
+      (
+        this.subscribed() ? this.unsubscribe() : this.subscribe()
+      ).then(() => {
+        this.show(e)
+      })
     })
 
     showEle.querySelector('.btn-play').addEventListener(
