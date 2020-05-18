@@ -1,6 +1,6 @@
 {
-  "name": "castor",
-  "productName": "castor",
+  "name": "Castor",
+  "productName": "Castor",
   "version": "1.0.0",
   "description": "A very no-frills podcast app.",
   "main": "src/index.js",
