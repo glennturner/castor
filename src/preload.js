@@ -17,6 +17,8 @@ contextBridge.exposeInMainWorld(
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
+        'disableSpace',
+        'enableSpace',
         'hash',
         'openURL',
         'parseXML',
@@ -79,3 +81,4 @@ ipcRenderer.on('promptURL', (args) => {
       }
     )
 })
+
