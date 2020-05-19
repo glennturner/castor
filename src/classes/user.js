@@ -22,9 +22,9 @@ class User {
 
   get subscribedPodcasts () {
     let podcasts = this.subscribedPodcastIds().map(
-      podcast => Podcast.get(podcast)
-    // Yeah. Bad DB issue.
-    // @todo Fix.
+      (podcast) => {
+        return Podcast.get(podcast)
+      }
     ).filter(podcast => podcast !== undefined)
 
     return podcasts
@@ -40,6 +40,7 @@ class User {
   subscribe (podcastId) {
     let subscribed = this.subscribedPodcasts.map(podcast => podcast.id)
 
+    /* Replace with break event? */
     this.subscribedPodcasts = [...new Set(
       subscribed.concat([podcastId])
     )]
@@ -63,6 +64,7 @@ class User {
 
   refreshView () {
     this._renderSubscriberNav()
+    // this.refreshSubscriptions().then(() => this._renderSubscriberNav)
   }
 
   refreshSubscriptions () {
@@ -82,6 +84,8 @@ class User {
             this.refreshView()
             resolve()
           }
+        }).finally(() => {
+          console.log('REFRESH SUBS')
         })
       })
     })
