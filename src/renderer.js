@@ -6,7 +6,18 @@ view.resume()
 
 player = new Player
 
-document.getElementById('search').addEventListener('submit', (e) => {
+let searchEle = document.getElementById('search')
+
+/* Ignore space shortcut in search field. */
+searchEle.addEventListener('focus', (e) => {
+  window.api.send('disableSpace')
+}, true)
+
+searchEle.addEventListener('blur', (e) => {
+  window.api.send('enableSpace')
+}, true)
+
+searchEle.addEventListener('submit', (e) => {
   let searchTerm = document.getElementById('search-input').value
 
   search(searchTerm)
