@@ -224,7 +224,7 @@ const template = [
     submenu: [
       {
         label: 'Add Show By URL...',
-        accelerator: 'CmdOrCtrl+A',
+        accelerator: 'CmdOrCtrl+Shift+A',
         click: () => {
           mainWindow.webContents.send('promptURL', true)
         }
@@ -312,8 +312,11 @@ if (process.platform === 'darwin') {
   )
 }
 
-const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
+function setMenu () {
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}
+setMenu()
 
 // Example context menu.
 contextMenu({
@@ -340,3 +343,12 @@ app.whenReady().then(() => {
   })
 })
 
+ipcMain.on('disableSpace', (event) => {
+  template[2].submenu[0].accelerator = 'CmdOrCtrl+Up'
+  setMenu()
+})
+
+ipcMain.on('enableSpace', (event) => {
+  template[2].submenu[0].accelerator = 'Space'
+  setMenu()
+})
