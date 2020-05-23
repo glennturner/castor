@@ -53,6 +53,7 @@ class Episode {
 
     currentState.currentTime = currentTime
     this.state = currentState
+    this.updateCurrentTime()
   }
 
   pubDateDisplay () {
@@ -152,7 +153,7 @@ class Episode {
                 <span
                   class="elapsed-time"
                 >
-                  ${this.minElapsed()} min elapsed
+                  ${this.minElapsed()}
                 </span>
               </h5>
 
@@ -218,11 +219,15 @@ class Episode {
     return this.id === player.state.episodeId
   }
 
+  updateCurrentTime () {
+    document.getElementById(this.id).querySelector('.elapsed-time').innerText = this.minElapsed() + ' min elapsed'
+  }
+
   minElapsed () {
     if (this.currentTime) {
       return Math.floor(this.currentTime / 60)
     } else {
-      return 0
+      return ''
     }
   }
 
