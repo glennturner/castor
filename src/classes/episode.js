@@ -149,6 +149,11 @@ class Episode {
                 class="episode-title"
               >
                 ${icons} ${this.title}
+                <span
+                  class="elapsed-time"
+                >
+                  ${this.minElapsed()} min elapsed
+                </span>
               </h5>
 
               ${playedBadge}
@@ -211,6 +216,14 @@ class Episode {
 
   isActive () {
     return this.id === player.state.episodeId
+  }
+
+  minElapsed () {
+    if (this.currentTime) {
+      return Math.floor(this.currentTime / 60)
+    } else {
+      return 0
+    }
   }
 
   pubDisplayDate () {
