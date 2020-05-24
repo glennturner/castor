@@ -53,7 +53,7 @@ class Episode {
 
     currentState.currentTime = currentTime
     this.state = currentState
-    this.updateCurrentTime()
+    this.updateTimeElapsed()
   }
 
   pubDateDisplay () {
@@ -151,9 +151,9 @@ class Episode {
               >
                 ${icons} ${this.title}
                 <span
-                  class="elapsed-time"
+                  class="duration"
                 >
-                  ${this.minElapsed()}
+                  ${this.durationMin()} Min
                 </span>
               </h5>
 
@@ -203,6 +203,11 @@ class Episode {
             class="episode-supplemental"
           >
             <div
+              class="episode-time-remaining"
+            >
+              ${this._remainingTimeHTML()}
+            </div>
+            <div
               class="episode-description"
             >
               <p>
@@ -219,22 +224,59 @@ class Episode {
     return this.id === player.state.episodeId
   }
 
-  updateCurrentTime () {
-    document.getElementById(this.id).querySelector('.elapsed-time').innerText = this.minElapsed() + ' min elapsed'
+  updateTimeElapsed () {
+    let remainingEle = document.getElementById(this.id).querySelector('.episode-time-remaining')
+
+    if (remainingEle) {
+      remainingEle.innerHTML = this._remainingTimeHTML()
+    }
   }
 
   minElapsed () {
     if (this.currentTime) {
-      return Math.floor(this.currentTime / 60)
+      return this._timeToMin(this.currentTime)
     } else {
       return ''
     }
+  }
+
+  minRemaining () {
+    if (this.currentTime) {
+      console.log('DURATION: ' + this.duration + ' - ' + this.minElapsed())
+      return this.durationMin() - this.minElapsed()
+    }
+  }
+
+  durationMin () {
+    return this._timeToMin(this.duration)
   }
 
   pubDisplayDate () {
     let eles = this.pubDate.split(' ')
 
     return [ eles[2], (eles[1] + ','), eles[3] ].join(' ')
+  }
+
+  _timeToMin (time) {
+     return Math.floor(time / 60)
+  }
+
+  _remainingTimeHTML () {
+    let minElapsed = this.minElapsed()
+    let minRemaining = this.minRemaining()
+    let maxMin = this.durationMin()
+
+    return this.currentTime ? `
+      <progress
+        id="episode-time-remaining-progress"
+        max="${maxMin}"
+        value="${minElapsed}"
+      >
+        ${minElapsed}
+      </progress>
+
+      ${minRemaining} min left
+    ` : ''
   }
 }
 
