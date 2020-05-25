@@ -123,4 +123,3 @@ window.api.receive('subscribeByUrl', (id, url) => {
 window.api.receive('togglePlay', () => {
   player.toggle()
 })
-
