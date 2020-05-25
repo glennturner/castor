@@ -44,11 +44,9 @@ class Player {
     state.episodeId = episodeId
 
     this.state = state
-    this.podcast = this.episode.podcastId
-    this.audioPlayer.src = this.episode.episodeUrl
-    if (this.episode.state.currentTime) {
-      this.audioPlayer.currentTime = this.episode.state.currentTime
-    }
+
+    this._updatePodcast()
+    this._updateGlobalPlayerAttrs()
 
     this._updateGlobalPlayerUI()
   }
@@ -93,10 +91,14 @@ class Player {
   playEpisode (ep) {
     this._activateEp(this.state.episodeId, ep.id)
 
-    this.podcast = ep.podcastId
-    this.episode = ep.id
+    // Prevent making unnecessary saves.
+    this._updatePodcast()
 
-    this.src = this.episode.episodeUrl
+    if (this.episode.id !== ep.id) {
+      this.episode = ep.id
+    }
+
+    this._updateGlobalPlayerSrc()
 
     this.toggle()
   }
@@ -142,6 +144,25 @@ class Player {
     currentEp.classList.add(className)
   }
 
+  _updatePodcast () {
+    if (this.podcast !== this.episode.podcastId) {
+      this.podcast = this.episode.podcastId
+    }
+  }
+
+  _updateGlobalPlayerAttrs () {
+    this._updateGlobalPlayerSrc()
+    if (this.episode.state.currentTime) {
+      this.audioPlayer.currentTime = this.episode.state.currentTime
+    }
+  }
+
+  _updateGlobalPlayerSrc () {
+    if (this.src !== this.episode.episodeUrl) {
+      this.src = this.episode.episodeUrl
+    }
+  }
+
   _updateGlobalPlayerUI () {
     document.getElementById(
       'podcast-display-artwork-cont'
@@ -176,21 +197,27 @@ class Player {
     this.audioPlayer.addEventListener('play', (e) => { this._setPlay(e) }, true)
     this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
+    this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
   }
 
   _removeEvents () {
     this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) }, true)
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
+    this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
   }
 
-  _focusPlayer (e) {{
+  _focusPlayer (e) {
     if (!e.relatedTarget || !(
       e.relatedTarget instanceof HTMLInputElement
     )) {
       e.target.focus()
     }
   }
+
+  _onLoaded (e) {
+    console.log('EP LOADED')
+    console.log(e.target.duration)
   }
 
   // Should improve this, as invoking `audioPlayer.pause()` will cause a delayed offset.
