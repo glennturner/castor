@@ -63,6 +63,7 @@ class User {
   }
 
   refreshView () {
+    console.log('REFRESH USER SUBSCRIBER NAV')
     this._renderSubscriberNav()
     // this.refreshSubscriptions().then(() => this._renderSubscriberNav)
   }

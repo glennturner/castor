@@ -269,6 +269,11 @@ nav .subscribed-podcasts-options {
   margin: 0.5rem 0;
 }
 
+.episode .duration.badge {
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+}
+
 /* Players */
 .capsule-player {
   height: 230px;

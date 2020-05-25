@@ -30,10 +30,13 @@ class Player {
   }
 
   get episode () {
+    console.log('GET EP')
+    console.log(this.podcast)
     return this.podcast.getEpisodeById(this.state.episodeId)
   }
 
   set episode (episodeId) {
+    console.log('SET EP: ' + episodeId + ' (PODCASTID: ' + this.episode.podcastId + ')')
     // Ep has changed, so reset elapsed time, reset play state, and refresh view.
     if (!this.episode || this.episode.id != episodeId) {
       this.#timeElapsed = 0
@@ -42,6 +45,7 @@ class Player {
 
     let state = this.state
     state.episodeId = episodeId
+    state.podcastId = this.episode.podcastId
 
     this.state = state
 
@@ -52,6 +56,8 @@ class Player {
   }
 
   get podcast () {
+    console.log('GET PODCAST BY ID: ' + this.state.podcastId)
+    console.log(this.state)
     return Podcast.get(this.state.podcastId)
   }
 
@@ -91,9 +97,7 @@ class Player {
   playEpisode (ep) {
     this._activateEp(this.state.episodeId, ep.id)
 
-    // Prevent making unnecessary saves.
     this._updatePodcast()
-
     if (this.episode.id !== ep.id) {
       this.episode = ep.id
     }
@@ -198,6 +202,11 @@ class Player {
     this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
     this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
+    document.querySelector('.play-pause').addEventListener(
+      'click', (e) => {
+        this._togglePlayPause(e)
+      }, true
+    )
   }
 
   _removeEvents () {
@@ -258,6 +267,11 @@ class Player {
     this.playing = false
     this._onTimeUpdate(e, true)
     this._showPlay()
+  }
+
+  _togglePlayPause (e) {
+    console.log('TOGGLE PLAY? ' + this.playing)
+    this.playing ? this.pause(e) : this.play(e)
   }
 
   _showPlay () {

@@ -162,12 +162,13 @@ class Episode {
                 class="episode-title"
               >
                 ${icons} ${this.title}
-                <span
-                  class="duration"
-                >
-                  ${this.durationMin()} Min
-                </span>
               </h5>
+
+              <span
+                class="duration badge badge-info"
+              >
+                ${this.durationMin()} Min
+              </span>
 
               ${playedBadge}
 

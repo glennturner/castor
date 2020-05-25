@@ -161,6 +161,7 @@ class Podcast {
   // Eventually we should optimize this to allow for refreshing
   // specific elements, but this is fine for now.
   refreshView (e) {
+    console.log('REFRESH VIEW')
     this._showDetailedView(e)
     user.refreshView()
   }
@@ -171,7 +172,7 @@ class Podcast {
 
   async playLatest () {
     return await this.update().then(() => {
-      this.playEpisode(this.episodes[0])
+      player.playEpisode(this.episodes[0])
     })
   }
 
@@ -398,7 +399,10 @@ class Podcast {
         'dblclick',
         (e) => {
           let id = e.currentTarget.dataset.episodeId
+          console.log('ID: ' + id)
           let ep = this.getEpisodeById(id)
+          console.log('EP: ')
+          console.log(ep)
 
           player.playEpisode(ep)
         }
