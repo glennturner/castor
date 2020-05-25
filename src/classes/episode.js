@@ -88,6 +88,18 @@ class Episode {
     }
   }
 
+  update (attrs) {
+    let keys = [
+      'duration'
+    ]
+
+    Object.keys(attrs).map(attr => {
+      if (keys.include(attr)) {
+        this[attr] = attrs[attr]
+      }
+    })
+  }
+
   detailedHTML () {
     let iconClass = 'episode-metadata-icon'
     let icons = `<span class="${iconClass} spacer"></span>`
@@ -225,10 +237,14 @@ class Episode {
   }
 
   updateTimeElapsed () {
-    let remainingEle = document.getElementById(this.id).querySelector('.episode-time-remaining')
+    let epEle = document.getElementById(this.id)
 
-    if (remainingEle) {
-      remainingEle.innerHTML = this._remainingTimeHTML()
+    if (epEle) {
+      let remainingEle = epEle.querySelector('.episode-time-remaining')
+
+      if (remainingEle) {
+        remainingEle.innerHTML = this._remainingTimeHTML()
+      }
     }
   }
 
