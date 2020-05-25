@@ -4,6 +4,9 @@ const {
   ipcRenderer
 } = require('electron')
 
+const Prefs = require('./helpers/prefs.js')
+let prefs = new Prefs
+
 const Dialogs = require('dialogs')
 
 const Feed = require('./classes/feed')
@@ -22,6 +25,7 @@ contextBridge.exposeInMainWorld(
         'hash',
         'openURL',
         'parseXML',
+        'prefs',
         'reset',
         'saveBackup',
         'saveEpisode',
@@ -41,9 +45,11 @@ contextBridge.exposeInMainWorld(
         'hashed',
         'parsedXML',
         'promptURL',
+        'requestPrefs',
         'resetCompleted',
         'restoreBackup',
-        'subscribeByUrl'
+        'subscribeByUrl',
+        'togglePref'
       ]
 
       if (validChannels.includes(channel)) {
@@ -81,4 +87,3 @@ ipcRenderer.on('promptURL', (args) => {
       }
     )
 })
-
