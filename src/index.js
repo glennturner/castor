@@ -22,6 +22,9 @@ const Podcast = require('./classes/podcast')
 const Player = require('./classes/player')
 const User = require('./classes/user')
 
+const Prefs = require('./helpers/prefs.js')
+let prefs = new Prefs
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
@@ -41,6 +44,8 @@ const createWindow = () => {
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  mainWindow.webContents.openDevTools()
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'))
@@ -215,6 +220,9 @@ ipcMain.on('subscribeByUrl', (event, args) => {
   mainWindow.webContents.send('subscribeByUrl', hashedId, args.url)
 })
 
+console.log('GET PREFS')
+console.log(prefs.prefs)
+
 /* Menus */
 const isMac = process.platform === 'darwin'
 
@@ -275,6 +283,18 @@ const template = [
       },
       {
         type: 'separator'
+      },
+      {
+        label: (
+          'Show Debug Menu Options'
+        ),
+        accelerator: 'CmdOrCtrl+Shift+M',
+        checked: prefs.getPref('debugMenuOpts'),
+        type: 'checkbox',
+        click: (e) => {
+          console.log('TOGGLE DEBUG MENU OPT')
+          prefs.togglePref('debugMenuOpts')
+        }
       },
       {
         label: 'Reset (DEBUG)',
@@ -341,6 +361,12 @@ app.whenReady().then(() => {
   globalShortcut.register('Cmd+Up', () => {
     mainWindow.webContents.send('togglePlay', true)
   })
+
+})
+
+ipcMain.on('prefs', (event, prefs) => {
+  console.log('MAIN RECEIPVED PREFS')
+  console.log(prefs)
 })
 
 ipcMain.on('disableSpace', (event) => {
