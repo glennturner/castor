@@ -259,7 +259,6 @@ class Episode {
 
   minRemaining () {
     if (this.currentTime) {
-      console.log('DURATION: ' + this.duration + ' - ' + this.minElapsed())
       return this.durationMin() - this.minElapsed()
     }
   }

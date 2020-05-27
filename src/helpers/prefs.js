@@ -49,9 +49,7 @@ class Prefs {
 
   togglePref (key) {
     let val = this.getPref(key)
-    console.log('ORI ' + key + ' VAL: ' + val)
     val = val !== true
-    console.log('NEW ' + key + ' VAL: ' + val)
 
     this.setPref(key, val)
   }

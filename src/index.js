@@ -105,7 +105,6 @@ ipcMain.on('openURL', (event, url) => {
 })
 
 function importOPML (e) {
-  console.log('IMPORT OPML')
   dialog.showOpenDialog(
     {
       filters: [
@@ -122,11 +121,8 @@ function importOPML (e) {
     for (let file of dialog.filePaths) {
       let xml = fs.readFileSync(file, 'utf-8')
       let parser = new DOMParser
-      console.log('OPEN FILE ' + file)
       if (Itunes.isPlaylist(xml, parser)) {
-        console.log('IS ITUNES PLAYLIST')
         let playlist = Itunes.parsePlaylist(xml, parser)
-        console.log(playlist)
       // OPML
       } else {
         console.error('Currently unsupported')
@@ -136,7 +132,6 @@ function importOPML (e) {
 }
 
 function restoreBackup (e) {
-  console.log('IMPORT BACKUP')
   dialog.showOpenDialog(
     {
       filters: [
@@ -213,15 +208,10 @@ ipcMain.on('saveBackup', (event, argvs) => {
 })
 
 ipcMain.on('subscribeByUrl', (event, args) => {
-  console.log('SEND URL TO MAIN WINDOW: ')
-  console.log(args)
   let hashedId = ncrypto.createHash('md5').update(args.url).digest('hex')
 
   mainWindow.webContents.send('subscribeByUrl', hashedId, args.url)
 })
-
-console.log('GET PREFS')
-console.log(prefs.prefs)
 
 /* Menus */
 const isMac = process.platform === 'darwin'
