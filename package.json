@@ -1,7 +1,7 @@
 {
   "name": "Castor",
   "productName": "Castor",
-  "version": "0.0.8",
+  "version": "0.8.0",
   "description": "A very no-frills podcast app.",
   "main": "src/index.js",
   "scripts": {
