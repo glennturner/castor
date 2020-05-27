@@ -264,7 +264,35 @@ class Episode {
   }
 
   durationMin () {
-    return this._timeToMin(this.duration)
+    let duration = this.getDuration()
+    return this._timeToMin(duration)
+  }
+
+  // Handling parsing non-standard duration formats
+  getDuration () {
+    let duration = this.duration
+    let durParts = duration.split(':')
+
+    if (durParts.length > 1) {
+      durParts = durParts.map(part => Number.parseInt(part))
+
+      // Should programmatically calc seconds by durParts length, but
+      // for now, we'll just special-case it.
+      // Under an hour
+      if (durParts.length == 2) {
+        durParts.unshift(0)
+      }
+
+      duration = (
+        (
+          durParts[0] * 3600
+        ) + (
+          durParts[1] * 60
+        ) + durParts[2]
+      )
+    }
+
+    return duration
   }
 
   pubDisplayDate () {
