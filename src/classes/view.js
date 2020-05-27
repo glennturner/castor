@@ -61,7 +61,7 @@ class View {
   resume () {
     let history = this._getHistory()
 
-    if (history) {
+    if (history && Object.keys(history).length) {
       this._doChange(history)
     }
   }
