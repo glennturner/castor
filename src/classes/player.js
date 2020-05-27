@@ -30,25 +30,23 @@ class Player {
   }
 
   get episode () {
-    console.log('GET EP')
-    console.log(this.podcast)
     return this.podcast.getEpisodeById(this.state.episodeId)
   }
 
   set episode (episodeId) {
-    console.log('SET EP: ' + episodeId + ' (PODCASTID: ' + this.episode.podcastId + ')')
-    // Ep has changed, so reset elapsed time, reset play state, and refresh view.
-    if (!this.episode || this.episode.id != episodeId) {
-      this.#timeElapsed = 0
-      this.playing = false
-    }
-
     let state = this.state
     state.episodeId = episodeId
-    state.podcastId = this.episode.podcastId
+
+    // Ep has changed, so reset elapsed time, reset play state, and refresh view.
+    if (!this.episode || (this.episode.id != episodeId)) {
+      this.#timeElapsed = 0
+      this.playing = false
+    // Otherwise, the podcast has changed.
+    } else {
+      state.podcastId = this.episode.podcastId
+    }
 
     this.state = state
-
     this._updatePodcast()
     this._updateGlobalPlayerAttrs()
 
@@ -56,8 +54,6 @@ class Player {
   }
 
   get podcast () {
-    console.log('GET PODCAST BY ID: ' + this.state.podcastId)
-    console.log(this.state)
     return Podcast.get(this.state.podcastId)
   }
 
@@ -69,10 +65,14 @@ class Player {
   }
 
   get state () {
-    return Player.state()
+    return JSON.parse(
+      localStorage.getItem(Player.#stateKey)
+    )
   }
 
   set state (obj) {
+    let priorPodcastId = this.state.podcastId
+
     localStorage.setItem(
       Player.#stateKey,
       JSON.stringify({
@@ -81,7 +81,8 @@ class Player {
       })
     )
 
-    if (this.podcast) {
+    // Refresh podcast view if necessary.
+    if (this.podcast.id !== priorPodcastId) {
       this.podcast.refreshView()
     }
   }
@@ -95,12 +96,19 @@ class Player {
   }
 
   playEpisode (ep) {
+    this.podcast = ep.podcastId
+
+    if (!this.episode || (this.episode.id !== ep.id)) {
+      this.episode = ep.id
+    }
+
+    if (!this.episode) {
+      this.episode = ep.id
+    }
+
     this._activateEp(this.state.episodeId, ep.id)
 
     this._updatePodcast()
-    if (this.episode.id !== ep.id) {
-      this.episode = ep.id
-    }
 
     this._updateGlobalPlayerSrc()
 
@@ -157,7 +165,7 @@ class Player {
   _updateGlobalPlayerAttrs () {
     this._updateGlobalPlayerSrc()
     if (this.episode.state.currentTime) {
-      this.audioPlayer.currentTime = this.episode.state.currentTime
+      this.audioPlayer.currentTime = this.episode.currentTime
     }
   }
 
@@ -225,8 +233,6 @@ class Player {
   }
 
   _onLoaded (e) {
-    console.log('EP LOADED')
-    console.log(e.target.duration)
   }
 
   // Should improve this, as invoking `audioPlayer.pause()` will cause a delayed offset.
