@@ -56,6 +56,10 @@ class Episode {
     this.updateTimeElapsed()
   }
 
+  uidClassName () {
+    return `ep-${this.id}`
+  }
+
   pubDateDisplay () {
     return new Date(
       Date.parse(this.pubDate)
@@ -98,6 +102,18 @@ class Episode {
         this[attr] = attrs[attr]
       }
     })
+  }
+
+  // Slop, but more efficient slop.
+  refreshEles () {
+    // @todo Fix dupe child elements.
+    // This created dupe children. For now, this is faster than the prior
+    // redraw methods, so we'll deal with it.
+    document.getElementById(this.id).outerHTML = this.detailedHTML()
+
+    // Should work out a better resolution between this and `Podcast.refreshView`,
+    // but for now it's fine.
+    Episode.setEvents(document.getElementById(this.id))
   }
 
   detailedHTML () {
@@ -145,9 +161,10 @@ class Episode {
       <div
         class="episode ${
           this.isActive() ? 'active' : ''
-        }"
+        } ${this.uidClassName()}"
         id="${this.id}"
         data-episode-id="${this.id}"
+        data-podcast-id="${this.podcastId}"
       >
         <div
           class="episode-metadata"
@@ -188,7 +205,7 @@ class Episode {
                   <button
                     class="trigger-ep-ctx-menu btn btn-sm btn-settings btn-primary"
                     type="button"
-                    data-podcast-id"${this.podcastId}"
+                    data-podcast-id="${this.podcastId}"
                     data-episode-id="${this.id}"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -311,6 +328,90 @@ class Episode {
       ${minRemaining} min left
     ` : ''
   }
+
+  // Episodes
+  static setEvents (parentEle) {
+    parentEle.querySelectorAll('.mark-episode-played').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          let id = e.currentTarget.dataset.episodeId
+          let ep = this.getEpisodeById(id)
+
+          ep.played = true
+          ep.refreshDisplay(e)
+        }
+      )
+    })
+
+    parentEle.querySelectorAll('.mark-episode-unplayed').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          let id = e.currentTarget.dataset.episodeId
+          let ep = this.getEpisodeById(id)
+
+          ep.played = false
+          ep.refreshDisplay(e)
+        }
+      )
+    })
+
+    parentEle.querySelectorAll('.episode-description a').forEach(ele => {
+      ele.addEventListener(
+        'click',
+        (e) => {
+          window.api.send(
+            'openURL',
+            e.currentTarget.getAttribute('href')
+          )
+
+          e.preventDefault()
+        }
+      )
+    })
+
+    parentEle.querySelectorAll('.trigger-ep-ctx-menu').forEach(ele => {
+      ele.addEventListener('click', (e) => {
+        Episode._showEpCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
+
+    parentEle.querySelectorAll('.episode').forEach(ele => {
+      ele.addEventListener('contextmenu', (e) => {
+        console.log('THIS?')
+        console.log(this)
+        Episode._showEpCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
+
+    return parentEle
+  }
+
+  static _showEpCtxMenu (e) {
+    let pid = e.currentTarget.dataset.podcastId
+    let eid = e.currentTarget.dataset.episodeId
+    console.log('SHOW EXP CTX MENU')
+    console.log(e)
+    console.log(e.currentTarget)
+
+    let podcast = Podcast.get(pid)
+    let ep = podcast.getEpisodeById(eid)
+
+    window.api.send(
+      'showEpCtxMenu',
+      {
+        id: ep.id,
+        podcastId: ep.podcastId,
+        played: ep.played
+      }
+    )
+  }
+
 }
 
 if (typeof(module) !== 'undefined') {
