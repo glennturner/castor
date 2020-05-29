@@ -165,6 +165,15 @@ class Podcast {
     user.refreshView()
   }
 
+  // @optimize
+  // Instead of re-rendering the entire view, we just update the ep.
+  refreshEpView (e, epId) {
+    let ep = this.getEpisodeById(epId)
+    document.getElementById(epId).innerHTML = ep.detailedHTML()
+
+    //user.refreshSubscriptionEp(epId)
+  }
+
   async getFeed () {
     return new Feed(this.feed).get()
   }
@@ -416,32 +425,6 @@ class Podcast {
       )
     })
 
-    detailedEle.querySelectorAll('.mark-episode-played').forEach(ele => {
-      ele.addEventListener(
-        'click',
-        (e) => {
-          let id = e.currentTarget.dataset.episodeId
-          let ep = this.getEpisodeById(id)
-
-          ep.played = true
-          this.refreshView(e)
-        }
-      )
-    })
-
-    detailedEle.querySelectorAll('.mark-episode-unplayed').forEach(ele => {
-      ele.addEventListener(
-        'click',
-        (e) => {
-          let id = e.currentTarget.dataset.episodeId
-          let ep = this.getEpisodeById(id)
-
-          ep.played = false
-          this.refreshView(e)
-        }
-      )
-    })
-
     detailedEle.querySelectorAll('[data-ep-list-filter]').forEach(ele => {
       ele.addEventListener(
         'click',
@@ -472,51 +455,8 @@ class Podcast {
       )
     })
 
-    detailedEle.querySelectorAll('.episode-description a').forEach(ele => {
-      ele.addEventListener(
-        'click',
-        (e) => {
-          window.api.send(
-            'openURL',
-            e.currentTarget.getAttribute('href')
-          )
-
-          e.preventDefault()
-        }
-      )
-    })
-
-    detailedEle.querySelectorAll('.trigger-ep-ctx-menu').forEach(ele => {
-      ele.addEventListener('click', (e) => {
-        this._showEpCtxMenu(e)
-
-        e.preventDefault()
-      }, false)
-    })
-
-    detailedEle.querySelectorAll('.episode').forEach(ele => {
-      ele.addEventListener('contextmenu', (e) => {
-        this._showEpCtxMenu(e)
-
-        e.preventDefault()
-      }, false)
-    })
-
+    detailedEle = Episode.setEvents(detailedEle)
     return detailedEle
-  }
-
-  _showEpCtxMenu (e) {
-    let eid = e.currentTarget.dataset.episodeId
-    let ep = this.getEpisodeById(eid)
-
-    window.api.send(
-      'showEpCtxMenu',
-      {
-        id: ep.id,
-        podcastId: ep.podcastId,
-        played: ep.played
-      }
-    )
   }
 
   _unplayedFilter () {
