@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld(
         'saveBackup',
         'saveEpisode',
         'saveOPML',
+        'showEpCtxMenu',
         'togglePlay'
       ]
 
@@ -43,6 +44,8 @@ contextBridge.exposeInMainWorld(
         'exportBackup',
         'exportOPML',
         'hashed',
+        'markAsPlayed',
+        'markAsUnplayed',
         'parsedXML',
         'promptURL',
         'requestPrefs',

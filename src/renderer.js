@@ -78,6 +78,12 @@ function searchResults (podcasts) {
   return list
 }
 
+// @todo Deprecate for direct podcast-less ep lookup?
+function getEpByPodcastAndEpIds (podcastId, epId) {
+  let podcast = Podcast.get(podcastId)
+  return podcast.getEpisodeById(epId)
+}
+
 window.api.receive('exportOPML', (filename) => {
   let user = new User
   let xml = user.exportOPML()
@@ -122,4 +128,16 @@ window.api.receive('subscribeByUrl', (id, url) => {
 
 window.api.receive('togglePlay', () => {
   player.toggle()
+})
+
+window.api.receive('markAsPlayed', (epObj) => {
+  let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
+  ep.played = true
+  ep.podcast.refreshView()
+})
+
+window.api.receive('markAsUnplayed', (epObj) => {
+  let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
+  ep.played = false
+  ep.podcast.refreshView()
 })
