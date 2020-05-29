@@ -4,6 +4,7 @@ const {
   dialog,
   globalShortcut,
   Menu,
+  MenuItem,
   shell,
   Tray,
   ipcMain
@@ -45,7 +46,7 @@ const createWindow = () => {
     }
   })
 
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'))
@@ -368,3 +369,21 @@ ipcMain.on('enableSpace', (event) => {
   template[2].submenu[0].accelerator = 'Space'
   setMenu()
 })
+
+ipcMain.on('showEpCtxMenu', (event, epObj) => {
+  const epMenu = new Menu()
+
+  let playedAction = epObj.played ? 'Unplayed' : 'Played'
+  let sendAction = `markAs${playedAction}`
+  epMenu.append(
+    new MenuItem ({
+      label: `Mark as ${playedAction}`,
+      click () {
+        mainWindow.webContents.send(sendAction, epObj)
+      }
+    })
+  )
+
+  epMenu.popup(mainWindow)
+})
+
