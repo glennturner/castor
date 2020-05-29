@@ -486,7 +486,37 @@ class Podcast {
       )
     })
 
+    detailedEle.querySelectorAll('.trigger-ep-ctx-menu').forEach(ele => {
+      ele.addEventListener('click', (e) => {
+        this._showEpCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
+
+    detailedEle.querySelectorAll('.episode').forEach(ele => {
+      ele.addEventListener('contextmenu', (e) => {
+        this._showEpCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
+
     return detailedEle
+  }
+
+  _showEpCtxMenu (e) {
+    let eid = e.currentTarget.dataset.episodeId
+    let ep = this.getEpisodeById(eid)
+
+    window.api.send(
+      'showEpCtxMenu',
+      {
+        id: ep.id,
+        podcastId: ep.podcastId,
+        played: ep.played
+      }
+    )
   }
 
   _unplayedFilter () {
