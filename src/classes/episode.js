@@ -186,28 +186,15 @@ class Episode {
                   class="dropdown"
                 >
                   <button
-                    class="btn btn-sm btn-settings btn-primary"
+                    class="trigger-ep-ctx-menu btn btn-sm btn-settings btn-primary"
                     type="button"
-                    id="episodeDropdownMenuButton"
-                    data-toggle="dropdown"
+                    data-podcast-id"${this.podcastId}"
+                    data-episode-id="${this.id}"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
                     &#8943;
                   </button>
-                  <div
-                    class="dropdown-menu dropdown-menu-right"
-                    aria-labelledby="episodeDropdownMenuButton"
-                  >
-                    <a
-                      class="dropdown-item mark-episode-${this.played ? 'un' : ''}played"
-                      href="#"
-                      data-episode-id="${this.id}"
-                      data-focus-query="[data-episode-id='${this.id}']"
-                    >
-                      Mark as ${this.played ? 'Unplayed' : 'Played'}
-                    </a>
-                  </div>
                 </div>
               </diV>
             </div>
@@ -270,7 +257,9 @@ class Episode {
 
   // Handling parsing non-standard duration formats
   getDuration () {
-    let duration = this.duration
+    // @todo if a proper duration isn't given, supply a visibly absurd duration in its place.
+    // We do this to prevent the episode from being immediately marked as played.
+    let duration = this.duration || '9999999999'
     let durParts = duration.split(':')
 
     if (durParts.length > 1) {
