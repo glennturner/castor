@@ -133,11 +133,9 @@ window.api.receive('togglePlay', () => {
 window.api.receive('markAsPlayed', (epObj) => {
   let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
   ep.played = true
-  ep.refreshEles()
 })
 
 window.api.receive('markAsUnplayed', (epObj) => {
   let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
   ep.played = false
-  ep.refreshEles()
 })

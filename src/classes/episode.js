@@ -32,6 +32,7 @@ class Episode {
     podcastState.episodes[this.id] = state
 
     this.podcast.state = podcastState
+    this.react()
   }
 
   get played () {
@@ -105,7 +106,7 @@ class Episode {
   }
 
   // Slop, but more efficient slop.
-  refreshEles () {
+  react () {
     // @todo Fix dupe child elements.
     // This created dupe children. For now, this is faster than the prior
     // redraw methods, so we'll deal with it.
