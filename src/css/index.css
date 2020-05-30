@@ -330,7 +330,7 @@ nav.podcast-options {
 }
 
 .podcast-episodes-view-by .btn-light,
-.episode-header-col .badge-light {
+.episode .badge-light {
   background-color: rgba(0, 0, 0, 0.10);
   border-color: rgba(0, 0, 0, 0.10);
 }
