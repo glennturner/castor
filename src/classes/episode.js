@@ -182,7 +182,7 @@ class Episode {
               </h5>
 
               <span
-                class="duration badge badge-info"
+                class="duration badge badge-light"
               >
                 ${this.durationMin()} Min
               </span>
@@ -325,7 +325,11 @@ class Episode {
         ${minElapsed}
       </progress>
 
-      ${minRemaining} min left
+      <span
+        class="duration badge badge-light"
+      >
+        ${minRemaining} min left
+      </span>
     ` : ''
   }
 
@@ -381,8 +385,6 @@ class Episode {
 
     parentEle.querySelectorAll('.episode').forEach(ele => {
       ele.addEventListener('contextmenu', (e) => {
-        console.log('THIS?')
-        console.log(this)
         Episode._showEpCtxMenu(e)
 
         e.preventDefault()
@@ -395,9 +397,6 @@ class Episode {
   static _showEpCtxMenu (e) {
     let pid = e.currentTarget.dataset.podcastId
     let eid = e.currentTarget.dataset.episodeId
-    console.log('SHOW EXP CTX MENU')
-    console.log(e)
-    console.log(e.currentTarget)
 
     let podcast = Podcast.get(pid)
     let ep = podcast.getEpisodeById(eid)
