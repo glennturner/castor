@@ -283,7 +283,6 @@ const template = [
         checked: prefs.getPref('debugMenuOpts'),
         type: 'checkbox',
         click: (e) => {
-          console.log('TOGGLE DEBUG MENU OPT')
           prefs.togglePref('debugMenuOpts')
         }
       },

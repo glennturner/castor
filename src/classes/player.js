@@ -276,7 +276,6 @@ class Player {
   }
 
   _togglePlayPause (e) {
-    console.log('TOGGLE PLAY? ' + this.playing)
     this.playing ? this.pause(e) : this.play(e)
   }
 
