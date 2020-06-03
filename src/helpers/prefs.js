@@ -29,6 +29,8 @@ class Prefs {
   }
 
   set prefs (prefs) {
+    console.log('WRITE PREFS')
+    console.log(prefs)
     fs.writeFileSync(
       this.prefPath(), JSON.stringify(prefs)
     )
@@ -40,7 +42,7 @@ class Prefs {
 
   setPref (key, val) {
     // Ignore whitespaced prefs, just to be safe.
-    if (!this.#defaultPrefs[key]) { return }
+    if (this.#defaultPrefs[key] === undefined) { return }
 
     let prefs = this.prefs
     prefs[key] = val
