@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld(
         'saveBackup',
         'saveEpisode',
         'saveOPML',
+        'sendToClipboard',
         'showEpCtxMenu',
         'togglePlay'
       ]
@@ -40,6 +41,7 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
+        'debugEpJSON',
         'episodeSaved',
         'exportBackup',
         'exportOPML',
