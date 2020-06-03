@@ -29,8 +29,6 @@ class Prefs {
   }
 
   set prefs (prefs) {
-    console.log('WRITE PREFS')
-    console.log(prefs)
     fs.writeFileSync(
       this.prefPath(), JSON.stringify(prefs)
     )
