@@ -139,3 +139,9 @@ window.api.receive('markAsUnplayed', (epObj) => {
   let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
   ep.played = false
 })
+
+window.api.receive('debugEpJSON',  (epObj) => {
+  let podcast = Podcast.get(epObj.podcastId)
+  let ep = podcast.cache.episodes.filter(ep => ep.id === epObj.id)[0]
+  window.api.send('sendToClipboard', JSON.stringify(ep))
+})
