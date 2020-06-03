@@ -303,7 +303,13 @@ class Podcast {
     detailedEle.className = 'podcast-show-detailed'
 
     let eps = this._filterEpList().map(ep => {
-        return this._detailedEp(ep)
+        return `
+          <div
+            class="episode-cont"
+          >
+            ${this._detailedEp(ep)}
+          </div>
+        `
       }).join('')
 
     detailedEle.innerHTML = `
