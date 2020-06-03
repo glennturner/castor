@@ -108,13 +108,16 @@ class Episode {
   // Slop, but more efficient slop.
   react () {
     // @todo Fix dupe child elements.
-    // This created dupe children. For now, this is faster than the prior
+    // This creates dupe children. For now, this is faster than the prior
     // redraw methods, so we'll deal with it.
-    document.getElementById(this.id).outerHTML = this.detailedHTML()
+    const epEle = document.getElementById(this.id)
+    if (epEle) {
+      epEle.innerHTML = this.detailedHTML()
 
-    // Should work out a better resolution between this and `Podcast.refreshView`,
-    // but for now it's fine.
-    Episode.setEvents(document.getElementById(this.id))
+      // Should work out a better resolution between this and `Podcast.refreshView`,
+      // but for now it's fine.
+      Episode.setEvents(epEle)
+    }
   }
 
   detailedHTML () {
