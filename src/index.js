@@ -1,6 +1,7 @@
 const {
   app,
   BrowserWindow,
+  clipboard,
   dialog,
   globalShortcut,
   Menu,
@@ -369,6 +370,10 @@ ipcMain.on('enableSpace', (event) => {
   setMenu()
 })
 
+ipcMain.on('sendToClipboard', (event, str) => {
+  clipboard.writeText(str)
+})
+
 ipcMain.on('showEpCtxMenu', (event, epObj) => {
   const epMenu = new Menu()
 
@@ -382,6 +387,18 @@ ipcMain.on('showEpCtxMenu', (event, epObj) => {
       }
     })
   )
+
+  // Add JSON opt
+  if (prefs.getPref('debugMenuOpts')) {
+    epMenu.append(
+      new MenuItem ({
+        label: `Copy Ep JSON [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugEpJSON', epObj)
+        }
+      })
+    )
+  }
 
   epMenu.popup(mainWindow)
 })
