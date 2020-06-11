@@ -184,12 +184,14 @@ class Podcast {
     })
   }
 
+  isSubscribed () {
+    let isSubscribed = user.subscribedPodcasts.filter(podcast => podcast.id === this.id)
+    return isSubscribed[0]
+  }
+
   capsule () {
     let showEle = document.createElement('div')
     showEle.className = 'podcast-show'
-
-    let isSubscribed = user.subscribedPodcasts.filter(podcast => podcast.id === this.id)
-    isSubscribed = isSubscribed[0] || undefined
 
     showEle.innerHTML = `
       <img
@@ -218,35 +220,36 @@ class Podcast {
           class="dropdown"
         >
           <button
-            class="btn btn-settings btn-secondary"
+            class="trigger-podcast-ctx-menu btn btn-settings btn-secondary"
             type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
+            data-podcast-id="${this.id}"
             aria-haspopup="true"
             aria-expanded="false"
           >
             &#8943;
           </button>
+          <!--
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a
               class="dropdown-item podcast-subscribe-toggle"
               data-podcast-id="${this.id}"
               href="#"
             >` + (
-              isSubscribed ? 'Unsubscribe' : 'Subscribe'
+              this.isSubscribed() ? 'Unsubscribe' : 'Subscribe'
             ) + `</a>
           </div>
+          -->
         </div>
       </div>
     `
 
-    showEle.querySelector('.podcast-subscribe-toggle').addEventListener('click', (e) => {
-      let podcast = Podcast.get(e.target.dataset.podcastId)
-      (
-        this.subscribed() ? this.unsubscribe() : this.subscribe()
-      ).then(() => {
-        this.show(e)
-      })
+    showEle.querySelectorAll('.trigger-podcast-ctx-menu').forEach(ele => {
+      ele.addEventListener('click', (e) => {
+        console.log('SHOW PODCAST CTX')
+        Podcast._showPodcastCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
     })
 
     showEle.querySelector('.btn-play').addEventListener(
@@ -340,20 +343,21 @@ class Podcast {
               class="dropdown"
             >
               <button
-                class="btn btn-settings btn-sm btn-primary"
+                class="trigger-podcast-ctx-menu btn btn-settings btn-sm btn-primary"
                 type="button"
-                id="podcastDropdownMenuButton"
-                data-toggle="dropdown"
+                data-podcast-id="${this.id}"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
                 Options
               </button>
+              <!--
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="podcastDropdownMenuButton">
                 <a class="dropdown-item refresh-podcast" href="#">Refresh</a>
                 <a class="dropdown-item mark-podcast-as-played" href="#">Mark All as Played</a>
                 <a class="dropdown-item mark-podcast-as-unplayed" href="#">Mark All as Unplayed</a>
               </div>
+              -->
             </span>
           </nav>
         </div>
@@ -403,6 +407,15 @@ class Podcast {
         </div>
       </div>
     `
+
+    detailedEle.querySelectorAll('.trigger-podcast-ctx-menu').forEach(ele => {
+      ele.addEventListener('click', (e) => {
+        console.log('SHOW PODCAST CTX')
+        Podcast._showPodcastCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
 
     detailedEle.querySelector('#podcast-subscribe-toggle').addEventListener('click', () => {
       this.subscribed() ? this.unsubscribe() : this.subscribe()
@@ -519,6 +532,26 @@ class Podcast {
 
   static showDetailedViewById (id) {
     Podcast.get(id)._showDetailedView()
+  }
+
+  static _showPodcastCtxMenu (e) {
+    let pid = e.currentTarget.dataset.podcastId
+    console.log('PID: ' + pid)
+
+    let subscribed = false
+    let podcast = Podcast.get(pid)
+
+    if (podcast) {
+      subscribed = podcast.isSubscribed()
+    }
+
+    window.api.send(
+      'showPodcastCtxMenu',
+      {
+        id: pid,
+        subscribed: subscribed
+      }
+    )
   }
 
   /* Private */
