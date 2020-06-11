@@ -31,3 +31,8 @@ function sortByProp (prop, a, b) {
   // names must be equal
   return 0
 }
+
+// Pretty-print JSON.
+function ppJSON (obj) {
+  return JSON.stringify(obj, undefined, 2)
+}
