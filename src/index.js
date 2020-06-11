@@ -403,3 +403,59 @@ ipcMain.on('showEpCtxMenu', (event, epObj) => {
   epMenu.popup(mainWindow)
 })
 
+ipcMain.on('showPodcastCtxMenu', (event, podcast) => {
+  const podcastMenu = new Menu()
+
+  if (podcast.subscribed) {
+    podcastMenu.append(
+      new MenuItem ({
+        label: 'Unsubscribe',
+        click () {
+          mainWindow.webContents.send('unsubscribePodcast', podcast)
+        }
+      })
+    )
+  } else {
+    podcastMenu.append(
+      new MenuItem ({
+        label: 'Subscribe',
+        click () {
+          mainWindow.webContents.send('subscribePodcast', podcast)
+        }
+      })
+    )
+  }
+
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Mark All Played`,
+      click () {
+        mainWindow.webContents.send('markPodcastAsPlayed', podcast)
+      }
+    })
+  )
+
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Mark All Unplayed`,
+      click () {
+        mainWindow.webContents.send('markPodcastAsUnplayed', podcast)
+      }
+    })
+  )
+
+  // Add JSON opt
+  if (prefs.getPref('debugMenuOpts')) {
+    podcastMenu.append(
+      new MenuItem ({
+        label: `Copy Podcast JSON [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugPodcastJSON', podcast)
+        }
+      })
+    )
+  }
+
+  podcastMenu.popup(mainWindow)
+})
+
