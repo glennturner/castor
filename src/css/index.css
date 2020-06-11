@@ -362,7 +362,7 @@ nav.podcast-options {
 }
 
 .episode-description {
-  margin: 0 1rem;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .episode.active {
@@ -381,6 +381,9 @@ nav.podcast-options {
 .episode-metadata-icon .bi {
   width: 35px;
   fill: #0069d9;
+}
+
+.episode-metadata .episode-time-remaining progress {
 }
 
 .episode.active .episode-title {
