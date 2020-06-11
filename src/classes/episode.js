@@ -224,16 +224,16 @@ class Episode {
             class="episode-supplemental"
           >
             <div
-              class="episode-time-remaining"
-            >
-              ${this._remainingTimeHTML()}
-            </div>
-            <div
               class="episode-description"
             >
               <p>
                 ${this.description}
               </p>
+              <div
+                class="episode-time-remaining"
+              >
+                ${this._remainingTimeHTML()}
+              </div>
             </div>
           </div>
         </div>
@@ -322,7 +322,7 @@ class Episode {
 
     return this.currentTime ? `
       <progress
-        id="episode-time-remaining-progress"
+        class="episode-time-remaining-progress"
         max="${maxMin}"
         value="${minElapsed}"
       >
