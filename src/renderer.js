@@ -84,6 +84,12 @@ function getEpByPodcastAndEpIds (podcastId, epId) {
   return podcast.getEpisodeById(epId)
 }
 
+// Helper method to pretty-print passed obj and send JSON string to clipboard.
+function sendJSONToClipboard (obj) {
+  let json = ppJSON(obj)
+  window.api.send('sendToClipboard', json)
+}
+
 window.api.receive('exportOPML', (filename) => {
   let user = new User
   let xml = user.exportOPML()
@@ -143,5 +149,5 @@ window.api.receive('markAsUnplayed', (epObj) => {
 window.api.receive('debugEpJSON',  (epObj) => {
   let podcast = Podcast.get(epObj.podcastId)
   let ep = podcast.cache.episodes.filter(ep => ep.id === epObj.id)[0]
-  window.api.send('sendToClipboard', JSON.stringify(ep))
+  sendJSONToClipboard(ep)
 })
