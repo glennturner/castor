@@ -32,6 +32,7 @@ contextBridge.exposeInMainWorld(
         'saveOPML',
         'sendToClipboard',
         'showEpCtxMenu',
+        'showPodcastCtxMenu',
         'togglePlay'
       ]
 
