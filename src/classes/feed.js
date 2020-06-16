@@ -7,12 +7,18 @@ class Feed {
   }
 
   async get () {
+    return await this.getXML().then((str) => {
+      this.#xml = (new window.DOMParser()).parseFromString(str, "text/xml")
+
+      return this.parse()
+    })
+  }
+
+  async getXML () {
     return await fetch(this.#path)
       .then(response => response.text())
       .then((str) => {
-        this.#xml = (new window.DOMParser()).parseFromString(str, "text/xml")
-
-        return this.parse()
+        return str
       })
   }
 
