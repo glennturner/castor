@@ -113,6 +113,16 @@ class Podcast {
     this.#stateKey = Podcast.podcastStateKey(key)
   }
 
+  async getFeedXML () {
+    return new Promise(resolve => {
+      const feed = new Feed(this.feed)
+
+      return feed.getXML().then((respXML) => {
+        return resolve(respXML)
+      })
+    })
+  }
+
   subscribe () {
     user.subscribe(this.id)
 
@@ -143,6 +153,22 @@ class Podcast {
 
   archived () {
     return true
+  }
+
+  markAllAsPlayed () {
+    this.episodes.filter(item => !item.played).map(item => {
+      item.played = true
+    })
+
+    this.refreshView()
+  }
+
+  markAllAsUnplayed () {
+    this.episodes.filter(item => item.played).map(item => {
+      item.played = false
+    })
+
+    this.refreshView()
   }
 
   unplayedCount () {
@@ -245,7 +271,6 @@ class Podcast {
 
     showEle.querySelectorAll('.trigger-podcast-ctx-menu').forEach(ele => {
       ele.addEventListener('click', (e) => {
-        console.log('SHOW PODCAST CTX')
         Podcast._showPodcastCtxMenu(e)
 
         e.preventDefault()
@@ -264,7 +289,6 @@ class Podcast {
       'click',
       (e) => {
         if (e.currentTarget == e.target) {
-          view.loading()
           this._showDetailedView(e)
         }
       }
@@ -274,10 +298,7 @@ class Podcast {
   }
 
   show (e = null) {
-    view.loading()
-
-    this._showDetailedView(e)
-    user.refreshView()
+    this.refreshView(e)
   }
 
   async detailed () {
@@ -314,6 +335,14 @@ class Podcast {
           </div>
         `
       }).join('')
+
+    if (!eps) {
+      eps = `
+        <p
+          class="alert alert-success text-center">
+          All ${this.title} episodes have been played!
+        </p>`
+    }
 
     detailedEle.innerHTML = `
       <div
@@ -410,7 +439,6 @@ class Podcast {
 
     detailedEle.querySelectorAll('.trigger-podcast-ctx-menu').forEach(ele => {
       ele.addEventListener('click', (e) => {
-        console.log('SHOW PODCAST CTX')
         Podcast._showPodcastCtxMenu(e)
 
         e.preventDefault()
@@ -537,7 +565,6 @@ class Podcast {
 
   static _showPodcastCtxMenu (e) {
     let pid = e.currentTarget.dataset.podcastId
-    console.log('PID: ' + pid)
 
     let subscribed = false
     let podcast = Podcast.get(pid)
@@ -601,7 +628,9 @@ class Podcast {
   }
 
   _showDetailedView (e = undefined) {
-    this.detailed()
+    view.loading()
+
+    return this.detailed()
       .then((ele) => {
         view.change('podcast',
           ele,
@@ -615,6 +644,7 @@ class Podcast {
         if (e) {
           this._scrollToElement(e)
         }
+        view.loaded()
       })
   }
 
