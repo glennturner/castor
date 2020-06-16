@@ -150,7 +150,6 @@ class Player {
   /* Private */
   _activateEp(priorEpId, currentEpId) {
     let className = 'active'
-    console.log('PRIOR ID: ' + priorEpId)
     if (priorEpId && document.getElementById(priorEpId)) {
       document.getElementById(priorEpId).classList.remove(className)
     }
