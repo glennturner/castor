@@ -10,6 +10,10 @@ body {
   padding: 0;
 }
 
+body.loading {
+  cursor: wait;
+}
+
 #main-nav {
   background-color: #ccc;
   display: block;
