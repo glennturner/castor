@@ -157,3 +157,36 @@ window.api.receive('debugPodcastJSON',  (podcastObj) => {
   sendJSONToClipboard(podcast.cache)
 })
 
+
+window.api.receive('subscribePodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.subscribe()
+})
+
+window.api.receive('unsubscribePodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.unsubscribe()
+})
+
+window.api.receive('markPodcastAsPlayed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.markAllAsPlayed()
+})
+
+window.api.receive('markPodcastAsUnplayed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.markAllAsUnplayed()
+})
+
+window.api.receive('refreshPodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.refresh()
+})
+
+window.api.receive('debugPodcastFeed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.getFeedXML().then((feed) => {
+    window.api.send('sendToClipboard', feed)
+  })
+})
+

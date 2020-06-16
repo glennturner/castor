@@ -43,6 +43,7 @@ contextBridge.exposeInMainWorld(
     receive: (channel, func) => {
       let validChannels = [
         'debugEpJSON',
+        'debugPodcastFeed',
         'debugPodcastJSON',
         'episodeSaved',
         'exportBackup',
@@ -50,13 +51,18 @@ contextBridge.exposeInMainWorld(
         'hashed',
         'markAsPlayed',
         'markAsUnplayed',
+        'markPodcastAsPlayed',
+        'markPodcastAsUnplayed',
         'parsedXML',
         'promptURL',
+        'refreshPodcast',
         'requestPrefs',
         'resetCompleted',
         'restoreBackup',
+        'subscribePodcast',
         'subscribeByUrl',
-        'togglePref'
+        'togglePref',
+        'unsubscribePodcast'
       ]
 
       if (validChannels.includes(channel)) {
