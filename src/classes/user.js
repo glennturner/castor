@@ -63,7 +63,10 @@ class User {
   }
 
   refreshView () {
-    this._renderSubscriberNav()
+    return new Promise(resolve => {
+      this._renderSubscriberNav()
+      resolve()
+    })
   }
 
   refreshSubscriptions () {
@@ -83,7 +86,6 @@ class User {
             this.refreshView()
             resolve()
           }
-        }).finally(() => {
         })
       })
     })
