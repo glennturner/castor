@@ -151,3 +151,9 @@ window.api.receive('debugEpJSON',  (epObj) => {
   let ep = podcast.cache.episodes.filter(ep => ep.id === epObj.id)[0]
   sendJSONToClipboard(ep)
 })
+
+window.api.receive('debugPodcastJSON',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  sendJSONToClipboard(podcast.cache)
+})
+

@@ -43,6 +43,7 @@ contextBridge.exposeInMainWorld(
     receive: (channel, func) => {
       let validChannels = [
         'debugEpJSON',
+        'debugPodcastJSON',
         'episodeSaved',
         'exportBackup',
         'exportOPML',
