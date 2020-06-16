@@ -444,8 +444,26 @@ ipcMain.on('showPodcastCtxMenu', (event, podcast) => {
     })
   )
 
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Refresh Podcast`,
+      click () {
+        mainWindow.webContents.send('refreshPodcast', podcast)
+      }
+    })
+  )
+
   // Add JSON opt
   if (prefs.getPref('debugMenuOpts')) {
+    podcastMenu.append(
+      new MenuItem ({
+        label: `Copy Podcast Feed [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugPodcastFeed', podcast)
+        }
+      })
+    )
+
     podcastMenu.append(
       new MenuItem ({
         label: `Copy Podcast JSON [DEBUG]`,
