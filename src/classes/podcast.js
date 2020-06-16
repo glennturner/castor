@@ -430,6 +430,7 @@ class Podcast {
 
           player.playEpisode(ep)
           e.stopPropagation()
+          e.preventDefault()
         },
         false
       )

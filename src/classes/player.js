@@ -3,6 +3,8 @@ class Player {
   #playerInterfaceId = 'player-ui'
   #playerUI
   #timeElapsed = 0
+  #jumpFwdIntv = 30
+  #skipBackIntv = 15
 
   static #stateKey = 'C-PS'
 
@@ -148,6 +150,7 @@ class Player {
   /* Private */
   _activateEp(priorEpId, currentEpId) {
     let className = 'active'
+    console.log('PRIOR ID: ' + priorEpId)
     if (priorEpId && document.getElementById(priorEpId)) {
       document.getElementById(priorEpId).classList.remove(className)
     }
@@ -215,6 +218,12 @@ class Player {
         this._togglePlayPause(e)
       }, true
     )
+    document.querySelector('.jump-fwd').addEventListener('click',
+      (e) => { this._jumpFwd(e) }, true
+    )
+    document.querySelector('.skip-back').addEventListener('click',
+      (e) => { this._skipBack(e) }, true
+    )
   }
 
   _removeEvents () {
@@ -273,6 +282,14 @@ class Player {
     this.playing = false
     this._onTimeUpdate(e, true)
     this._showPlay()
+  }
+
+  _jumpFwd (e) {
+    this.audioPlayer.currentTime += this.#jumpFwdIntv
+  }
+
+  _skipBack (e) {
+    this.audioPlayer.currentTime -= this.#skipBackIntv
   }
 
   _togglePlayPause (e) {
