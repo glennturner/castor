@@ -32,6 +32,7 @@ class Episode {
     podcastState.episodes[this.id] = state
 
     this.podcast.state = podcastState
+    this.react()
   }
 
   get played () {
@@ -105,15 +106,18 @@ class Episode {
   }
 
   // Slop, but more efficient slop.
-  refreshEles () {
+  react () {
     // @todo Fix dupe child elements.
-    // This created dupe children. For now, this is faster than the prior
+    // This creates dupe children. For now, this is faster than the prior
     // redraw methods, so we'll deal with it.
-    document.getElementById(this.id).outerHTML = this.detailedHTML()
+    const epEle = document.getElementById(this.id)
+    if (epEle) {
+      epEle.innerHTML = this.detailedHTML()
 
-    // Should work out a better resolution between this and `Podcast.refreshView`,
-    // but for now it's fine.
-    Episode.setEvents(document.getElementById(this.id))
+      // Should work out a better resolution between this and `Podcast.refreshView`,
+      // but for now it's fine.
+      Episode.setEvents(epEle)
+    }
   }
 
   detailedHTML () {
@@ -220,16 +224,16 @@ class Episode {
             class="episode-supplemental"
           >
             <div
-              class="episode-time-remaining"
-            >
-              ${this._remainingTimeHTML()}
-            </div>
-            <div
               class="episode-description"
             >
               <p>
                 ${this.description}
               </p>
+              <div
+                class="episode-time-remaining"
+              >
+                ${this._remainingTimeHTML()}
+              </div>
             </div>
           </div>
         </div>
@@ -318,7 +322,7 @@ class Episode {
 
     return this.currentTime ? `
       <progress
-        id="episode-time-remaining-progress"
+        class="episode-time-remaining-progress"
         max="${maxMin}"
         value="${minElapsed}"
       >

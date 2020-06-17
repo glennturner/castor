@@ -1,6 +1,7 @@
 const {
   app,
   BrowserWindow,
+  clipboard,
   dialog,
   globalShortcut,
   Menu,
@@ -369,6 +370,10 @@ ipcMain.on('enableSpace', (event) => {
   setMenu()
 })
 
+ipcMain.on('sendToClipboard', (event, str) => {
+  clipboard.writeText(str)
+})
+
 ipcMain.on('showEpCtxMenu', (event, epObj) => {
   const epMenu = new Menu()
 
@@ -383,6 +388,92 @@ ipcMain.on('showEpCtxMenu', (event, epObj) => {
     })
   )
 
+  // Add JSON opt
+  if (prefs.getPref('debugMenuOpts')) {
+    epMenu.append(
+      new MenuItem ({
+        label: `Copy Ep JSON [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugEpJSON', epObj)
+        }
+      })
+    )
+  }
+
   epMenu.popup(mainWindow)
+})
+
+ipcMain.on('showPodcastCtxMenu', (event, podcast) => {
+  const podcastMenu = new Menu()
+
+  if (podcast.subscribed) {
+    podcastMenu.append(
+      new MenuItem ({
+        label: 'Unsubscribe',
+        click () {
+          mainWindow.webContents.send('unsubscribePodcast', podcast)
+        }
+      })
+    )
+  } else {
+    podcastMenu.append(
+      new MenuItem ({
+        label: 'Subscribe',
+        click () {
+          mainWindow.webContents.send('subscribePodcast', podcast)
+        }
+      })
+    )
+  }
+
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Mark All Played`,
+      click () {
+        mainWindow.webContents.send('markPodcastAsPlayed', podcast)
+      }
+    })
+  )
+
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Mark All Unplayed`,
+      click () {
+        mainWindow.webContents.send('markPodcastAsUnplayed', podcast)
+      }
+    })
+  )
+
+  podcastMenu.append(
+    new MenuItem ({
+      label: `Refresh Podcast`,
+      click () {
+        mainWindow.webContents.send('refreshPodcast', podcast)
+      }
+    })
+  )
+
+  // Add JSON opt
+  if (prefs.getPref('debugMenuOpts')) {
+    podcastMenu.append(
+      new MenuItem ({
+        label: `Copy Podcast Feed [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugPodcastFeed', podcast)
+        }
+      })
+    )
+
+    podcastMenu.append(
+      new MenuItem ({
+        label: `Copy Podcast JSON [DEBUG]`,
+        click () {
+          mainWindow.webContents.send('debugPodcastJSON', podcast)
+        }
+      })
+    )
+  }
+
+  podcastMenu.popup(mainWindow)
 })
 

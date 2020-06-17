@@ -30,7 +30,9 @@ contextBridge.exposeInMainWorld(
         'saveBackup',
         'saveEpisode',
         'saveOPML',
+        'sendToClipboard',
         'showEpCtxMenu',
+        'showPodcastCtxMenu',
         'togglePlay'
       ]
 
@@ -40,19 +42,27 @@ contextBridge.exposeInMainWorld(
     },
     receive: (channel, func) => {
       let validChannels = [
+        'debugEpJSON',
+        'debugPodcastFeed',
+        'debugPodcastJSON',
         'episodeSaved',
         'exportBackup',
         'exportOPML',
         'hashed',
         'markAsPlayed',
         'markAsUnplayed',
+        'markPodcastAsPlayed',
+        'markPodcastAsUnplayed',
         'parsedXML',
         'promptURL',
+        'refreshPodcast',
         'requestPrefs',
         'resetCompleted',
         'restoreBackup',
+        'subscribePodcast',
         'subscribeByUrl',
-        'togglePref'
+        'togglePref',
+        'unsubscribePodcast'
       ]
 
       if (validChannels.includes(channel)) {

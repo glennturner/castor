@@ -32,6 +32,14 @@ class View {
         </div>
       </div>
     `
+
+    const body = document.getElementsByTagName('body')[0]
+    body.classList.add('loading')
+  }
+
+  loaded () {
+    const body = document.getElementsByTagName('body')[0]
+    body.classList.remove('loading')
   }
 
   // `opts` are primarily for history use:
@@ -39,6 +47,7 @@ class View {
   //   - podcastId
   //   - episodeId
   change (type, html, opts) {
+    view.loaded()
     user.updateSubscriberNav(opts)
 
     this._setHistory(

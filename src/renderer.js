@@ -84,6 +84,12 @@ function getEpByPodcastAndEpIds (podcastId, epId) {
   return podcast.getEpisodeById(epId)
 }
 
+// Helper method to pretty-print passed obj and send JSON string to clipboard.
+function sendJSONToClipboard (obj) {
+  let json = ppJSON(obj)
+  window.api.send('sendToClipboard', json)
+}
+
 window.api.receive('exportOPML', (filename) => {
   let user = new User
   let xml = user.exportOPML()
@@ -133,11 +139,54 @@ window.api.receive('togglePlay', () => {
 window.api.receive('markAsPlayed', (epObj) => {
   let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
   ep.played = true
-  ep.refreshEles()
 })
 
 window.api.receive('markAsUnplayed', (epObj) => {
   let ep = getEpByPodcastAndEpIds(epObj.podcastId, epObj.id)
   ep.played = false
-  ep.refreshEles()
 })
+
+window.api.receive('debugEpJSON',  (epObj) => {
+  let podcast = Podcast.get(epObj.podcastId)
+  let ep = podcast.cache.episodes.filter(ep => ep.id === epObj.id)[0]
+  sendJSONToClipboard(ep)
+})
+
+window.api.receive('debugPodcastJSON',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  sendJSONToClipboard(podcast.cache)
+})
+
+
+window.api.receive('subscribePodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.subscribe()
+})
+
+window.api.receive('unsubscribePodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.unsubscribe()
+})
+
+window.api.receive('markPodcastAsPlayed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.markAllAsPlayed()
+})
+
+window.api.receive('markPodcastAsUnplayed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.markAllAsUnplayed()
+})
+
+window.api.receive('refreshPodcast',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.refresh()
+})
+
+window.api.receive('debugPodcastFeed',  (podcastObj) => {
+  let podcast = Podcast.get(podcastObj.id)
+  podcast.getFeedXML().then((feed) => {
+    window.api.send('sendToClipboard', feed)
+  })
+})
+

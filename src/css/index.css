@@ -10,6 +10,10 @@ body {
   padding: 0;
 }
 
+body.loading {
+  cursor: wait;
+}
+
 #main-nav {
   background-color: #ccc;
   display: block;
@@ -47,6 +51,7 @@ nav#player-ui {
   text-align: center;
   min-width: 600px;
   width: calc(100vw - 280px);
+  z-index: 99999;
 }
 
 nav#player-ui audio {
@@ -259,10 +264,11 @@ nav .subscribed-podcasts-options {
   margin-top: 0.5rem;
 }
 
-.episodes .episode {
+.episodes .episode-cont {
   padding-top: 0.5rem;
   border-width: 1px 0 0 0;
   border-top: solid 1px rgba(0,0,0,.125);
+  user-select: none;
 }
 
 .episodes .episode p {
@@ -361,7 +367,7 @@ nav.podcast-options {
 }
 
 .episode-description {
-  margin: 0 1rem;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .episode.active {
@@ -380,6 +386,9 @@ nav.podcast-options {
 .episode-metadata-icon .bi {
   width: 35px;
   fill: #0069d9;
+}
+
+.episode-metadata .episode-time-remaining progress {
 }
 
 .episode.active .episode-title {

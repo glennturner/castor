@@ -63,7 +63,10 @@ class User {
   }
 
   refreshView () {
-    this._renderSubscriberNav()
+    return new Promise(resolve => {
+      this._renderSubscriberNav()
+      resolve()
+    })
   }
 
   refreshSubscriptions () {
@@ -83,7 +86,6 @@ class User {
             this.refreshView()
             resolve()
           }
-        }).finally(() => {
         })
       })
     })
@@ -250,6 +252,14 @@ class User {
       ele.addEventListener('click', (e) => {
         Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
       })
+    })
+
+    this._subscribedItemsEle.querySelectorAll('.list-group-item-action').forEach(ele => {
+      ele.addEventListener('contextmenu', (e) => {
+        Podcast._showPodcastCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
     })
   }
 }
