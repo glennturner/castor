@@ -21,7 +21,7 @@ class Player {
 
     this.state.episode = episodeId || this.state.episodeId
 
-    if (this.state.episodeId) {
+    if (this.state.episodeId && this.episode) {
       this.state.podcast = this.episode.podcastId
       this.src = this.episode.episodeUrl
       this.audioPlayer.currentTime = this.episode.currentTime || 0
@@ -155,7 +155,10 @@ class Player {
     }
 
     let currentEp = document.getElementById(currentEpId)
-    currentEp.classList.add(className)
+
+    if (currentEp) {
+      currentEp.classList.add(className)
+    }
   }
 
   _updatePodcast () {
