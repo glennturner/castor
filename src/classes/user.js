@@ -253,6 +253,14 @@ class User {
         Podcast.showDetailedViewById(e.currentTarget.dataset.podcastId)
       })
     })
+
+    this._subscribedItemsEle.querySelectorAll('.list-group-item-action').forEach(ele => {
+      ele.addEventListener('contextmenu', (e) => {
+        Podcast._showPodcastCtxMenu(e)
+
+        e.preventDefault()
+      }, false)
+    })
   }
 }
 
