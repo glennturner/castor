@@ -55,11 +55,15 @@ class Feed {
       let epNum = item.getElementsByTagName('itunes:episode')
       let author = item.querySelector('author')
 
+      // Sigh. Default to iTunes, since something changed with with a bunch of feeds there.
+      let itunesSumm = item.getElementsByTagName('itunes:summary')
+      let descrEle  = itunesSumm.length ? itunesSumm[0] : item.querySelector('description')
+
       parsed.episodes.push(
         {
           id: item.querySelector('guid').textContent,
           title: item.querySelector('title').textContent,
-          description: item.querySelector('description') ? item.querySelector('description').textContent : undefined,
+          description: descrEle ? descrEle.textContent : undefined,
           pubDate: item.querySelector('pubDate').textContent,
           author: author ? author.textContent : undefined,
           link: link ? link.textContent : undefined,

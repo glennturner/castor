@@ -1,7 +1,7 @@
 {
   "name": "Castor",
   "productName": "Castor",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A very no-frills podcast app.",
   "main": "src/index.js",
   "scripts": {
@@ -15,6 +15,10 @@
   "author": {
     "name": "Glenn Turner",
     "email": "glenn@standalone.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:glennturner/castor.git"
   },
   "license": "MIT",
   "config": {

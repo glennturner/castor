@@ -171,6 +171,7 @@ nav input {
 nav .list-item-group {
   height: calc(100vh - 120px);
   overflow: auto;
+  user-select: none;
 }
 
 .search-results {
