@@ -61,6 +61,10 @@ nav#player-ui audio {
   width: 100%;
 }
 
+nav#player-ui .player-add-controls {
+  cursor: default;
+}
+
 nav#player-ui .player-add-controls,
 nav#player-ui #podcast-display-cont {
   display: inline-block;
