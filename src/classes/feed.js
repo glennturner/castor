@@ -58,7 +58,7 @@ class Feed {
       // Sigh. Default to iTunes, since something changed with with a bunch of feeds there.
       let itunesDescr = item.getElementsByTagName('description')
       itunesDescr = itunesDescr.length ? itunesDescr : undefined
-      let itunesSumm = itunesDescr || itunesDescritem.getElementsByTagName('itunes:summary')
+      let itunesSumm = itunesDescr || item.getElementsByTagName('itunes:summary')
       let descrEle  = itunesSumm.length ? itunesSumm[0] : item.querySelector('description')
 
       parsed.episodes.push(
