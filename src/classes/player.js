@@ -215,6 +215,8 @@ class Player {
     this.audioPlayer.addEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.addEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
     this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
+    this.audioPlayer.addEventListener('stalled', (e) => { this._stalled(e) }, true)
+    this.audioPlayer.addEventListener('waiting', (e) => { this._waiting(e) }, true)
     document.querySelector('.play-pause').addEventListener(
       'click', (e) => {
         this._togglePlayPause(e)
@@ -272,6 +274,16 @@ class Player {
       this.podcast.refreshView()
       user.refreshSubscriptions()
     }
+  }
+
+  _stalled(e) {
+    console.log('STALLED!')
+    console.log(e)
+  }
+
+  _waiting(e) {
+    console.log('WAITING!')
+    console.log(e)
   }
 
   _setPlay (e) {
