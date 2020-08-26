@@ -8,17 +8,31 @@ class Feed {
 
   async get () {
     return await this.getXML().then((str) => {
+      if (!str) { return }
+
       this.#xml = (new window.DOMParser()).parseFromString(str, "text/xml")
 
       return this.parse()
+    }).catch(err => {
+      console.error('An error occurred with this podcast:')
+      console.error(err)
     })
   }
 
   async getXML () {
     return await fetch(this.#path)
-      .then(response => response.text())
+      .then(response => {
+        if (!response.ok) {
+          throw response
+        } else {
+          return response.text()
+        }
+      })
       .then((str) => {
         return str
+      }).catch(err => {
+        console.error('An error occurred downloading this podcast:')
+        console.error(err)
       })
   }
 
