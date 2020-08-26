@@ -527,6 +527,9 @@ class Podcast {
         this._populate(parsed)
 
         this._cacheFeed()
+      }).catch(err => {
+        console.error('An error occurred updating this podcast:')
+        console.error(err)
       })
     }
   }
