@@ -217,6 +217,9 @@ class Player {
     this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
     this.audioPlayer.addEventListener('stalled', (e) => { this._stalled(e) }, true)
     this.audioPlayer.addEventListener('waiting', (e) => { this._waiting(e) }, true)
+    this.audioPlayer.addEventListener('ended', (e) => { this._ended(e) }, true)
+    this.audioPlayer.addEventListener('error', (e) => { this._errored(e) }, true)
+    this.audioPlayer.addEventListener('stalled', (e) => { this._stalled(e) }, true)
     document.querySelector('.play-pause').addEventListener(
       'click', (e) => {
         this._togglePlayPause(e)
@@ -234,7 +237,12 @@ class Player {
     this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) }, true)
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
-    this.audioPlayer.addEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
+    this.audioPlayer.removeEventListener('loadeddata', (e) => { this._onLoaded(e) }, true)
+    this.audioPlayer.removeEventListener('stalled', (e) => { this._stalled(e) }, true)
+    this.audioPlayer.removeEventListener('waiting', (e) => { this._waiting(e) }, true)
+    this.audioPlayer.removeEventListener('ended', (e) => { this._ended(e) }, true)
+    this.audioPlayer.removeEventListener('error', (e) => { this._errored(e) }, true)
+    this.audioPlayer.removeEventListener('stalled', (e) => { this._stalled(e) }, true)
   }
 
   _focusPlayer (e) {
@@ -276,13 +284,28 @@ class Player {
     }
   }
 
-  _stalled(e) {
+  _stalled (e) {
     console.log('STALLED!')
     console.log(e)
   }
 
-  _waiting(e) {
+  _waiting (e) {
     console.log('WAITING!')
+    console.log(e)
+  }
+
+  _ended (e) {
+    console.log('ENDED!')
+    console.log(e)
+  }
+
+  _errored (e) {
+    console.log('ERRORED!')
+    console.log(e)
+  }
+
+  _stalled (e) {
+    console.log('STALLED!')
     console.log(e)
   }
 
