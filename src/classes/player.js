@@ -219,7 +219,11 @@ class Player {
     this.audioPlayer.addEventListener('waiting', (e) => { this._waiting(e) }, true)
     this.audioPlayer.addEventListener('ended', (e) => { this._ended(e) }, true)
     this.audioPlayer.addEventListener('error', (e) => { this._errored(e) }, true)
-    this.audioPlayer.addEventListener('stalled', (e) => { this._stalled(e) }, true)
+    this.audioPlayer.addEventListener('abort', (e) => { this._aborted(e) }, true)
+    this.audioPlayer.addEventListener('canplaythrough', (e) => { this._canplaythrough(e) }, true)
+    this.audioPlayer.addEventListener('emptied', (e) => { this._emptied(e) }, true)
+    this.audioPlayer.addEventListener('suspend', (e) => { this._suspended(e) }, true)
+
     document.querySelector('.play-pause').addEventListener(
       'click', (e) => {
         this._togglePlayPause(e)
@@ -234,6 +238,7 @@ class Player {
   }
 
   _removeEvents () {
+
     this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) }, true)
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
@@ -242,7 +247,10 @@ class Player {
     this.audioPlayer.removeEventListener('waiting', (e) => { this._waiting(e) }, true)
     this.audioPlayer.removeEventListener('ended', (e) => { this._ended(e) }, true)
     this.audioPlayer.removeEventListener('error', (e) => { this._errored(e) }, true)
-    this.audioPlayer.removeEventListener('stalled', (e) => { this._stalled(e) }, true)
+    this.audioPlayer.removeEventListener('abort', (e) => { this._aborted(e) }, true)
+    this.audioPlayer.removeEventListener('canplaythrough', (e) => { this._canplaythrough(e) }, true)
+    this.audioPlayer.removeEventListener('emptied', (e) => { this._emptied(e) }, true)
+    this.audioPlayer.removeEventListener('suspend', (e) => { this._suspended(e) }, true)
   }
 
   _focusPlayer (e) {
@@ -260,6 +268,9 @@ class Player {
   // But, for now, it's fine.
   _onTimeUpdate (e, forceUpdate = false) {
     let currentTime = e.target.currentTime
+    if (!currentTime || currentTime < 0) {
+      console.log('CURRENT TIME: ' + currentTime)
+    }
 
     // Throttle updates
     if (this._shouldUpdateCurrentTime(currentTime) || forceUpdate) {
@@ -272,9 +283,14 @@ class Player {
     let duration = this.audioPlayer.duration
     let threshold = duration * 0.05
     let priorPlayStatus = this.episode.played
+
+    // @todo This may be the culprit preemptively expiring eps
+    // before they should be. (Usually occurs when the feed url has changed
+    // or cannot be resumed.
     let expire = duration - currentTime <= threshold
 
     if (!this.episode.played) {
+      console.log('SET PLAYED: (' + duration + ' - ' + currentTime + ' <= ' + threshold + ')')
       this.episode.played = expire
     }
 
@@ -282,6 +298,21 @@ class Player {
       this.podcast.refreshView()
       user.refreshSubscriptions()
     }
+  }
+
+  _aborted (e) {
+    console.log('ABORTED')
+    console.log(e)
+  }
+
+  _canplaythrough (e) {
+    console.log('CAN PLAY THROUGH')
+    console.log(e)
+  }
+
+  _emptied (e) {
+    console.log('EMPTIED')
+    console.log(e)
   }
 
   _stalled (e) {
@@ -304,8 +335,8 @@ class Player {
     console.log(e)
   }
 
-  _stalled (e) {
-    console.log('STALLED!')
+  _suspended (e) {
+    console.log('SUSPENDED!')
     console.log(e)
   }
 
