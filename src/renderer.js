@@ -35,6 +35,7 @@ function search (searchTerm) {
       return Podcast.getOrInitialize({
         id: item.collectionId,
         artwork: item.artworkUrl600,
+        feed: item.feedUrl,
         identity: item.artistName,
         title: item.collectionName,
         feed: item.feedUrl,
@@ -159,8 +160,11 @@ window.api.receive('debugPodcastJSON',  (podcastObj) => {
 
 
 window.api.receive('subscribePodcast',  (podcastObj) => {
-  let podcast = Podcast.get(podcastObj.id)
-  podcast.subscribe()
+  let podcast = Podcast.getOrInitialize(podcastObj)
+
+  podcast.getFeed().then((resp) => {
+    podcast.subscribe()
+  })
 })
 
 window.api.receive('unsubscribePodcast',  (podcastObj) => {
