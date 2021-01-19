@@ -238,7 +238,6 @@ class Player {
   }
 
   _removeEvents () {
-
     this.audioPlayer.removeEventListener('play', (e) => { this._setPlay(e) }, true)
     this.audioPlayer.removeEventListener('pause', (e) => { this._setPause(e) }, true)
     this.audioPlayer.removeEventListener('timeupdate', (e) => { this._onTimeUpdate(e) }, true)
@@ -290,7 +289,6 @@ class Player {
     let expire = duration - currentTime <= threshold
 
     if (!this.episode.played) {
-      console.log('SET PLAYED: (' + duration + ' - ' + currentTime + ' <= ' + threshold + ')')
       this.episode.played = expire
     }
 
@@ -336,8 +334,6 @@ class Player {
   }
 
   _suspended (e) {
-    console.log('SUSPENDED!')
-    console.log(e)
   }
 
   _setPlay (e) {
