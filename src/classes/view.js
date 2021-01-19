@@ -130,14 +130,16 @@ class View {
       case 'podcast':
         let podcast = Podcast.get(opts.podcastId)
 
-        podcast.detailed().then(ele => {
-          view.change('podcast',
-            ele,
-            {
-              podcastId: podcast.id
-            }
-          )
-        })
+        if (podcast) {
+          podcast.detailed().then(ele => {
+            view.change('podcast',
+              ele,
+              {
+                podcastId: podcast.id
+              }
+            )
+          })
+        }
 
         break
       default:
