@@ -1,12 +1,12 @@
 # Castor - A very no-frills podcast app.
 
-## Build Requirements
+## Requirements
 
-- node
+- node v.8.4.0+
 - electron v.8.3+
 - electron-forge v.5.2.4
 
-## Running Development
+## Run
 
 ```
 npm start
@@ -14,32 +14,13 @@ npm start
 
 ## Current Issues
 
-### Electron 
+### Electron and Building
 
-We're encountering errors with `electron-forge` 6.x* (not surprising as it's in beta) but we're also encountering issues with `electon` v.8.2** (`electron-forge`'s bundled `electron`).
+Due to _Castor_ being extremely out-of-date and some electron-forge issues, a build of -Castor- will fail.
 
-Consequently, we're using `electron-forge` for packaging, but using `electron .` for starting in dev mode.
-
-* Appears to be config or promise issue:
-
-```
-The "file" argument must be of type string. Received an instance of Object
-```
-
-** Private variable syntax isn't allowed:
-
-```
-SyntaxError: /Users/gturner/Documents/dev/electron/castor/src/classes/podcast.js: Unexpected character '#' (2:2)
-  1 | class Podcast {
-> 2 |   #player
-    |   ^
-  3 |   #cacheKey
-  4 |   #stateKey
-```
-
-Guessing this is an issue with how `electron-forge` is transpiling the code.
+This may or may not be resolved in a future update!
 
 ## Contact
 
-Glenn Turner
-development@peccaui.com
+G Turner
+contact@iamgturner.com
