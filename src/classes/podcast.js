@@ -139,18 +139,23 @@ class Podcast {
     return user.subscribedPodcastIds().includes(this.id)
   }
 
+  // PLACEHOLDER
   archive () {
+    // NOT IMPLEMENTED
     user.archive(this.id)
 
     this.refreshView()
   }
 
+  // PLACEHOLDER
   unarchive () {
+    // NOT IMPLEMENTED
     user.unarchive(this.id)
 
     this.refreshView()
   }
 
+  // PLACEHOLDER
   archived () {
     return true
   }
@@ -249,6 +254,7 @@ class Podcast {
             class="trigger-podcast-ctx-menu btn btn-settings btn-secondary"
             type="button"
             data-podcast-id="${this.id}"
+            data-podcast-feed="${this.feed}"
             aria-haspopup="true"
             aria-expanded="false"
           >
@@ -259,6 +265,7 @@ class Podcast {
             <a
               class="dropdown-item podcast-subscribe-toggle"
               data-podcast-id="${this.id}"
+              data-podcast-feed-url="${this.feed}"
               href="#"
             >` + (
               this.isSubscribed() ? 'Unsubscribe' : 'Subscribe'
@@ -527,6 +534,9 @@ class Podcast {
         this._populate(parsed)
 
         this._cacheFeed()
+      }).catch(err => {
+        console.error('An error occurred updating this podcast:')
+        console.error(err)
       })
     }
   }
@@ -565,6 +575,7 @@ class Podcast {
 
   static _showPodcastCtxMenu (e) {
     let pid = e.currentTarget.dataset.podcastId
+    let feedUrl = e.currentTarget.dataset.podcastFeed
 
     let subscribed = false
     let podcast = Podcast.get(pid)
@@ -577,6 +588,7 @@ class Podcast {
       'showPodcastCtxMenu',
       {
         id: pid,
+        feed: feedUrl,
         subscribed: subscribed
       }
     )
