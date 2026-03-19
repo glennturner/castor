@@ -329,8 +329,8 @@ class Player {
   }
 
   _errored (e) {
-    console.log('ERRORED!')
-    console.log(e)
+    console.log('ERRORED! via ', e.srcElement)
+    console.log(e.srcElement.error)
   }
 
   _suspended (e) {
